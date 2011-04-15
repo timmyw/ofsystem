@@ -1,0 +1,94 @@
+set(PROJECTNAME ofsystem)
+
+set(BD ${CMAKE_BINARY_DIR})
+
+set(CMAKE_BUILD_TYPE "Debug")
+#SET(CMAKE_BUILD_TYPE "Release")
+
+set(OFBUILDER "no-one")
+IF (WIN32)
+SET(OFBUILDER $ENV{USERNAME})
+SET(OFBUILDHOST $ENV{COMPUTERNAME})
+SET(OFBUILDPROC $ENV{PROCESSOR_ARCHITECTURE})
+SET(OFBUILDOS $ENV{OS})
+SET(OFBUILDMAC "")
+ELSE(WIN32)
+EXEC_PROGRAM("whoami" output_variable OFBUILDER)
+EXEC_PROGRAM("uname -n" output_variable OFBUILDHOST)
+EXEC_PROGRAM("uname -m" output_variable OFBUILDMAC)
+EXEC_PROGRAM("uname -s" output_variable OFBUILDOS)
+EXEC_PROGRAM("uname -p" output_variable OFBUILDPROC)
+EXEC_PROGRAM("uname -m" OUTPUT_VARIABLE UNAMEM)
+ENDIF(WIN32)
+
+# Defaults to 32bit platform on Win32
+SET(BUILD_PLATFORM OFPLATFORM_I386)
+SET(BUILD_OS OFOPSYS_WIN32)
+
+include_directories(include ${BD}/include)
+
+IF (WIN32)
+  SET(BUILD_OS OFOPSYS_WIN32)
+  SET(WORDSIZE "WORDSIZE32")
+  SET(SERVER_INCLUDES )
+  add_definitions(-DOFEXPORTS)
+  include_directories(include \\mssdk\\include)
+ELSE(WIN32)
+  SET(OSTYPE $ENV{OSTYPE})
+  SET(BUILD_OS OPSYS_LINUX)
+  SET(WORDSIZE "WORDSIZE32")
+
+  IF (OSTYPE STREQUAL "linux")
+    SET(BUILD_OS OFOPSYS_LINUX)
+  ENDIF(OSTYPE STREQUAL "linux")
+
+  IF (OSTYPE STREQUAL "linux-gnu")
+    SET(BUILD_OS OFOPSYS_LINUX)
+  ENDIF(OSTYPE STREQUAL "linux-gnu")
+
+  IF (UNAMEM STREQUAL "x86_64")
+    SET(BUILD_PLATFORM OFPLATFORM_X86_64)
+    SET(WORDSIZE "WORDSIZE64")
+  ENDIF(UNAMEM STREQUAL "x86_64")
+
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic -fPIC")
+
+ENDIF(WIN32)
+
+# Change this to "SHARED" to create shared libraries
+set(SHAREDSTATIC "STATIC")
+#set(SHAREDSTATIC "SHARED")
+
+# Add the definitions for OS and PLATFORM
+add_definitions(-D${BUILD_OS} -D${BUILD_PLATFORM} -D${WORDSIZE} -DOF_${SHAREDSTATIC}_BUILD)
+
+# Add debug/ndebug macros
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  add_definitions(-DDEBUG)
+else(CMAKE_BUILD_TYPE STREQUAL "Debug")
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+# Add the shared build flags, if necessary
+if (SHAREDSTATIC STREQUAL "SHARED")
+#  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -shared")
+else (SHAREDSTATIC STREQUAL "SHARED")
+endif (SHAREDSTATIC STREQUAL "SHARED")
+
+set(bindir ${BD}/../bin)
+set(libdir ${BD}/../lib)
+
+function(addexec name srcs libs)
+    add_executable(${name} ${srcs})
+    target_link_libraries(${name} ${libs})
+    install(TARGETS ${name} DESTINATION ${bindir})
+endfunction(addexec)
+
+function(addlib name libtype srcs libs)
+    add_library(${name} ${libtype} ${srcs})
+    target_link_libraries(${name} ${libs})
+    install(TARGETS ${name} 
+                    RUNTIME DESTINATION ${libdir}
+                    LIBRARY DESTINATION ${libdir}
+                    ARCHIVE DESTINATION ${libdir}
+    )
+endfunction(addlib)
