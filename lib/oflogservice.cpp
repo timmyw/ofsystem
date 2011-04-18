@@ -3,8 +3,12 @@
 
 #include <ofsys.h>
 #include <oflogservice.h>
+#include <ofos.h>
 
+#if !defined(OFOPSYS_WIN32)
+#include <syslog.h>
 #include <stdarg.h>
+#endif
 
 string OFLogService::m_appName = "ofsystem";
 
@@ -27,8 +31,47 @@ void OFLogService::writeLine(const char* format, ...)
     write_(LOG_NOTICE, line);
 }
 
-void
-LogService::write_(ofuint32 sev, , const string& line);
+void OFLogService::errorLine(const char* format, ...)
+{
+    va_list arglist;
+    va_start( arglist, format );
+    char line[OF_LOG_LINE_LENGTH+10];
+#if defined(OFOPSYS_WIN32)
+    ::_vsnprintf
+#else
+        ::vsnprintf
+#endif
+        ( line, OF_LOG_LINE_LENGTH - 3, format, arglist );
+
+    va_end( arglist );
+
+    if (!OFOS::strstr (line, "\n"))
+        OFOS::strcat( line, "\n" );
+    write_(LOG_ERR, line);
+}
+
+#if !defined(NDEBUG)
+void OFLogService::debugLine(const char* format, ...)
+{
+    va_list arglist;
+    va_start( arglist, format );
+    char line[OF_LOG_LINE_LENGTH+10];
+#if defined(OFOPSYS_WIN32)
+    ::_vsnprintf
+#else
+        ::vsnprintf
+#endif
+        ( line, OF_LOG_LINE_LENGTH - 3, format, arglist );
+
+    va_end( arglist );
+
+    if (!OFOS::strstr (line, "\n"))
+        OFOS::strcat( line, "\n" );
+    write_(LOG_DEBUG, line);
+}
+#endif
+
+void OFLogService::write_(ofuint32 sev, const string& line)
 {
 #if !defined(OFOPSYS_WIN32)
     if (sev != LOG_DEBUG)

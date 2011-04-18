@@ -10,6 +10,7 @@ $Id: ofconfig.cpp,v 2.2 2008-03-13 18:15:01 timmy Exp $
 #include <ofutility.h>
 #include <ofos.h>
 #include <ofplatform.h>
+#include <oflogservice.h>
 
 const char *OFConfigurator::rootGroup = "root";
 
@@ -645,7 +646,7 @@ OFConfigGroup::dump(OFFile &file, char force_all /*= 0*/)
     {
         OFOS::snprintf(name, 200, "[%s]%s", m_name, OFPlatform::CRLF);
         if (file.write(name, OFOS::strlen(name)) <= 0)
-            LogService::errorLine("Error writing group name");
+            OFLogService::errorLine("Error writing group name");
     }
  
     comment_iter i1 = m_comments.begin();

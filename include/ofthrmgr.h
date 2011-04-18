@@ -9,7 +9,7 @@
 #if !defined(_OF_THR_MGR_H_)
 #define _OF_THR_MGR_H_
 
-#include <ofsys/ofos.h>
+#include <ofos.h>
 
 /** \file ofthrmgr.h
     Contains the declaration of the OFThreadManager class.

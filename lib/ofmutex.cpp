@@ -6,8 +6,8 @@
  * $Id: ofmutex.cpp,v 2.0 2006-01-01 19:26:31 timmy Exp $
  */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofmutex.h>
+#include <ofsys.h>
+#include <ofmutex.h>
 
 #if defined(UNIT_TEST)
 #include <iostream>

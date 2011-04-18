@@ -4,13 +4,12 @@
   $Id: ofutility.cpp,v 2.5 2010-03-15 08:57:36 timmy Exp $
 */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofutility.h>
-#include <ofsys/ofos.h>
-#include <ofsys/offile.h>
+#include <ofsys.h>
+#include <ofutility.h>
+#include <ofos.h>
+#include <offile.h>
 #include <openssl/ssl.h>
-#include <ofversions.h>
-#include <ofsys/ofconfig.h>
+#include <ofconfig.h>
 
 #if defined(OFOPSYS_WIN32)
 #include <errno.h>
@@ -935,18 +934,6 @@ OFUtility::readPassword(char* password, ofuint32 password_length)
      
     return nread;
 #endif
-}
-
-const char* getSourceBranch()
-{
-    static char source_branch_name[257] = "HEAD";
-
-    if (OFOS::strlen(SOURCE_DETAILS) > 9)
-    {
-        OFOS::strcpy(source_branch_name, SOURCE_DETAILS+7);
-        source_branch_name[OFOS::strlen(source_branch_name)-1] = 0;
-    }
-    return source_branch_name;
 }
 
 void

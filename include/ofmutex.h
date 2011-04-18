@@ -13,8 +13,8 @@
     Contains the declaration of the OFMutex class.
 */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofos.h>
+#include <ofsys.h>
+#include <ofos.h>
 
 #if defined(OFOPSYS_LINUX) || defined(OFOPSYS_FREEBSD) || defined(OFOPSYS_SOLARIS)
 #include <pthread.h>

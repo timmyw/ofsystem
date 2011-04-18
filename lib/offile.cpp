@@ -1,16 +1,9 @@
 /*
- * Created            : Apr-00 by Timmy Whelan
- * Last u.test update : dd/mm/yy by ------
- * Last code review   : dd/mm/yy by ------
-
- $Revision: 2.3 $
-
- $Id: offile.cpp,v 2.3 2010-03-21 17:37:03 timmy Exp $
 */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/offile.h>
-#include <ofsys/ofutility.h>
+#include <ofsys.h>
+#include <offile.h>
+#include <ofutility.h>
 
 #if defined(unix) | defined(linux) | defined(__CYGWIN__)
 #include <unistd.h>
@@ -21,7 +14,6 @@
 #include <io.h>
 #include <errno.h>
 #endif
-
 
 char OFFile::m_tempPath[OF_MAX_PATH_LEN+1] = "";
 

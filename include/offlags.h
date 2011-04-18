@@ -1,6 +1,9 @@
 /*
  */
 
+#if !defined(_OFGLAGS_H_)
+#define _OFGLAGS_H_
+
 /** \enum Flags for OFFile */
 enum OFFILE_OPEN_FLAGS
     {
@@ -1980,3 +1983,61 @@ enum OFERROR
          */
         ERR_SSO_FAILED
     };
+
+/** \enum Operating systems */
+enum OPSYS
+    {
+        /** Linux
+         */
+        OS_LINUX = 1,
+
+        /** Windows 95/98
+         */
+        OS_WIN9X,
+
+        /** Windows ME
+         */
+        OS_WINME,
+
+        /** Windows NT
+         */
+        OS_WINNT,
+
+        /** Windows 2000
+         */
+        OS_WIN2K,
+
+        /** Windows XP
+         */
+        OS_WINXP,
+
+        /** Mac OS
+         */
+        OS_MACOS,
+
+        /** Mac OS X
+         */
+        OS_MACOSX,
+
+        /** Solaris 8
+         */
+        OS_SOL8,
+
+        /** Solaris 9
+         */
+        OS_SOL9,
+
+        /** FreeBSD
+         */
+        OS_FREEBSD,
+
+        /** Darwin
+         */
+        OS_DARWIN,
+
+        /** Solaris
+         */
+        OS_SOLARIS
+    };
+
+#endif // _OFGLAGS_H_

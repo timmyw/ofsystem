@@ -20,4 +20,14 @@
 
 #define OF_MAX_LOG_NAME_LEN             128
 
+#define OF_LOG_LINE_LENGTH 1024
+
+/** Size of socket send buffer
+ */
+#define OF_SOCK_SEND_BUFSIZE            8192
+
+/** Size of socket receive buffer
+ */
+#define OF_SOCK_RECV_BUFSIZE            8192
+
 #endif // _OFLIMITS_H_

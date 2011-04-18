@@ -6,8 +6,8 @@
  * $Id: ofthrmgr.cpp,v 2.1 2007-09-13 09:32:41 timmy Exp $
  */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofthrmgr.h>
+#include <ofsys.h>
+#include <ofthrmgr.h>
 
 #if defined(OFOPSYS_LINUX) || defined(OFOPSYS_SOLARIS) || defined(OFOPSYS_FREEBSD) || defined(OFOPSYS_DARWIN)
 extern "C" {

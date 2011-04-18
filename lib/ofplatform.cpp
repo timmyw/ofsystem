@@ -3,13 +3,13 @@
 $Id: ofplatform.cpp,v 2.7 2007-05-23 06:45:30 timmy Exp $
 */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofplatform.h>
-#include <ofsys/ofos.h>
-#include <ofsys/ofconfig.h>
-#include <ofsys/offile.h>
-#include <ofsys/ofutility.h>
-#include <ofsys/ofdirent.h>
+#include <ofsys.h>
+#include <ofplatform.h>
+#include <ofos.h>
+#include <ofconfig.h>
+#include <offile.h>
+#include <ofutility.h>
+#include <ofdirent.h>
 
 #if defined(linux)
 extern char *cuserid(char *);

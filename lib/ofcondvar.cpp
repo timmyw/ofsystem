@@ -6,9 +6,9 @@
  * $Id: ofcondvar.cpp,v 2.0 2006-01-01 19:26:31 timmy Exp $
  */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofcondvar.h>
-#include <ofsys/ofmutex.h>
+#include <ofsys.h>
+#include <ofcondvar.h>
+#include <ofmutex.h>
 
 #if defined(OFOPSYS_LINUX) || defined(OFOPSYS_SOLARIS) || defined(OFOPSYS_FREEBSD) || defined(OFOPSYS_DARWIN)
 #include <sys/time.h>

@@ -27,7 +27,21 @@ class OFSYS_API OFLogService
      */
     //@{
 
+    /** Write a standard line to the log
+     */
     static void writeLine(const char* format, ...);
+
+    /** Write an error line to the log
+     */
+    static void errorLine(const char* format, ...);
+
+    /** Write a debug line to the log
+
+        Does nothing for a release build
+    */
+#if !defined(NDEBUG)
+    static void debugLine(const char* format, ...);
+#endif
 
     //@}
 

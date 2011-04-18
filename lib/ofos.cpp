@@ -3,16 +3,15 @@
 $Id: ofos.cpp,v 2.3 2009-08-12 01:54:42 timmy Exp $
 */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofos.h>
-#include <ofsys/ofplatform.h>
-#include <flags.h>
+#include <ofsys.h>
+#include <ofos.h>
+#include <ofplatform.h>
 #include <ctype.h>
 #include <stdarg.h>
 #include <signal.h>
 
-#define LIBVER_MAJOR_   2
-#define LIBVER_MINOR_   3
+#define LIBVER_MAJOR_   3
+#define LIBVER_MINOR_   0
 #define LIBVER_RELEASE_ 1
 const char * LIBVER_DESC_ofsys = "openFabric System library"; 
 extern "C" ofint32 libraryversion_ofsys( ) { return ( LIBVER_MAJOR_ << 16) | LIBVER_MINOR_; } 
@@ -20,7 +19,7 @@ extern "C" ofint32 libraryrelease_ofsys( ) {    return LIBVER_RELEASE_; }
 extern "C" const char *librarydescription_ofsys( ) { return LIBVER_DESC_ofsys; }
 
 #if !defined(NDEBUG)
-#include <ofsys/ofos.i>
+#include <ofos.i>
 #endif
 
 #if defined(OFOPSYS_WIN32)

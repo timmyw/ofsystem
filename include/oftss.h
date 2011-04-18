@@ -13,7 +13,7 @@
     Contains the declaration of the OFTSS_T template and OFTSS class.
 */
 
-#include <ofsys/ofos.h>
+#include <ofos.h>
 
 /** \class OFTSS_T oftss.h
     Implementation of thread local storage (thread specific storage on pthreads.)
@@ -74,6 +74,6 @@ class OFSYS_API OFTSS
     OFOS::of_tls_t m_index;
 };
 
-#include <ofsys/oftss.i>
+#include <oftss.i>
 
 #endif // #if !defined(_OF_TSS_H_)

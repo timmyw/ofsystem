@@ -6,8 +6,8 @@
  * $Id: oftss.cpp,v 2.0 2006-01-01 19:26:31 timmy Exp $
  */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/oftss.h>
+#include <ofsys.h>
+#include <oftss.h>
 
 OFTSS::OFTSS( void *initial /* = 0 */ )
 {

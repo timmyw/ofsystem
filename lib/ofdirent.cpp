@@ -6,10 +6,10 @@
  * $Id: ofdirent.cpp,v 2.3 2006-02-20 15:45:22 timmy Exp $
  */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofdirent.h>
-#include <ofsys/ofplatform.h>
-#include <ofsys/ofos.h>
+#include <ofsys.h>
+#include <ofdirent.h>
+#include <ofplatform.h>
+#include <ofos.h>
 
 OFDirent::OFDirent( const char *path )
 {

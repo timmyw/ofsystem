@@ -4,11 +4,11 @@
 $Id: ofsocket.cpp,v 2.10 2007-09-27 12:59:57 timmy Exp $
 */
 
-#include <ofsys/ofsys.h>
-#include <ofsys/ofsocket.h>
-#include <ofsys/ofutility.h>
-#include <ofsys/oflogsvc.h>
-#include <ofsys/ofplatform.h>
+#include <ofsys.h>
+#include <ofsocket.h>
+#include <ofutility.h>
+#include <oflogservice.h>
+#include <ofplatform.h>
 
 #if defined(OFOPSYS_WIN32)
 typedef LINGER OFLINGER;
@@ -71,8 +71,8 @@ OFSocket::connect( const OFAddress &remote )
         ofuint32 param = fcntl(m_socket, F_GETFL);
     if (fcntl(m_socket, F_SETFL, param | O_NONBLOCK))
 #endif
-        LogService::debugLine("Error setting NBIO: %s",
-                              retrieveMsg(OFUtility::translateLastSystemError()));
+        OFLogService::debugLine("Error setting NBIO: %s",
+                                retrieveMsg(OFUtility::translateLastSystemError()));
     return ERR_SUCCESS;
 }
 

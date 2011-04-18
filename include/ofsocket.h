@@ -12,7 +12,7 @@ typedef ofuint32 (__stdcall *OF_CLIENT_FUNC)(void *);
 typedef void * (*OF_CLIENT_FUNC)(void *);
 #endif // #if defined(OFOPSYS_WIN32)
 
-#include <ofsys/ofaddress.h>
+#include <ofaddress.h>
 
 /**
    \class OFSocket ofsocket.h
@@ -137,7 +137,7 @@ class OFSYS_API OFSocket
     OFOS::of_socket_t m_socket;
 };
 
-#include <ofsys/ofsocket.i>
+#include <ofsocket.i>
 
 #endif // #if !defined(_OF_SOCKET_H_)
 
