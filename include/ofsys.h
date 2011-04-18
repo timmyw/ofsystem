@@ -20,7 +20,7 @@
 #if defined(OF_STATIC_BUILD)
 #  define OFSYS_API
 #else // STATIC_BUILD
-#  if defined(OFEXPORTS)
+#  if defined(ofsystem_EXPORTS)
 #    define OFSYS_API  __declspec(dllexport)
 #  else
 #    define OFSYS_API  __declspec(dllimport)

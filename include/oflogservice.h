@@ -39,9 +39,7 @@ class OFSYS_API OFLogService
 
         Does nothing for a release build
     */
-#if !defined(NDEBUG)
     static void debugLine(const char* format, ...);
-#endif
 
     //@}
 

@@ -3,7 +3,7 @@ set(PROJECTNAME ofsystem)
 set(BD ${CMAKE_BINARY_DIR})
 
 set(CMAKE_BUILD_TYPE "Debug")
-#SET(CMAKE_BUILD_TYPE "Release")
+#set(CMAKE_BUILD_TYPE "Release")
 
 set(OFBUILDER "no-one")
 IF (WIN32)
@@ -35,7 +35,7 @@ IF (WIN32)
   include_directories(include \\mssdk\\include)
 ELSE(WIN32)
   SET(OSTYPE $ENV{OSTYPE})
-  SET(BUILD_OS OPSYS_LINUX)
+  SET(BUILD_OS OFOPSYS_LINUX)
   SET(WORDSIZE "WORDSIZE32")
 
   IF (OSTYPE STREQUAL "linux")
@@ -56,8 +56,8 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 # Change this to "SHARED" to create shared libraries
-set(SHAREDSTATIC "STATIC")
-#set(SHAREDSTATIC "SHARED")
+#set(SHAREDSTATIC "STATIC")
+set(SHAREDSTATIC "SHARED")
 
 # Add the definitions for OS and PLATFORM
 add_definitions(-D${BUILD_OS} -D${BUILD_PLATFORM} -D${WORDSIZE} -DOF_${SHAREDSTATIC}_BUILD)
