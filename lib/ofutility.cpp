@@ -1074,6 +1074,150 @@ void OFUtility::split_string_on_last_delim(const string& l
     }
 }
 
+void OFUtility::convertToBase64( const char *data, ofuint32 buflen, char *output )
+{
+    char conv[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    const char *current = data;
+    const char *finish = data + buflen;
+    while ( current < finish )
+    {
+        char outbuf[4];
+        char inbuf[3];
+
+        ofint32 x;
+        for ( x=0; x<3; x++ )
+            if ( current+x <= finish )
+                inbuf[x] = current[x];
+            else
+                inbuf[x] = 0;
+
+        outbuf[0] = (inbuf[0] & 0xfc) >> 2;
+        outbuf[1] = ((inbuf[0] & 0x3) << 4) | ((inbuf[1] & 0xf0) >> 4);        //(*(ofuint16*)current++) & 0xfc0;
+        outbuf[2] = ((inbuf[1] & 0xf) << 2) | ((inbuf[2] & 0xc0) >> 6);
+        outbuf[3] = (inbuf[2] & 0x3f);
+
+        ofint32 upto = 4;
+        if ( finish - current == 1 )
+            upto = 2;
+        if ( finish - current == 2 )
+            upto = 3;
+        for ( x = 0; x < 4; x++ )
+            if ( x < upto )
+                *output++ = conv[(ofuint32)outbuf[x]];
+            else
+                *output++ = '=';
+
+        current += 3;
+    }
+    *output = 0;
+}
+
+ofuint32 OFUtility::convertFromBase64( const char *data, ofuint32 buflen, char *output )
+{
+    // SGVsbG8gQmlnIEJveQ==
+    const char *current = data;
+    char inbuf[4];
+    char *pos = output;
+    ofint32 forandy=(ofint32)buflen;
+    ofuint32 count = 0;
+    ofuint32 size = 0;
+    while ( *current && forandy > 0 )
+    {
+        while ( *current && forandy > 0 && (*current=='\r'||*current=='\n'))
+        {
+            current++;
+            forandy--;
+        }
+        ofint32 x;
+        for ( x = 0; x < 4; x++ )
+        {
+            if ( current[x] == '\n' || current[x] == '\r' )
+                x = x?x-1:x;
+            else
+            {
+                unsigned char t = current[x];
+                if ( t >= 'A' && t <= 'Z' )
+                    t -= 'A';
+                else if ( t >= 'a' && t <= 'z' )
+                    t = t - 'a' + 26;
+                else if ( t >= '0' && t <= '9' )
+                    t = t - '0' + 52;
+                else if ( t == '+' )
+                    t = 62;
+                else if ( t == '/' )
+                    t = 63;
+                else if ( t == '=' )
+                {
+                    if ( !size )
+                        size = count;
+                    t = 0;
+                }
+                inbuf[x] = t;
+            }
+        }
+        *pos++ = (inbuf[0] << 2) | ((inbuf[1] & 0x30) >> 4);
+        *pos++ = ((inbuf[1] & 0xf) << 4) | ((inbuf[2] & 0x3c) >> 2);
+        *pos++ = ((inbuf[2] & 0x3) << 6) | (inbuf[3] & 0x3f);
+        count += 3;
+        current += 4;
+        forandy -= 4;
+    }
+    *pos = 0;
+    return size;
+}
+
+
+ofuint32 OFUtility::convertFromBase64_2( const char *data, ofuint32 buflen, char *output )
+{
+    // SGVsbG8gQmlnIEJveQ==
+    const char *current = data;
+    char inbuf[4];
+    char *pos = output;
+    
+    // Check we are not going to write over the end of the buffer.
+    while ( *current && (ofuint32)( pos - output ) < ( buflen + 4 ) )
+    {
+        ofint32 x;
+        // Ignore line feeds/carriage returns and other garbage
+        if ( current[0] > 31 )
+        {    
+            for ( x = 0; x < 4; x++ )
+            {
+                unsigned char t = current[x];
+                
+                if ( t >= 'A' && t <= 'Z' )
+                    t -= 'A';
+                else if ( t >= 'a' && t <= 'z' )
+                    t = t - 'a' + 26;
+                else if ( t >= '0' && t <= '9' )
+                    t = t - '0' + 52;
+                else if ( t == '+' )
+                    t = 62;
+                else if ( t == '/' )
+                    t = 63;
+                else if ( t == '=' )
+                    t = 0;
+                inbuf[x] = t;
+            }
+            *pos++ = (inbuf[0] << 2) | ((inbuf[1] & 0x30) >> 4);
+            *pos++ = ((inbuf[1] & 0xf) << 4) | ((inbuf[2] & 0x3c) >> 2);
+            *pos++ = ((inbuf[2] & 0x3) << 6) | (inbuf[3] & 0x3f);
+            current += 4;
+        }
+        else
+            current += 1;
+    }
+    return pos - ( output + 1 );
+}
+
+ofuint32 OFUtility::calculateBase64Size( const char *data, ofuint32 buflen /* = 0 */ )
+{
+	if ( !buflen )
+		buflen = ofstrlen( data );
+	return ( (buflen/3+1) * 4 + 1);
+}
+
 // //////////////////////////////////////////////////////////////////////////
 
 #if defined(UNIT_TEST)
@@ -1090,7 +1234,7 @@ ofuint32 cb1(OFCHARSTARLIST* line, ofuint32 line_number, void* user)
     return 0;
 }
 
-int  main( ofint32 argc, char *argv[] )
+int main( ofint32 argc, char *argv[] )
 {
     UT_BATCH_START( "OFUtility" );
 

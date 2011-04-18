@@ -14,7 +14,9 @@ set (srcs
   ofdll.cpp
   oftss.cpp
   ofcondvar.cpp
-  ofdirent.cpp)
+  ofdirent.cpp
+  buffers.cpp
+  )
 
 if (!WIN32)
    set (srcs ${srcs} terminput.cpp)

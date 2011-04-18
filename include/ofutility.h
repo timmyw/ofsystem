@@ -354,6 +354,46 @@ class OFSYS_API OFUtility
                                      OFCHARSTARLIST* list);
 
     //@}
+
+    /** \name Base64 methods
+     */
+    //@{
+
+    /** Calculates the size of the buffer required to represent the data in base64.
+        \param data A pointer to the data cast to const char *. If the \c buflen
+        parameter is non-zero, this parameter can be OFNULL.
+        \param buflen The length of the data. If zero, the \c data parameter is assumed
+        to point to a null-terminated string, and the length calculated from that.
+        \return An ofuint32 containing the size of the required buffer.
+    */
+    static ofuint32 calculateBase64Size( const char *data, ofuint32 buflen = 0 );
+
+    /** Convert the supplied data to base64.
+        \param data A pointer to the data to be converted. This is cast to a const char *.
+        \param buflen An ofuint32 containing the length of the supplied data.
+        \param output A pointer to an already allocated buffer.  This buffer must be at the size
+        of the value returned by calculateBase64Size().
+    */
+    static void convertToBase64( const char *data, ofuint32 buflen, char *output );
+
+    /** Convert back from base64.
+        Returns the length of the converted data.
+     */
+    static ofuint32 convertFromBase64( const char *data, ofuint32 buflen, char *output );
+
+    /** Convert back from base64 and returns the length of the decoded data.
+        \param data A pointer to the data to be converted. This is cast to a const char *.
+        \param buflen An ofuint32 containing the length of the supplied data.
+        \param output A pointer to an already allocated buffer.  This buffer must be set at the size
+        which is at least 3/4 of the size of the supplied data (rounded up to the nearest multiple
+        of 3)
+        Note. This method checks the supplied buflen to prevent memory overflow and ignores extraneous
+        line feeds etc in the base64 data.
+     */
+    static ofuint32 convertFromBase64_2( const char *data, ofuint32 buflen, char *output );
+
+    //@}
+
 };
 
 OFSYS_API const char* getSourceBranch();
