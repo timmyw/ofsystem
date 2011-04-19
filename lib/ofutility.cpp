@@ -1218,6 +1218,466 @@ ofuint32 OFUtility::calculateBase64Size( const char *data, ofuint32 buflen /* = 
 	return ( (buflen/3+1) * 4 + 1);
 }
 
+char
+OFUtility::intToHexChar(ofint32 i)
+{
+    if (i >= 0 && i <= 9)
+    {
+        return '0'+i;
+    }
+    else if (i >= 10 && i <= 15)
+    {
+        return 'A'+i-10;
+    }
+    else
+    {
+        assert(SHOULD_NEVER_GET_HERE);
+        return 0;
+    }
+}
+
+OFINLINE std::string OFUtility::dataToHexString( unsigned char data)
+{
+    std::string outstring;
+    char temp;
+    temp = intToHexChar(data / 16);
+    outstring += temp;
+
+    temp = intToHexChar(data % 16);
+    outstring += temp;
+
+    return outstring;
+}
+    
+std::string OFUtility::dataToHexString( unsigned const char* data, ofint32 length)
+{
+    std::string outstring;
+    for ( ofint32 i=0; i < length; i++)
+        outstring += dataToHexString(data[i]);
+    return outstring;
+}
+
+OFINLINE ofint32 OFUtility::hexCharToInt(char c)
+{
+    if (c >= '0' && c <= '9')
+    {
+        return c-'0';
+    }
+    else if (c >= 'A' && c <= 'F')
+    {
+        return c-'A'+10;
+    }
+    else if (c >= 'a' && c <= 'f')
+    {
+        return c-'a'+10;
+    }
+    else
+    {
+        assert(SHOULD_NEVER_GET_HERE);
+        return 0;
+    }
+}
+
+void OFUtility::hexStringToData(const std::string& hexString, unsigned char*& data, ofuint32* length)
+{
+    assert(hexString.length()%2 == 0); // only works for even length strings (which is all dataToHexString() creates)
+    *length = hexString.length()/2;
+    data = new unsigned char[*length];
+    for (ofuint32 i=0; i < *length; i++)
+    {
+        data[i] = 16*hexCharToInt(hexString[i*2]) + hexCharToInt(hexString[i*2+1]);
+    }
+}
+
+OFINLINE std::string OFUtility::toString(ofint16 theValue)
+{
+    char buffer[32];
+    sprintf(buffer,"%d",theValue);
+    std::string outstring(buffer);
+    return outstring;
+}
+        
+OFINLINE std::string OFUtility::toString(ofint32 theValue)
+{
+    char buffer[32];
+    sprintf(buffer,"%"LFORMAT"d",theValue);
+    std::string outstring(buffer);
+    return outstring;
+}
+
+OFINLINE std::string OFUtility::toString(ofuint32 theValue)
+{
+    char buffer[32];
+    sprintf(buffer,"%"LFORMAT"u", (ofuint32)theValue);
+    std::string outstring(buffer);
+    return outstring;
+}
+
+OFINLINE std::string OFUtility::toString(double theValue)
+{
+    char buffer[32];
+    sprintf(buffer,"%f",theValue);
+    std::string outstring(buffer);
+    return outstring;
+}
+
+OFINLINE ofint32 OFUtility::toInt(const std::string& theValue)
+{
+    return atoi(theValue.c_str());
+}
+
+OFINLINE ofint32 OFUtility::toOfint32(const std::string& theValue)
+{
+    return atol(theValue.c_str());
+}
+
+OFINLINE ofuint32 OFUtility::toofuint32(const std::string& theValue)
+{
+    return strtoul(theValue.c_str(),NULL,10);
+}
+
+OFINLINE double OFUtility::toDouble(const std::string& theValue)
+{
+    return atof(theValue.c_str());
+}
+
+void OFUtility::toASCIIfromURL(const char *value,
+                               char *result,
+                               ofuint32 result_length,
+                               const char* spaceEnc)
+{
+    char *pos = (char*)value;
+    char *copypos = result;
+    
+    while (*pos && ((ofuint32)(copypos-result) < result_length))
+    {
+        if (!OFOS::strcmp(pos, spaceEnc))
+        {
+            *copypos++ = 32;
+            pos += OFOS::strlen(spaceEnc);
+        }
+        else 
+        {
+            if ( *pos != '%' && *pos != '+' )
+                *copypos++ = *pos++;
+            else
+            {
+                if (*pos == '+')
+                {
+                    *copypos++ = 32;
+                    pos++;
+                }
+                else
+                {
+                    if (pos[1] && ((pos[1] >= '0' && pos[1] <= '9') ||
+                                   (pos[1] >= 'A' && pos[1] <= 'F') ||
+                                   (pos[1] >= 'a' && pos[1] <= 'f')) &&
+                        pos[2] && ((pos[2] >= '0' && pos[2] <= '9') ||
+                                   (pos[2] >= 'A' && pos[2] <= 'F') ||
+                                   (pos[2] >= 'a' && pos[2] <= 'f')))
+                    {
+                        pos++;
+                        char one = toUpper(*pos++);
+                        char two = toUpper(*pos++);
+                        ofint16 dec = (one>='0' && one <= '9')?(one-48)*16:(one-55)*16;
+                        dec += (two >= '0' && two <= '9')?(two-48):(two-55);
+                        *copypos = (char)dec;
+                        copypos++;
+                    }
+                    else
+                    {
+                        *copypos++ = '%';
+                        pos++;
+                    }
+                }
+            }
+        }
+    }
+    *copypos = 0;
+}
+
+void
+OFUtility::toURLfromASCII( const char *value, char *result, const char* spaceEnc /* = "+" */ )
+{
+    assert(result);
+
+    if (!value)
+    {
+        result[0] = '\0';
+        return;
+    }
+ 
+    for (const char* cp = value; *cp != 0; cp++)
+    {
+        const ofchar c = *cp;
+        if ( (c >= 'a' && c <= 'z') ||
+             (c >= 'A' && c <= 'Z') ||
+             (c >= '0' && c <= '9') ||
+             c == '-' ||
+             c == '_' ||
+             c == '.' ||
+             c == '*' ||
+             c == '\'' ||
+             c == '(' ||
+             c == ')' ||
+             c == ':' )
+            *result++ = c;
+        else if (c == ' ')
+        {
+            OFOS::strcpy(result, spaceEnc);
+            result += OFOS::strlen(spaceEnc);
+            //*result++ = '+';
+        }
+        else
+        {
+            *result++ = '%';
+            *result++ = (c >> 4) + (((c >> 4) > 9) ? 'A' - 10: '0');
+            *result++ = (c & 0x0F) + (((c & 0x0F) > 9) ? 'A' - 10: '0');
+        }
+    }
+    /* terminate new string*/
+    *result = 0;
+}
+
+char *
+OFUtility::toURLfromPath( const char *value, char *result )
+{
+    char *ret = result;
+
+    assert(result);
+
+    if (!value)
+    {
+        result[0] = '\0';
+        return result;
+    }
+ 
+    for (const char* cp = value; *cp != 0; cp++)
+    {
+        const ofchar c = *cp;
+        if ( (c >= 'a' && c <= 'z') ||
+             (c >= 'A' && c <= 'Z') ||
+             (c >= '0' && c <= '9') ||
+             c == '/' || // keep slashes unencoded
+             c == '-' ||
+             c == '_' ||
+             c == '.' ||
+             c == '*' ||
+             c == '\'' ||
+             c == '(' ||
+             c == ')' ||
+             c == ':' )
+            *result++ = c;
+        else if (c == ' ')
+            *result++ = '+';
+        else
+        {
+            *result++ = '%';
+            *result++ = (c >> 4) + (((c >> 4) > 9) ? 'A' - 10: '0');
+            *result++ = (c & 0x0F) + (((c & 0x0F) > 9) ? 'A' - 10: '0');
+        }
+    }
+    // terminate new string
+    *result = 0;
+
+    return ret;
+}
+
+char *
+OFUtility::toXURLfromPath( const char *value, char *result )
+{
+    char *ret = result;
+
+    assert(result);
+
+    if (!value)
+    {
+        result[0] = '\0';
+        return result;
+    }
+ 
+    for (const char* cp = value; *cp != 0; cp++)
+    {
+        const ofchar c = *cp;
+        if ( (c >= 'a' && c <= 'z') ||
+             (c >= 'A' && c <= 'Z') ||
+             (c >= '0' && c <= '9') ||
+             c == '/' || // keep slashes unencoded
+             c == '-' ||
+             c == '_' ||
+             c == '.' ||
+             c == '*' ||
+             //c == '\'' || encode apostrophe
+             c == '(' ||
+             c == ')' ||
+             c == ':' )
+            *result++ = c;
+        else if (c == ' ')
+            *result++ = '+';
+        else
+        {
+            *result++ = '%';
+            *result++ = (c >> 4) + (((c >> 4) > 9) ? 'A' - 10: '0');
+            *result++ = (c & 0x0F) + (((c & 0x0F) > 9) ? 'A' - 10: '0');
+        }
+    }
+    // terminate new string
+    *result = 0;
+
+    return ret;
+}
+
+char *
+OFUtility::toXURLfromASCII( const char *value, char *result )
+{
+    char *ret = result;
+
+    assert(result);
+
+    if (!value)
+    {
+        result[0] = '\0';
+        return result;
+    }
+ 
+    for (const char* cp = value; *cp != 0; cp++)
+    {
+        const ofchar c = *cp;
+        if ( (c >= 'a' && c <= 'z') ||
+             (c >= 'A' && c <= 'Z') ||
+             (c >= '0' && c <= '9') ||
+             c == '-' ||
+             c == '_' ||
+             c == '.' ||
+             c == '*' ||
+             //c == '\'' || encode apostrophe
+             c == '(' ||
+             c == ')' ||
+             c == ':' )
+            *result++ = c;
+        else if (c == ' ')
+            *result++ = '+';
+        else
+        {
+            *result++ = '%';
+            *result++ = (c >> 4) + (((c >> 4) > 9) ? 'A' - 10: '0');
+            *result++ = (c & 0x0F) + (((c & 0x0F) > 9) ? 'A' - 10: '0');
+        }
+    }
+    // terminate new string
+    *result = 0;
+
+    return ret;
+}
+
+char
+OFUtility::toUpper( const char ch )
+{
+    return ( ch < 'a' || ch > 'z' )?ch:ch-('a'-'A');
+}
+
+char *
+OFUtility::toRelativePath( const char *fromPath, const char *toPath, char **relPath )
+{
+    ofuint32 baseLevel = 0;
+    ofuint32 refLevel = 0;
+    const char *mp = fromPath;
+    const char *tp = toPath;
+    const char *rel = toPath;
+
+    for ( ; mp && tp && *mp; ++mp, ++tp )
+    {
+        if ( *mp == *tp )
+        {
+            // match
+
+            if ( *mp == *OF_OBJECT_SEPARATOR_STR )
+            {
+                baseLevel++;
+                refLevel++;
+                rel = tp+1;
+            }   
+            else if ( *mp == 0 /* == *tp */ )
+            {
+                rel = ".";
+            }
+            else
+            {
+                // ignore
+            }
+        }
+        else
+        {
+            if ( *tp == 0 )
+            {
+                // end of target path
+
+                if ( *mp == *OF_OBJECT_SEPARATOR_STR )
+                {
+                    if ( mp[1] == 0 )
+                    {
+                        // special case
+                        // abc/def/
+                        // abd/def
+                        rel = ".";
+                    }  
+                    else
+                    {
+                        // abc/def/g...
+                        // abd/def
+                        rel = "";
+                    }
+                    ++mp;
+                }
+            }
+                
+            break;
+        }
+    }
+
+    // count remaining levels in the base path
+    for ( ; mp && *mp; ++mp )
+    {
+        if ( *mp == *OF_OBJECT_SEPARATOR_STR )
+        {
+            baseLevel++;
+        }
+    }
+
+    // calculate space needed
+    ofuint32 size = 1; // null terminator
+
+    ofuint32 j;
+    for ( j = baseLevel; j > refLevel; --j )
+    {
+        size += 2; // ..
+
+        if (j > refLevel + 1 || (rel && *rel))
+            ++size; // OF_OBJECT_SEPARATOR_STR
+    }
+    if ( rel && *rel )
+    {
+        size += OFOS::strlen( rel );
+    }
+
+    char *work = *relPath = new char [ size ];
+
+    RESETSTRING( work );
+    for ( j = baseLevel; j > refLevel; --j )
+    {
+        OFOS::strcat( work, ".." );
+
+        if (j > refLevel + 1 || (rel && *rel))
+            OFOS::strcat( work, OF_OBJECT_SEPARATOR_STR );
+    }
+    if ( rel && *rel )
+    {
+        OFOS::strcat( work, rel );
+    }
+
+    return *relPath;        
+}
+
 // //////////////////////////////////////////////////////////////////////////
 
 #if defined(UNIT_TEST)

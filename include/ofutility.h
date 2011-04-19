@@ -134,7 +134,7 @@ class OFSYS_API OFUtility
     /** Read a single line from a file
         \warning This does NO checking of the length of the supplied buffer
         so you are much better off using OFUtility::readLine2()
-     */
+    */
     static bool readLine( OFFile *file, char *line );
 
     /** Dynamic implementation of readLine.
@@ -153,12 +153,12 @@ class OFSYS_API OFUtility
         Uses the dynamic version of read line, OFUtility::readLine2.
         \warning It is the caller's responsibility to destroy the buffer. It
         is allocated with new[].
-     */
+    */
     static ofuint32 readLineNo2( const char *name, char **line, ofuint32 lineno );
 
     /** \type READLINESB
         Callback function type, used by readLines family of methods.
-     */
+    */
     typedef ofuint32(*READLINESCB)(OFCHARSTARLIST*, ofuint32, void*);
 
     /** Read in the lines from a CSV file
@@ -183,22 +183,22 @@ class OFSYS_API OFUtility
         The memory allocated for the strings passed to the callback
         will be destroyed by the calling function.  The callback
         should not modify the string data.
-     */
+    */
     static ofint64 readLinesCSV(OFFile *file,
-                                 READLINESCB cb,
-                                 void* userData);
+                                READLINESCB cb,
+                                void* userData);
 
     /** Scan the supplied line as a list of comma separated values.
 
-    \param line A null-terminated string containing the list to scan.
+        \param line A null-terminated string containing the list to scan.
 
-    \param elements A pointer to an OFCHARSTARLIST which will contain
-    the elements.
+        \param elements A pointer to an OFCHARSTARLIST which will contain
+        the elements.
 
-    Scans the buffer supplied in \c line, and splits it up into comma
-    separated values.  Commas that appear inside double quotes will be
-    treated as part of the value, not a delimiter.
-     */
+        Scans the buffer supplied in \c line, and splits it up into comma
+        separated values.  Commas that appear inside double quotes will be
+        treated as part of the value, not a delimiter.
+    */
     static void scanCommaSepLine(const char *line, OFCHARSTARLIST *elements);
 
     /** Implementation of the getpass() libc function.
@@ -209,7 +209,7 @@ class OFSYS_API OFUtility
         before being returned - to remove whitespace and the carriage return.
 
         \return Either the length of password entered, or -1 on error.
-     */
+    */
     static ofint32 readPassword(char* password, ofuint32 password_length);
 
     //@}
@@ -257,11 +257,11 @@ class OFSYS_API OFUtility
     //@}
 
     /** \name String conversions
-    */
+     */
     //@{
 
     /** Convert the supplied string to a long
-    */
+     */
     static ofuint32 strToULong( const char* str );
 
     //@}
@@ -313,7 +313,7 @@ class OFSYS_API OFUtility
     //@{
 
     /** Translate a system error
-    */
+     */
     static ofuint32 translateSystemError( ofuint32 sysErr );
 
     /** Translate a system error.
@@ -323,7 +323,7 @@ class OFSYS_API OFUtility
 
 #if defined(OFOPSYS_WIN32)
     /** Translate a Win32 error
-    */
+     */
     static ofuint32 translateWin32Error( ofuint32 wErr );
 
 #else
@@ -333,7 +333,7 @@ class OFSYS_API OFUtility
 #endif
 
     /** Translate an SSL error
-    */
+     */
     static ofuint32 translateSSLError( ofint32 e );
 
 #if defined(OFOPSYS_WIN32)
@@ -346,9 +346,9 @@ class OFSYS_API OFUtility
 
     /** Retrieve all the items in a config group
 
-    This method will also break down all the comma separated values in
-    each line, and add them to the list.
-     */
+        This method will also break down all the comma separated values in
+        each line, and add them to the list.
+    */
     static void retrieveConfigValues(OFConfigurator* config,
                                      const char* groupName,
                                      OFCHARSTARLIST* list);
@@ -378,7 +378,7 @@ class OFSYS_API OFUtility
 
     /** Convert back from base64.
         Returns the length of the converted data.
-     */
+    */
     static ofuint32 convertFromBase64( const char *data, ofuint32 buflen, char *output );
 
     /** Convert back from base64 and returns the length of the decoded data.
@@ -389,11 +389,143 @@ class OFSYS_API OFUtility
         of 3)
         Note. This method checks the supplied buflen to prevent memory overflow and ignores extraneous
         line feeds etc in the base64 data.
-     */
+    */
     static ofuint32 convertFromBase64_2( const char *data, ofuint32 buflen, char *output );
 
     //@}
 
+    /** \name Conversion functions
+     */
+    //@{
+
+    /** Returns the hex char equivalent of the value stored in i from 0..15, e.g. returns 'A' for i=10 
+        \param i The integer to be converted.
+    */
+    static char intToHexChar(ofint32 i);
+    
+    /** Returns the hex equivalent 2 character string, e.g. if
+        data = 128 returns "80" \param data The char value to be
+        converted.
+    */
+    static std::string dataToHexString( unsigned char data);
+    
+    /** returns the hex equivalent string of the first length chars from data 
+        (useful for dumping data buffers) */
+    static std::string dataToHexString( unsigned const char* data, ofint32 length);
+    
+    /** returns the ofint32 equivalent of the hex stored in hexChar, e.g. returns 10 for c='A' */
+    static ofint32 hexCharToInt(char c);
+    
+    /** returns the unsigned char* equivalent of the hex stored in hexString in 'data' and its length in 'length'
+        (useful for retrieving data buffers), user must delete[] the returned value.
+        NB/ 'data' is not NULL terminated */
+    static void hexStringToData(const std::string& hexString, unsigned char*& data, ofuint32* length);
+    
+    /** convert an ofint16 to a string */
+    static std::string toString(ofint16 theValue);
+    
+    /** convert a ofint32 to a string */
+    static std::string toString(ofint32 theValue);
+    
+    /** convert a ofuint32 to a string */
+    static std::string toString(ofuint32 theValue);
+    
+    /** convert a double to a string */
+    static std::string toString(double theValue);
+    
+    /** convert string to an int, returns 0 if failed */
+    static ofint32 toInt(const std::string& theValue);
+    
+    /** convert string to a ofint32, returns 0 if failed */
+    static ofint32 toOfint32(const std::string& theValue);
+    
+    /** convert string to a ofuint32, returns 0 if failed */
+    static ofuint32 toofuint32(const std::string& theValue);
+    
+    /** convert string to a double, returns 0.0 if failed */
+    static double toDouble(const std::string& theValue);
+    
+    /** convert from URL format to plain ascii. 
+
+        The result parameter must be long enough to accomodate the
+        new string.
+
+        \param value A string containing the ASCII representation.
+        \param result A buffer which will contain the URL result.
+        \param result_length The length of the supplied buffer.
+    */
+    static void toASCIIfromURL(const char *value,
+                               char *result,
+                               ofuint32 result_length,
+                               const char* spaceEnd = "+");
+
+    /** Convert to URL format from plain ascii. 
+
+        The result parameter must be long enough to accomodate the
+        new string (which will probably be longer!).  Converts ' '
+        to + (rather than %20).
+    */
+    static void toURLfromASCII(const char *value,
+                               char *result,
+                               const char* spaceEnc = "+");
+
+    /** Convert the two absolute paths into a relative path, from fromPath to toPath.
+
+        Caller must delete [] the returned buffer, *relPath is set
+        to it as a reminder.
+
+        e.g.
+        "abc/def/ghijkl/",
+        "abc/def/ghi",
+        "../ghi"
+
+        "abc/def/ghi",
+        "abc/def/ghi",
+        "ghi"
+
+        Only intended for use on unencoded paths, not guaranteed
+        to work on URLs with different encodings.
+
+        My+Shared+Spaces, My Shared Spaces and
+        My%20Shared%20Spaces won't be matched.
+    */
+    static char *toRelativePath( const char *fromPath, const char *toPath, char **relPath );
+    
+    /** URL encode an unencoded path. 
+
+        '/' is left as is.
+        Converts ' ' to + (rather than %20).
+        \param *result should be sized as:
+        OFOS::strlen( path ) * 3 + 1 to safely handle the worst case.
+    */
+    static char *toURLfromPath( const char *path, char *result );
+
+    /** URL encode an unencoded path, for safe use in an XML attribute.
+
+        Apostrophe is encoded.
+        Converts ' ' to + (rather than %20).
+
+        \param path A string containing the path to be encoded.
+        \param *result should be sized as:
+        OFOS::strlen( path ) * 3 + 1 to safely handle the worst case.
+    */
+    static char *toXURLfromASCII( const char *path, char *result );
+
+    /** URL encode an unencoded path, for safe use in an XML attribute. 
+        Apostrophe is encoded.
+        '/' is left as is.
+        Converts ' ' to + (rather than %20).
+        \param *result should be sized as:
+        OFOS::strlen( path ) * 3 + 1 to safely handle the worst case.
+    */
+    static char *toXURLfromPath( const char *path, char *result );
+
+    /** \fn static char toUpper( const char ch );
+        Converts the char to upper case.
+    */
+    static char toUpper( const char ch );
+
+    //@}
 };
 
 OFSYS_API const char* getSourceBranch();
