@@ -1,0 +1,8 @@
+
+* Add support for CTest
+
+* Add support for CPack
+
+* Port to later versions of Visual C++
+
+* Port to Darwin/MACOSX
