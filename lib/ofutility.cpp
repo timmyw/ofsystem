@@ -26,7 +26,7 @@
 #include <ofutility.h>
 #include <ofos.h>
 #include <offile.h>
-#include <openssl/ssl.h>
+//#include <openssl/ssl.h>
 #include <ofconfig.h>
 
 #if defined(OFOPSYS_WIN32)
@@ -618,33 +618,6 @@ OFUtility::translateLastSystemError( )
 #else
     return translateUnixError( errno );
 #endif
-}
-
-ofuint32
-OFUtility::translateSSLError( ofint32 e )
-{
-    ofint32 errmap[][2] = {
-        { ERR_SUCCESS, SSL_ERROR_NONE },
-		{ ERR_SSL_ERROR_ZERO_RETURN, SSL_ERROR_ZERO_RETURN },
-        { ERR_SSL_ERROR_WANT_READ, SSL_ERROR_WANT_READ },
-        { ERR_SSL_ERROR_WANT_WRITE, SSL_ERROR_WANT_WRITE },
-        { ERR_SSL_ERROR_WANT_CONNECT, SSL_ERROR_WANT_CONNECT },
-        //{ ERR_SSL_ERROR_WANT_ACCEPT, SSL_ERROR_WANT_ACCEPT },
-        { ERR_SSL_ERROR_WANT_X509_LOOKUP, SSL_ERROR_WANT_X509_LOOKUP },
-        { ERR_SSL_ERROR_SYSCALL, SSL_ERROR_SYSCALL },
-		{ -1, -1 }
-	};
-
-    ofuint32 oferr = ERR_UNKNOWN_SYSTEM_ERROR;
-    for ( ofuint32 cur = 0; oferr == ERR_UNKNOWN_SYSTEM_ERROR && errmap[cur][0] != -1; cur++ )
-        if ( errmap[cur][1] == e )
-            oferr = errmap[cur][0];
-
-#if !defined(NDEBUG)
-	if ( oferr == ERR_UNKNOWN_SYSTEM_ERROR )
-		cout << "Unmapped SSL error:" << e << endl;
-#endif
-    return oferr;
 }
 
 #if defined(OFOPSYS_WIN32)

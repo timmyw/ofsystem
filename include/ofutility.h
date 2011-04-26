@@ -351,10 +351,6 @@ class OFSYS_API OFUtility
     static ofuint32 translateUnixError( ofint32 uErr );
 #endif
 
-    /** Translate an SSL error
-     */
-    static ofuint32 translateSSLError( ofint32 e );
-
 #if defined(OFOPSYS_WIN32)
     /** Get a line of input with no echo
         \return The number characters in the line.
