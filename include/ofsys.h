@@ -98,6 +98,8 @@
 #include <ofdefines.h>
 #include <oferr.h>
 
+#include <cas.h>
+
 using namespace std;
 
 #endif // #if !defined(_OF_SYS_H_)

@@ -43,6 +43,14 @@
 
 #define OF_LOG_LINE_LENGTH 1024
 
+#define OF_MAX_SRV_ID_LEN               16
+#define OF_MAX_OBJ_ID_LEN               16
+#define OF_MAX_ID_FLAGS_LEN             4
+
+#define OF_MAX_ID_LEN                   (OF_MAX_ID_FLAGS_LEN+OF_MAX_SRV_ID_LEN+OF_MAX_OBJ_ID_LEN)
+#define OF_MAX_NAME_LEN                 127
+#define OF_MAX_PASS_LEN                 50
+
 /** Size of socket send buffer
  */
 #define OF_SOCK_SEND_BUFSIZE            8192
