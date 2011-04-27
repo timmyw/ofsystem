@@ -19,8 +19,11 @@ set (srcs
   buffers.cpp
   ofvalue.cpp
   storageblob.cpp
+  storageblobbuffer.cpp
+  storageblobbuffered.cpp
   ofidentity.cpp
   offlags.cpp
+  srvidentity.cpp
   )
 
 if (!WIN32)
