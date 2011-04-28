@@ -8,3 +8,13 @@ libofsystem.so
 doc/html
 doc/latex
 Doxyfile
+*.dsp
+*.dsp.cmake
+*.rule
+*.plg
+*.dsw
+*.ncb
+*.opt
+*.pdb
+Debug
+RelWithDebInfo
