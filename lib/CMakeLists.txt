@@ -36,4 +36,4 @@ add_custom_command(OUTPUT offlags.cpp
   DEPENDS ${BD}/tools/mkflags.pl ${BD}/data/flags.data
 )
 
-addlib(ofsystem ${SHAREDSTATIC} "${srcs}" ${LIBS})
+addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "${LIBS}")
