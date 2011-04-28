@@ -29,7 +29,11 @@ const SRVIDENTITY SRVIDENTITY::NullSrvID( "0000000000000000" );
 
 ostream & operator << ( ostream &s, const SRVIDENTITY &id )
 {
-    return s << hex << setfill('0') << setw(16) << id.m_id << dec;
+    return s 
+		<< hex 
+		<< setfill('0') 
+		<< setw(16) 
+		<< id.m_id << dec;
 }
 
 bool SRVIDENTITY::isNull() const

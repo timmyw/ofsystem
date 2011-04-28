@@ -31,7 +31,6 @@ const OFIDENTITY OFIDENTITY::NullID( 0, 0, 0x0);
 const OFIDENTITY OFIDENTITY::ThisID( MAKEULL( 0xfffffffffffffffe ), MAKEULL( 0xeeeeeeeeeeeeeeee ), 0xffff );
 
 #if defined(OFOPSYS_WIN32)
-#if defined(_MSC_VER) && (_MSC_VER<1600)
 ostream &
 operator << ( ostream &s, const ofuint64 &x )
 {
@@ -39,7 +38,6 @@ operator << ( ostream &s, const ofuint64 &x )
     ofuint32 lo = (ofuint32)(x & MAKEULL(0xffffffff));
     return s << hex << setfill('0') << setw(8) << hi << setw(8) << lo << dec;
 }
-#endif
 #endif
 
 ostream &

@@ -28,6 +28,10 @@
 #include <ofsys.h>
 #include <ofos.h>
 
+#if defined(OFOPSYS_WIN32)
+OFSYS_API ostream & operator <<(ostream&s, const ofuint64 &x);
+#endif // OFOPSYS_WIN32
+
 /** \struct OFIDENTITY ofidentity.h
     Provides the storage and management of an openFabric identity.
     This structure is a replacement for the original, and uses

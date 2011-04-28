@@ -24,6 +24,7 @@ set (srcs
   ofidentity.cpp
   offlags.cpp
   srvidentity.cpp
+  oferr.cpp
   )
 
 if (!WIN32)
@@ -35,4 +36,4 @@ add_custom_command(OUTPUT offlags.cpp
   DEPENDS ${BD}/tools/mkflags.pl ${BD}/data/flags.data
 )
 
-addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "")
+addlib(ofsystem ${SHAREDSTATIC} "${srcs}" ${LIBS})

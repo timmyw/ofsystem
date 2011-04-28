@@ -29,6 +29,9 @@ using namespace std;
 #define _OFLOGSERVICE_H_
 
 #if defined(OFOPSYS_WIN32)
+
+#include <ofmutex.h>
+
 #define	LOG_EMERG	0	/* system is unusable */
 #define	LOG_ALERT	1	/* action must be taken immediately */
 #define	LOG_CRIT	2	/* critical conditions */
@@ -83,6 +86,12 @@ class OFSYS_API OFLogService
     /** Write the supplied line to log
      */
     static void write_(ofuint32 sev, const string& line);
+
+#if defined(OFOPSYS_WIN32)
+	/** Mutex for file loggin
+	*/
+	static OFMutex m_mutexFile;
+#endif
 
 };
 
