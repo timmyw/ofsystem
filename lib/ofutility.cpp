@@ -179,6 +179,53 @@ OFUtility::readLine2( OFFile *file, char **line )
         return ok;
 }
 
+/*static*/
+bool
+OFUtility::readLine2(OFOS::of_handle_t fd, char **line)
+{
+    ofuint32 chunkSize = 1024;
+    ofuint32 bufSize = chunkSize;
+    ofuint32 filepos = OFFile::get_position(fd);
+    char *buffer = new char[chunkSize+1];
+#if !defined(NDEBUG)
+    memset (buffer, 0, chunkSize);
+#endif
+    char *pos = buffer;
+    char *eol = 0;
+    bool ok = false;
+
+    // Read in a chunk, and attempt to find a CR
+    ofuint32 br;
+    while (!eol && (br = OFFile::read_file(fd, pos, chunkSize)))
+    {
+        buffer[bufSize] = 0;
+        eol = (char*)OFOS::strstr (buffer, "\n");
+        if (!eol)
+        {
+            bufSize += chunkSize;
+            char *newbuf = new char[bufSize+1];
+            memcpy (newbuf, buffer, bufSize - chunkSize) ;
+            delete [] buffer;
+            buffer = newbuf;
+            pos = buffer + bufSize - chunkSize;
+        }
+    }
+    if (eol)
+    {
+        // set file position to start of next line
+        filepos += 1 + (eol - buffer);
+        OFFile::set_position(fd, filepos);
+
+        *eol = 0;
+        *line = new char[OFOS::strlen(buffer) + 1];
+        OFOS::strcpy(*line, buffer);
+        ok = true;
+    }
+
+    delete [] buffer;
+    return ok;
+}
+
 void
 OFUtility::decToHex( unsigned char one_char, char *outstring )
 {

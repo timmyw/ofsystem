@@ -25,6 +25,8 @@
 #if !defined(_OF_UTILITY_H_)
 #define _OF_UTILITY_H_
 
+#include <ofos.h>
+
 /** \file ofutility.h
     Contains the declaration of the OFUtility class.
 */
@@ -163,6 +165,15 @@ class OFSYS_API OFUtility
         is allocated with new[].
     */
     static bool readLine2( OFFile *file, char **line );
+
+    /** Dynamic implementation of readLine.
+
+        Reads the next line (delimeter by CR) from the specified file
+        handle, but dynamically allocates the memory required for the
+        line.  \warning It is the caller's responsibility to destroy
+        the buffer. It is allocated with new[].
+     */
+    static bool readLine2(OFOS::of_handle_t fd, char** line);
 
     /** Read the specified line from the supplied file name.
      */

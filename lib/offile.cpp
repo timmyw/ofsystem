@@ -260,39 +260,44 @@ OFFile::close( )
 #endif
 }
 
-ofint32 
-OFFile::read(void *buffer, ofuint32 length)
+ofint32 OFFile::read_file(OFOS::of_handle_t fd, void *buffer, ofuint32 length)
 {
     ofint32 bytesRead = -1;
   
 #if defined(OFOPSYS_WIN32)
     ofuint32 actual;
-    BOOL ok  = ReadFile( m_handle, buffer, length, &actual, NULL ) ;
-    //printf( "error:%d\n", GetLastError() );
-    if ( ok )
+    BOOL ok  = ReadFile(fd, buffer, length, &actual, NULL);
+    if (ok)
         bytesRead = actual;
 #else
-    bytesRead = ::read( m_handle, buffer, length );
+    bytesRead = ::read(fd, buffer, length);
 #endif // #if defined(OFOPSYS_WIN32)
 
     return bytesRead;
 }
 
-ofint32 
-OFFile::write( const void * buffer, ofuint32 length )
+ofint32 OFFile::read(void *buffer, ofuint32 length)
 {
+    return OFFile::read_file(m_handle, buffer, length);
+}
 
+ofint32 OFFile::write_file(OFOS::of_handle_t fd, const void * buffer, ofuint32 length )
+{
 #if defined(OFOPSYS_WIN32)
     ofuint32 actual;
-    bool ok = WriteFile( m_handle, buffer, length, &actual, NULL ) != 0;
-    if ( ok )
+    bool ok = WriteFile(fd, buffer, length, &actual, NULL) != 0;
+    if (ok)
         return actual;
     else
         return -1;
 #else
-    return ::write( m_handle, buffer, length );
+    return ::write(fd, buffer, length);
 #endif // #if defined(OFOPSYS_WIN32)
+}
 
+ofint32 OFFile::write( const void * buffer, ofuint32 length )
+{
+    return OFFile::write_file(m_handle, buffer, length);
 }
 
 ofint32 OFFile::write(const char* line)
@@ -302,31 +307,40 @@ ofint32 OFFile::write(const char* line)
     return c;
 }
 
-ofint32 
-OFFile::position( ofuint32 newpos,ofint32 from /* = OFFILE_POSITION_BEGIN */ )
+ofint32 OFFile::set_position(OFOS::of_handle_t fd, ofuint32 newpos, ofint32 from /* = OFFILE_POSITION_BEGIN */ )
 {
 
 #if defined(OFOPSYS_WIN32)
     ofuint32 move = FILE_BEGIN;
     if ( from == OFFILE_POSITION_END ) move = FILE_END;
     if ( from == OFFILE_POSITION_CURRENT ) move = FILE_CURRENT;
-    return SetFilePointer( m_handle, newpos, NULL, move );
+    return SetFilePointer(fd, newpos, NULL, move);
 #else
     ofint32 origin = SEEK_SET;
     if ( from == OFFILE_POSITION_END ) origin = SEEK_END;
     if ( from == OFFILE_POSITION_CURRENT ) origin = SEEK_CUR;
-    return lseek( m_handle, newpos, origin );
+    return lseek(fd, newpos, origin);
 #endif // #if defined(OFOPSYS_WIN32)
 }
 
 ofint32 
-OFFile::position( )
+OFFile::position( ofuint32 newpos,ofint32 from /* = OFFILE_POSITION_BEGIN */ )
+{
+    return OFFile::set_position(m_handle, newpos, from);
+}
+
+ofint32 OFFile::get_position(OFOS::of_handle_t fd)
 {
 #if defined(OFOPSYS_WIN32)
-    return SetFilePointer( m_handle, 0, NULL, FILE_CURRENT );
+    return SetFilePointer(fd, 0, NULL, FILE_CURRENT);
 #else
-    return lseek( m_handle, 0, SEEK_CUR );
+    return lseek(fd, 0, SEEK_CUR);
 #endif // #if defined(OFOPSYS_WIN32)
+}
+
+ofint32 OFFile::position( )
+{
+    return OFFile::get_position(m_handle);
 }
 
 ofuint32 

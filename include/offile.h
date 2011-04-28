@@ -160,6 +160,10 @@ class OFSYS_API OFFile
     */
     virtual ofint32 write( const void * buffer, ofuint32 length );
 
+    static ofint32 write_file(OFOS::of_handle_t fd
+                              , const void * buffer
+                              , ofuint32 length);
+
     /** Write a line to the file
      */
     virtual ofint32 write(const char* line);
@@ -169,6 +173,9 @@ class OFSYS_API OFFile
     */
     virtual ofint32 read( void *buffer, ofuint32 length );
 
+    static ofint32 read_file(OFOS::of_handle_t fd
+                             , void *buffer
+                             , ofuint32 length);
     //@}
 
     /** \name File attribute methods.
@@ -180,10 +187,14 @@ class OFSYS_API OFFile
     */
     ofint32 position( ofuint32 newpos,ofint32 from = OFFILE_POSITION_BEGIN );
 
+    static ofint32 set_position(OFOS::of_handle_t fd, ofuint32 newpos,ofint32 from = OFFILE_POSITION_BEGIN);
+
     /** Retrieve the file position.
         \return The current file position.
     */
     ofint32 position( );
+
+    static ofint32 get_position(OFOS::of_handle_t fd);
 
     /** Retrieve the file size.
         \return The size of the file.
