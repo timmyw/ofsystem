@@ -1,0 +1,26 @@
+Building on Windows
+===================
+
+Requirements
+------------
+
+Visual C++ 6.0
+Perl (ActivePerl)
+CMake 2.6 (or higher)
+
+Build process
+-------------
+
+Open a command prompt, and change directory to the ofsystem source
+directory.
+
+To build using NMake
+
+> cmake -G "NMake Makefiles"
+> nmake
+
+To build using Visual Studio
+
+> cmake -G "Visual Studio 6"
+
+Open the .dsw file in Visual Studio, and press F7 to build all.

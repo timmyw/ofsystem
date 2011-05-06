@@ -17,12 +17,21 @@ To build ofsystem:
         cmake -G "Unix Makefiles
         make
 
+Documentation
+=============
+
+Cmake will create a 'doc' target if Doxygen is found, which currently
+generates HTML and LaTeX documentation, based on the comments in the
+source.
+
 Supported platforms
 ===================
 
 ofsystem currently builds and runs correctly on Linux systems and
 Windows (x86) systems.  On Windows it requires Visual C++ 6.0 to
 build.
+
+Both systems require an install of Perl to do a complete build.
 
 Documentation
 =============

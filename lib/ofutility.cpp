@@ -26,7 +26,7 @@
 #include <ofutility.h>
 #include <ofos.h>
 #include <offile.h>
-#include <openssl/ssl.h>
+//#include <openssl/ssl.h>
 #include <ofconfig.h>
 
 #if defined(OFOPSYS_WIN32)
@@ -177,6 +177,53 @@ OFUtility::readLine2( OFFile *file, char **line )
 
         delete [] buffer;
         return ok;
+}
+
+/*static*/
+bool
+OFUtility::readLine2(OFOS::of_handle_t fd, char **line)
+{
+    ofuint32 chunkSize = 1024;
+    ofuint32 bufSize = chunkSize;
+    ofuint32 filepos = OFFile::get_position(fd);
+    char *buffer = new char[chunkSize+1];
+#if !defined(NDEBUG)
+    memset (buffer, 0, chunkSize);
+#endif
+    char *pos = buffer;
+    char *eol = 0;
+    bool ok = false;
+
+    // Read in a chunk, and attempt to find a CR
+    ofuint32 br;
+    while (!eol && (br = OFFile::read_file(fd, pos, chunkSize)))
+    {
+        buffer[bufSize] = 0;
+        eol = (char*)OFOS::strstr (buffer, "\n");
+        if (!eol)
+        {
+            bufSize += chunkSize;
+            char *newbuf = new char[bufSize+1];
+            memcpy (newbuf, buffer, bufSize - chunkSize) ;
+            delete [] buffer;
+            buffer = newbuf;
+            pos = buffer + bufSize - chunkSize;
+        }
+    }
+    if (eol)
+    {
+        // set file position to start of next line
+        filepos += 1 + (eol - buffer);
+        OFFile::set_position(fd, filepos);
+
+        *eol = 0;
+        *line = new char[OFOS::strlen(buffer) + 1];
+        OFOS::strcpy(*line, buffer);
+        ok = true;
+    }
+
+    delete [] buffer;
+    return ok;
 }
 
 void
@@ -618,33 +665,6 @@ OFUtility::translateLastSystemError( )
 #else
     return translateUnixError( errno );
 #endif
-}
-
-ofuint32
-OFUtility::translateSSLError( ofint32 e )
-{
-    ofint32 errmap[][2] = {
-        { ERR_SUCCESS, SSL_ERROR_NONE },
-		{ ERR_SSL_ERROR_ZERO_RETURN, SSL_ERROR_ZERO_RETURN },
-        { ERR_SSL_ERROR_WANT_READ, SSL_ERROR_WANT_READ },
-        { ERR_SSL_ERROR_WANT_WRITE, SSL_ERROR_WANT_WRITE },
-        { ERR_SSL_ERROR_WANT_CONNECT, SSL_ERROR_WANT_CONNECT },
-        //{ ERR_SSL_ERROR_WANT_ACCEPT, SSL_ERROR_WANT_ACCEPT },
-        { ERR_SSL_ERROR_WANT_X509_LOOKUP, SSL_ERROR_WANT_X509_LOOKUP },
-        { ERR_SSL_ERROR_SYSCALL, SSL_ERROR_SYSCALL },
-		{ -1, -1 }
-	};
-
-    ofuint32 oferr = ERR_UNKNOWN_SYSTEM_ERROR;
-    for ( ofuint32 cur = 0; oferr == ERR_UNKNOWN_SYSTEM_ERROR && errmap[cur][0] != -1; cur++ )
-        if ( errmap[cur][1] == e )
-            oferr = errmap[cur][0];
-
-#if !defined(NDEBUG)
-	if ( oferr == ERR_UNKNOWN_SYSTEM_ERROR )
-		cout << "Unmapped SSL error:" << e << endl;
-#endif
-    return oferr;
 }
 
 #if defined(OFOPSYS_WIN32)

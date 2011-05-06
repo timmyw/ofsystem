@@ -33,6 +33,7 @@ IF (WIN32)
   SET(SERVER_INCLUDES )
   add_definitions(-DOFEXPORTS)
   include_directories(include \\mssdk\\include)
+  set(LIBS ${LIBS} ws2_32)
 ELSE(WIN32)
   SET(OSTYPE $ENV{OSTYPE})
   SET(BUILD_OS OFOPSYS_LINUX)
@@ -56,8 +57,11 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 # Change this to "SHARED" to create shared libraries
-#set(SHAREDSTATIC "STATIC")
+if(WIN32)
+set(SHAREDSTATIC "STATIC")
+else(WIN32)
 set(SHAREDSTATIC "SHARED")
+endif(WIN32)
 
 # Add the definitions for OS and PLATFORM
 add_definitions(-D${BUILD_OS} -D${BUILD_PLATFORM} -D${WORDSIZE} -DOF_${SHAREDSTATIC}_BUILD)

@@ -29,9 +29,17 @@
 #if !defined(OFOPSYS_WIN32)
 #include <syslog.h>
 #include <stdarg.h>
+#else
+#include <ofmutex.h>
+#include <oflockguard.h>
+#include <offile.h>
 #endif
 
 string OFLogService::m_appName = "ofsystem";
+
+#if defined(OFOPSYS_WIN32)
+OFMutex OFLogService::m_mutexFile;
+#endif // OFOPSYS_WIN32
 
 void OFLogService::writeLine(const char* format, ...)
 {

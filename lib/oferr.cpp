@@ -22,10 +22,13 @@
   SOFTWARE.
 */
 
-#if !defined(_OFGLAGS_H_)
-#define _OFGLAGS_H_
-
 #include <ofsys.h>
-#include <offlags.i>
+#include <offlags.h>
 
-#endif // _OFGLAGS_H_
+const char* retrieveMsg(ofuint32 errNo)
+{
+    const char *desc = translate_OFERROR_desc(errNo);
+    if (!desc)
+        desc = "";
+    return desc;
+}

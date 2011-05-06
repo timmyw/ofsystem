@@ -1,0 +1,598 @@
+#
+#  Copyright (C) 1997-2011 by Suntail.com AS, Tim Whelan
+#
+#  Permission is hereby granted, free of charge, to any person
+#  obtaining a copy of this software and associated documentation files
+#  (the "Software"), to deal in the Software without restriction,
+#  including without limitation the rights to use, copy, modify, merge,
+#  publish, distribute, sublicense, and/or sell copies of the Software,
+#  and to permit persons to whom the Software is furnished to do so,
+#  subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be
+#  included in all copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+#  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#  SOFTWARE.
+#
+# The following functions are generated for each enum if specified
+#
+# Convert the supplied enumValue to the text name
+# A    void translate_ENUM( ofuint32 enumValue, char *enumName );
+#
+# Same as above, but returns the enum text value
+# B    const char * translate_ENUM2( ofuint32 enumValue );
+#
+# Converts a bitmask of enum values into a list containing their text values
+# Includes an optional trim of the value (removes the first X chars from the text value, 
+# where X is the number of characters in the enum name
+# C    void translate_ENUM_list( ofuint32 flags, char *listof, char trim = 0 );
+#
+# Performs a reverse lookup, given the text value, returns the enum value.
+# D    ofuint32 translate_ENUM_rev( const char *enumName );
+#
+# Same as above, but performs the lookup on the enum description.
+# E    ofuint32 translate_ENUM_rev_desc( const char *enumName );
+#
+# Translates a list into a bitmask, but looks for enum descriptions instead of names
+# F    void translate_ENUM_rev_list_desc( ofuint32 flags, char *listof );
+#
+# Retrieves the enum description for a enum value
+# G    const char * translate_ENUM_desc( ofuint32 enumValue );
+#
+# Checks if a supplied enum value is valid.
+# H    bool OFSYS_API isvalid_( ofuint32 enumValue );
+#
+# Translates a bitmask (list) enum value to a description list.
+# I    void translate_ENUM_list_desc( ofuint32 enumValue, char *listof );
+#
+# Return a comma separated list of all the possible description values
+# J    const char *translate_ENUM_all_list_desc();
+#
+begin:LIST_OPERATIONS:Operations that can be performed on a list OFVALUE
+LIST_SIZE:0x01:Get list size
+LIST_GET:0x02:Get a list element
+LIST_SET:0x03:Set a list element
+LIST_ADD:0x04:Add a list element
+LIST_INSERT:0x05:Insert a list element
+LIST_DELETE:0x06:Delete a list element
+end:
+begin:OFFILE_OPEN_FLAGS:Flags for OFFile::open or the constructor
+OFFILE_CREATE_ALWAYS:1:Always create the file, even if it exists.
+OFFILE_OPEN_EXISTING:2:Attempt to open an existing file. Fails if the file does not exist.
+OFFILE_OPEN_ALWAYS:4:Always succeed in opening (excluding permission issues). If the file does not exist, create it.
+OFFILE_READWRITE:8:Open the file for reading and writing.
+OFFILE_READONLY:16:Open the file for reading only.
+OFFILE_WRITEONLY:32:Open the file for writing only.
+OFFILE_TEMPORARY:64:Open a temporary file.
+OFFILE_SHAREALL:128:Open for sharing.
+end:
+begin:OFFILE_POSITION_FLAGS:OFFile positioning flags
+OFFILE_POSITION_BEGIN:1:Set the file position relative to the beginning of the file.
+OFFILE_POSITION_END:2:Set the file position relative to the end of the file.
+OFFILE_POSITION_CURRENT:3:Set the file position relative to the current file position.
+end:
+begin:OFFILE_FILETYPES:File types
+OFFILE_FILETYPE_FILE:1:File is a normal file.
+OFFILE_FILETYPE_DIR:2:File is a directory.
+end:
+begin:OFVALUE_TYPES:Possible OFVALUE types:BED
+typeInteger:1:integer
+typeBoolean::boolean
+typeString::string
+typeFloat::float
+typeOFDateTime::datetime
+typeIdentity::identity
+typeBinary::binary
+end:
+begin:OFERROR:General errors:BG:
+ERR_SUCCESS:1:Success.
+ERR_INVAL_PROTMETH::Invalid protocol/method.
+ERR_COMPILE_ERROR::Compilation error(s).
+ERR_INVAL_CLASS::Unknown class.
+ERR_INVAL_OBJECT::Unknown object.
+ERR_PROXY_CONNECT::Error connecting to the server.
+ERR_INT_EXEC_FAIL::Internal execution failure.
+ERR_ACCDEN::Access denied.
+ERR_ENTITY_EXIST::Entity (class or object) already exists.
+ERR_ENTITY_NOTFOUND::Entity (class or object) not found.
+ERR_OBJSTORE_BUSY::Object storage is busy.
+ERR_NOTIMPL::Function not implemented.
+ERR_INT_DBMS::Internal DBMS error.
+ERR_AOM_INT::Internal active object map error.
+ERR_SUCCESS_WITH_INFO::Flagged success.
+ERR_INT_EXEC_ASSERT::Internal execution assert.
+ERR_DIVIDE_BY_ZERO::Division by zero.
+ERR_EXEC_STACK_UNDER::Execution stack underflow.
+ERR_AOM_OBJECT_INT::Internal active object error.
+ERR_EXEC_UNDEF_VAR::Undefined variable in execution.
+ERR_FILE_OPEN_ERR::Error opening file.
+ERR_LIB_NOSYM::A required symbol was not found in the library.
+ERR_CLM_ERROR::An error occured communicating with a CLM.
+ERR_METH_PARAM_COUNT::Method parameter count mismatch.
+ERR_INVAL_METHOD::Method invalid within class.
+ERR_INVAL_PROPERTY::Property not found.
+ERR_FIELD_NOTEXIST::A required header field was not found.
+ERR_INST_NOTEXIST::The named instance does not exist.
+ERR_INST_ALREADY_RUN::The named instance is already running.
+ERR_INST_NOT_RUN::The named instance is not running.
+ERR_SYSTEM_INSTANCE::The named instance is a system instance.
+ERR_LIB_NOCLASSLIST::The class list could not be retrieved from a library.
+ERR_LIB_ERROR::A general error occured while dealing with a server library.
+ERR_LIB_NOT_CREATE_CLASS::The library did not create the requested class.
+ERR_OBJECT_HAS_CHILDREN::The current operation cannot be performed on object's that have children.
+ERR_CLASS_HAS_CHILDREN::The current operation cannot be performed on class' that have children.
+ERR_CANT_DESTROY_ROOT::You cannot destroy the root class or object.
+ERR_CANT_DESTROY_SYSTEM_OBJECT::You cannot destroy a system object.
+ERR_CANT_DESTROY_SYSTEM_CLASS::You cannot destroy a system class.
+ERR_INVAL_LIB_ALIAS::The supplied library alias is invalid.
+ERR_INVAL_SUB_FUNCTION::The sub-function was not recognized.
+ERR_INVAL_COLONEL_FUNCTION::The specified function id was invalid.
+ERR_INVAL_DATA_ID::The data identity specified does not exist.
+ERR_ELVIS_ERROR::An error occurred within Elvis.
+ERR_INVAL_USERPASS::Invalid username or password.
+ERR_SESSION_INVALID::The specified session is invalid.
+ERR_NETWORK_FAILED::The network has failed in transaction.
+ERR_DEADLOCK_ABORT::The transaction has been aborted due to deadlock.
+ERR_INVAL_PARENT::The parent given is not a valid object.
+ERR_INVAL_NAME::The name given is already in use.
+ERR_INVAL_FILE_HANDLE::The handle supplied is invalid.
+ERR_OFSOCKET_ERROR::The server has encountered a socket error.
+ERR_INT_OFOR::Internal OpenFabric Object Repository error.
+ERR_CLM_NO_OFAP_MSG::The CLM could not retrieve the OFAP message.
+ERR_CLM_XSL_TRANSFORM_FAILED::The CLM could not perform the XSL transformation.
+ERR_SOCKET_TIMEOUT::The socket timed out while sending or receiving.
+ERR_UNLOCATABLE::The server could not be located.
+ERR_LDAP_CONNECTION::Could not connect or disconnect from LDAP server.
+ERR_LDAP_ENTRY::LDAP entry not found.
+ERR_LDAP_ATTRIBUTE::LDAP attribute not found.
+ERR_LDAP_ADD::Could not add entry to LDAP server.
+ERR_LDAP_DELETE::Could not delete entry from LDAP server.
+ERR_LDAP_MODIFY::Could not modify LDAP entry.
+ERR_NEW_ID::Could not create new id.
+ERR_AUTHENTICATION_FAILURE::Entity could not be authenticated.
+ERR_SERIAL_FILE::Could not load certificate serial number or rename file.
+ERR_MEMORY_ALLOCATION::Memory allocation failure.
+ERR_CERT_REQUEST::Could not read certificate request.
+ERR_CERT_REQUEST_FORMAT::Certificate request has wrong format or signature.
+ERR_EMAIL_FORMAT::Email address in certificate request has wrong format.
+ERR_ILLEGAL_CHARACTERS::The certificate request contains characters that are illegal for the ASN.1 type.
+ERR_REQUIRED_FIELD_MISSING::A required field in certificate request is missing.
+ERR_MATCHING_FIELD_MISSING::A matching field in certificate request is missing.
+ERR_CA_FIELD_MISSING::Missing field in CA certificate.
+ERR_MATCHING_FIELD::Required field in certificate request does not match CA certificate.
+ERR_INVALID_TYPE_IN_POLICY::An invalid type exists in the CA policy.
+ERR_USER_NAME_EXISTS::The user name already exists.
+ERR_USER_NAME_DOES_NOT_EXIST::The user name does not exist.
+ERR_USER_NAME_REQUIRED::A user name is required for this user.
+ERR_ID_EXISTS::The server already exists.
+ERR_ID_DOES_NOT_EXIST::The server does not exist.
+ERR_INVALID_CERT::Certificate has wrong format.
+ERR_SIGNING_FAILED::Could not sign data.
+ERR_CERT_EXPIRED::The certificate has expired.
+ERR_CERT_REVOKED::The certificate has been revoked.
+ERR_CERT_REQUIRED::A certificate is required for this user.
+ERR_INVALID_SIGNATURE::The signature supplied with this user token is invalid.
+ERR_REF_COUNT_CHANGE::The reference count could not be updated.
+ERR_CONNECTION_ERROR::Could not connect to server.
+ERR_NOT_AUTHENTICATED::The user or server has not been authenticated yet.
+ERR_REGISTRY_INFO::The address or port numbers for the registry could not be found.
+ERR_NO_CONTACT_REGISTRY::Could not contact the registry.
+ERR_NO_CONTACT_SENTINEL::Could not contact the sentinel server.
+ERR_NO_CONTACT_ACCESS::Could not contact the access manager.
+ERR_NO_CONTACT_COMPONENT::Could not contact the required component.
+ERR_REGISTRY_INVAL_SERVER::Invalid server (from registry)
+ERR_REGISTRY_INVAL_USER::Invalid user (from registry)
+ERR_NAME_NOT_SET::The server name to connect to has not been specified.
+ERR_INVALID_TOKEN::The authentication token is invalid.
+ERR_ILLEGAL_ACTION::The action is not a legal operation for the registry or authentication server.
+ERR_ILLEGAL_FIELD::A field in the message is illegal.
+ERR_PRIVATE_KEY::Could not create private key.
+ERR_WRITE_PRIVATE_KEY::Could not write private key.
+ERR_SIGN_REQ::Could not sign certificate request.
+ERR_WRITE_REQ::Could not write certificate request.
+ERR_REQ_VERSION::Could not set certificate request version.
+ERR_ADD_SUBJECT_FIELD::Could not add subject field to certificate request.
+ERR_WRITE_CERT::Could not write certificate.
+ERR_CERT_OR_PRIV_KEY::Could not set certificate or private key for socket.
+ERR_REPLACE_NAME::Could not replace the common name in certificate.
+ERR_ADDRESS::The address or port numbers for the server are invalid.
+ERR_IP_ADDRESS::The message IP address does not match the IP address for this session.
+ERR_CANNOT_ADD_EXTENSION::Certificate extension cannot be added.
+ERR_AUTHENTICATION_REQUIRED::User must be authenticated.
+ERR_VERIFY_FAILED::Could not verify authentication token signature.
+ERR_RESPONDER_NOT_EXISTS::Could not find responder.
+ERR_INVALID_RESP_METHOD::The responder could not handle the method.
+ERR_CONFIG_FILE::Could not access config file.
+ERR_SSL_CONNECT::Could not establish SSL connection with server.
+ERR_SSL_CERT::Server certificate is invalid or has wrong server id.
+ERR_SSL_PRIVKEY::Server private key is invalid or could not be loaded.
+ERR_SSL_CERTKEY_MISMATCH::Server certificate and key do not match.
+ERR_SSL_SERIALFILE_ERROR::An error occured accessing the serial number file.
+ERR_SCHEDULER_INVAL_TASK::Invalid task index.
+ERR_SSL_CONNECTION_REQUIRED::SSL Connection required for specified operation.
+ERR_REG_NO_ID_LEFT::No identities available for requested pool.
+ERR_INVAL_LIC_FORMAT::Invalid licence file format.
+ERR_COMMIT_INCOMPLETE::Distributed transaction not commited on all machines/
+ERR_WAIT_FOR::Internal use only - transaction must wait for another.
+ERR_NOT_LOCAL::Internal use only - remote field not on remote machine.
+ERR_SICK::Internal use only - server has reached unreachable code.
+ERR_INVAL_REQUEST::Invalid network request received by repository.
+ERR_BAD_LINK::Bad link object.
+ERR_INVAL_TRANSACTION::Transaction not a valid one.
+ERR_LOCAL_LINK::Link is to a local object.
+ERR_PROXY_INTERNAL::Proxy internal error.
+ERR_EMPTY_ACL::The entity does not contain the requested ACL.
+ERR_INVAL_EXEC_CONTEXT::Invalid execution context.
+ERR_TRANSACTION_DEAD::Transaction being used is no longer running.
+ERR_UNKNOWN_ACLMAN_FUNC::Unknown acl management function.
+ERR_XML_ERROR_PARSING_INPUT_FILE::Error parsing input xml file.
+ERR_XML_ERROR_PARSING_WSDL_FILE::Error parsing WSDL file.
+ERR_XML_ERROR_PARSING_WSDL_IMPORT_FILE::Error parsing WSDL IMPORT file.
+ERR_XML_ERROR_PARSING_XSLT_STYLESHEET::Error parsing XSLT stylesheet.
+ERR_XML_CANNOT_RETRIEVE_WSDL_FILE::Unable to retrieve WSDL file.
+ERR_XSLT_TRANSFORM::Error perfoming xslt transform.
+ERR_XSLT_TRANSFORM_RELATED::Error related to perfoming xslt transform.
+ERR_SOAP_ERROR_LOADING_OBJECT::Unable to retrieve data from object.
+ERR_WSDL_ERROR_PARSING_COMPLEX_TYPES::Error parsing WSDL complex types.
+ERR_WSDL_CXT_COMPILE_FAILED::Compile of complex Types failed.
+ERR_WSDL_CLASS_COMPILE_FAILED::Compile of WSDL Class failed.
+ERR_WSDL_CANNOT_CREATE_CLASS::Unable to create class from WSDL.
+ERR_WSDL_CANNOT_FIND_DEFAULT_NAMESPACE_IN_WSDL_FILE::Missing Document or default XML namespace in WSDL document.
+ERR_WSDL_CANNOT_FIND_XMLSCHEMA_NAMESPACE_IN_WSDL_FILE::Missing default XMLSchema namespace in WSDL document.
+ERR_WSDL_CANNOT_FIND_DEFAULT_NAMESPACE_IN_WSDL_IMPORT_FILE::Missing default XML namespace in WSDL IMPORT document.
+ERR_WSDL_CANNOT_FIND_XMLSCHEMA_NAMESPACE_IN_WSDL_IMPORT_FILE::Missing default XMLSchema namespace in WSDL IMPORT document.
+ERR_WSDL_CANNOT_FIND_NAMESPACE_IN_WSDL_IMPORT_TAG::Missing namespace attribute in WSDL IMPORT tag.
+ERR_WSDL_CANNOT_FIND_LOCATION_IN_WSDL_IMPORT_TAG::Missing location attribute in WSDL IMPORT tag.
+ERR_WSDL_ERROR_ADDING_CHILD_NODE_FROM_WSDL_IMPORT_FILE::Error adding child node from WSDL IMPORT document.
+ERR_WSDL_NOTHING_TO_IMPORT_FROM_WSDL_IMPORT_FILE::Nothing found to import in WSDL IMPORT document.
+ERR_WSDL_CANNOT_FIND_SERVICE_NAME::Missing Service name in WSDL document.
+ERR_WSDL_CANNOT_FIND_ANY_PORTS::Missing Ports in WSDL Document.
+ERR_WSDL_CANNOT_FIND_BINDING_ATTRIBUTE_FOR_PORT::Missing binding attribute for Port in WSDL document.
+ERR_WSDL_CANNOT_FIND_LOCATION_FOR_PORT::Missing location for Port in WSDL document.
+ERR_WSDL_CANNOT_FIND_BINDING_TYPE::Missing Binding for Port in WSDL document.
+ERR_WSDL_CANNOT_FIND_BINDING_OPERATIONS::Missing Binding Operations in WSDL document.
+ERR_WSDL_MISSING_SOAP_ACTION::Missing soapAction in WSDL Document.
+ERR_WSDL_CANNOT_FIND_PORTTYPE_OPERATIONS::Missing portType Operations in WSDL document.
+ERR_WSDL_MISSING_ATTRIBUTE_FOR_COMPLEX_TYPE::Missing name attribute for element or complexType in WSDL document.
+ERR_WSDL_ERROR_ADDING_CONTAINER_CLASS::Error adding container class.
+ERR_WSDL_ERROR_ADDING_BASE_CLASS::Error adding base class.
+ERR_WSDL_ERROR_ADDING_COMPLEXTYPE_CLASS::Error adding complexType class.
+ERR_WSDL_ERROR_PARSING_COMPLEXTYPE_NAMES_FILE::Cannot parse complex type names file.
+ERR_WSDL_ERROR_PARSING_COMPLEXTYPE_SLICER_FILE::Cannot parse complex type slicer file.
+ERR_WSDL_FAILED_TO_RESOLVE_METHOD_RETURN_COMPLEXTYPE_REFERENCE::Failed to resolve method return complexType reference to an openFabric class.
+ERR_WSDL_FAILED_TO_RESOLVE_PARAMETER_COMPLEXTYPE_REFERENCE::Failed to resolve parameter complexType reference to an openFabric class.
+ERR_WSDL_FAILED_TO_RESOLVE_METHOD::ailed to resolve method reference.
+ERR_WSDL_FAILED_TO_RESOLVE_PROPERTY_COMPLEXTYPE_REFERENCE::Failed to resolve property complexType reference to an openFabric class.
+ERR_WSDL_XSLT_TRANSFORM_FAILED::Failed to complete XSLT transform.
+ERR_WSDL_FAILED_TO_DETERMINE_TYPE_OF_WSDL_FILE::Failed to recognise type of WSDL file.
+ERR_WSDL_FAILED_TO_OBTAIN_CLSGUARD::Failed to obtain ActiveClassGuard.
+ERR_WSDL_ERROR_PARSING_WSDLCXTPREPROCESS_SLICER_FILE::Cannot parse wsdl complexType preprocess stylesheet.
+ERR_WSDL_ERROR_PARSING_WSDLPREPROCESS_SLICER_FILE::Cannot parse wsdl preprocess stylesheet.
+ERR_WSDL_NO_URI::Cannot parse A NULL WSDL URI.
+ERR_ERROR_APPLYING_WSDL_ANALYSE_STYLESHEET::Applying wsdl_analyse stylesheet returns NULL.
+ERR_ERROR_APPLYING_WSDL_CXT_ANALYSE_STYLESHEET::Applying wsdl_complexType_analyse stylesheet returns NULL.
+ERR_ERROR_APPLYING_WSDL_CXT_SLICER_STYLESHEET::Applying wsdl_cxt_slicer stylesheet returns NULL.
+ERR_ERROR_APPLYING_WSDL_IMPORTS_ANALYSE_STYLESHEET::Applying wsdl_imports_analyse stylesheet returns NULL.
+ERR_ERROR_APPLYING_WSDL_CXT_NAMES_STYLESHEET::Applying wsdl_cxt_names stylesheet returns NULL.
+ERR_ERROR_APPLYING_PREPROCESS_STYLESHEET::Applying wsdl_preprocess stylesheet returns NULL.
+ERR_ERROR_APPLYING_CXT_PREPROCESS_STYLESHEET::Applying wsdl_cxt_preprocess stylesheet returns NULL.
+ERR_ACCESS_TOKEN_NOT_FOUND::The message did not contain a relevant access token.
+ERR_WSDL_CANNOT_RE_ADD_CLASS::Failed to re-add class to repository after type resolution.
+ERR_SOAP_CALL_TO_REMOTE_SERVER_FAILED::Call to remote SOAP server failed.
+ERR_SOAP_REMOTE_SERVER_RETURNED_INVALID_RESPONSE::Remote SOAP server returned invalid response.
+ERR_SOAP_FAILED_TO_FIND_OPERATION_NAMESPACE::Missing operation namespace.
+ERR_SOAP_FAILED_TO_PARSE_RESPONSE::Failed to parse SOAP server response.
+ERR_SOAP_FAILED_TO_RESOLVE_OPERATION_NAME::ailed to resolve operation name returned by SOAP server.
+ERR_SOAP_FAILED_TO_FIND_SOAP_ACTION::Failed to find SOAP Action.
+ERR_SOAP_FAILED_TO_FIND_LOCATION::Failed to find location.
+ERR_SOAP_FAILED_TO_FIND_NAMESPACE_FOR_OPERATION::Failed to find namespace for operation.
+ERR_SOAP_FAILED_TO_FIND_RESPONSE_RETURN_VALUE::Failed to find return value(s) in SOAP response.
+ERR_SOAP_SOAP_FAULT_RETURNED::SOAP Fault Code returned.
+ERR_TOKEN_EXPIRED::The supplied token has expired.
+ERR_ADDRESS_INVALID::The address supplied (OFProxy/OFSocket) is invalid.
+ERR_INVAL_QUEUE::The supplied queue is invalid.
+ERR_NO_MESSAGES::There are no available messages.
+ERR_INVAL_LISTENER::The supplied listener is invalid.
+ERR_ALREADY_REGISTERED::The supplied listener is already registered for the supplied subject.
+ERR_INVAL_EVENT::Invalid or unsupported event.
+ERR_OUT_OF_RANGE::Supplied value is out of a required range.
+ERR_INVAL_FORMAT::The current format is invalid for the specified operation.
+ERR_OFAP_MSG_MALFORMED::The incoming message is malformed.
+ERR_INVALID_INDEX::The supplied index is invalid.
+# Unix system errors
+ERR_EPERM::System error - Operation not permitted
+ERR_ENOENT::System error - No such file or directory
+ERR_ESRCH::System error - No such process
+ERR_EINTR::System error - Interrupted system call
+ERR_EIO::System error - I/O error
+ERR_ENXIO::System error - No such device or address
+ERR_E2BIG::System error - Arg list too long
+ERR_ENOEXEC::System error - Exec format error
+ERR_EBADF::System error - Bad file number
+ERR_ECHILD::System error - No child processes
+ERR_EAGAIN::System error - Try again
+ERR_ENOMEM::System error - Out of memory
+ERR_EACCES::System error - Permission denied
+ERR_EFAULT::System error - Bad address
+ERR_ENOTBLK::System error - Block device required
+ERR_EBUSY::System error - Device or resource busy
+ERR_EEXIST::System error - File exists
+ERR_EXDEV::System error - Cross-device link
+ERR_ENODEV::System error - No such device
+ERR_ENOTDIR::System error - Not a directory
+ERR_EISDIR::System error - Is a directory
+ERR_EINVAL::System error - Invalid argument
+ERR_ENFILE::System error - File table overflow
+ERR_EMFILE::System error - Too many open files
+ERR_ENOTTY::System error - Not a typewriter
+ERR_ETXTBSY::System error - Text file busy
+ERR_EFBIG::System error - File too large
+ERR_ENOSPC::System error - No space left on device
+ERR_ESPIPE::System error - Illegal seek
+ERR_EROFS::System error - Read-only file system
+ERR_EMLINK::System error - Too many links
+ERR_EPIPE::System error - Broken pipe
+ERR_EDOM::System error - Math argument out of domain of func
+ERR_ERANGE::System error - Math result not representable
+ERR_EDEADLK::System error - Resource deadlock would occur
+ERR_ENAMETOOLONG::System error - File name too long
+ERR_ENOLCK::System error - No record locks available
+ERR_ENOSYS::System error - Function not implemented
+ERR_ENOTEMPTY::System error - Directory not empty
+ERR_ELOOP::System error - Too many symbolic links encountered
+ERR_EWOULDBLOCK::System error - Operation would block
+ERR_ENOMSG::System error - No message of desired type
+ERR_EIDRM::System error - Identifier removed
+ERR_ECHRNG::System error - Channel number out of range
+ERR_EL2NSYNC::System error - Level not synchronized
+ERR_EL3HLT::System error - Level halted
+ERR_EL3RST::System error - Level reset
+ERR_ELNRNG::System error - Link number out of range
+ERR_EUNATCH::System error - Protocol driver not attached
+ERR_ENOCSI::System error - No CSI structure available
+ERR_EL2HLT::System error - Level 2 halted
+ERR_EBADE::System error - Invalid exchange
+ERR_EBADR::System error - Invalid request descriptor
+ERR_EXFULL::System error - Exchange full
+ERR_ENOANO::System error - No anode
+ERR_EBADRQC::System error - Invalid request code
+ERR_EBADSLT::System error - Invalid slot
+ERR_EDEADLOCK::System error - Dead lock
+ERR_EBFONT::System error - Bad font file format
+ERR_ENOSTR::System error - Device not a stream
+ERR_ENODATA::System error - No data available
+ERR_ETIME::System error - Timer expired
+ERR_ENOSR::System error - Out of streams resources
+ERR_ENONET::System error - Machine is not on the network
+ERR_ENOPKG::System error - Package not installed
+ERR_EREMOTE::System error - Object is remote
+ERR_ENOLINK::System error - Link has been severed
+ERR_EADV::System error - Advertise error
+ERR_ESRMNT::System error - Srmount error
+ERR_ECOMM::System error - Communication error on send
+ERR_EPROTO::System error - Protocol error
+ERR_EMULTIHOP::System error - Multihop attempted
+ERR_EDOTDOT::System error - RFS specific error
+ERR_EBADMSG::System error - Not a data message
+ERR_EOVERFLOW::System error - Value too large for d data type
+ERR_ENOTUNIQ::System error - Name not unique on network
+ERR_EBADFD::System error - File descriptor in bad state
+ERR_EREMCHG::System error - Remote address changed
+ERR_ELIBACC::System error - Can not access a needed shared library
+ERR_ELIBBAD::System error - Accessing a corrupted shared library
+ERR_ELIBSCN::System error - .lib section in a.out corrupted
+ERR_ELIBMAX::System error - Attempting to link in too many shared libraries
+ERR_ELIBEXEC::System error - Cannot exec a shared library directly
+ERR_EILSEQ::System error - Illegal byte sequence
+ERR_ERESTART::System error - Interrupted system call should be restarted
+ERR_ESTRPIPE::System error - Streams pipe error
+ERR_EUSERS::System error - Too many users
+ERR_ENOTSOCK::System error - Socket operation on non-socket
+ERR_EDESTADDRREQ::System error - Destination address required
+ERR_EMSGSIZE::System error - Message too long
+ERR_EPROTOTYPE::System error - Protocol wrong type for socket
+ERR_ENOPROTOOPT::System error - Protocol not available
+ERR_EPROTONOSUPPORT::System error - Protocol not supported
+ERR_ESOCKTNOSUPPORT::System error - Socket type not supported
+ERR_EOPNOTSUPP::System error - Operation not supported on transport endpoint
+ERR_EPFNOSUPPORT::System error - Protocol family not supported
+ERR_EAFNOSUPPORT::System error - Address family not supported by protocol
+ERR_EADDRINUSE::System error - Address already in use
+ERR_EADDRNOTAVAIL::System error - Cannot assign requested address
+ERR_ENETDOWN::System error - Network is down
+ERR_ENETUNREACH::System error - Network is unreachable
+ERR_ENETRESET::System error - Network dropped connection because of reset
+ERR_ECONNABORTED::System error - Software caused connection abort
+ERR_ECONNRESET::System error - Connection reset by peer
+ERR_ENOBUFS::System error - No buffer space available
+ERR_EISCONN::System error - Transport endpoint is already connected
+ERR_ENOTCONN::System error - Transport endpoint is not connected
+ERR_ESHUTDOWN::System error - Cannot send after transport endpoint shutdown
+ERR_ETOOMANYREFS::System error - Too many references:: cannot splice
+ERR_ETIMEDOUT::System error - Connection timed out
+ERR_ECONNREFUSED::System error - Connection refused
+ERR_EHOSTDOWN::System error - Host is down
+ERR_EHOSTUNREACH::System error - No route to host
+ERR_EALREADY::System error - Operation already in progress
+ERR_EINPROGRESS::System error - Operation now in progress
+ERR_ESTALE::System error - Stale NFS file handle
+ERR_EUCLEAN::System error - Structure needs cleaning
+ERR_ENOTNAM::System error - Not a XENIX named type file
+ERR_ENAVAIL::System error - No XENIX semaphores available
+ERR_EISNAM::System error - Is a named type file
+ERR_EREMOTEIO::System error - Remote I/O error
+ERR_EDQUOT::System error - Quota exceeded
+ERR_ENOMEDIUM::System error - No medium found
+ERR_EMEDIUMTYPE::System error - Wrong medium type
+ERR_UNKNOWN_SYSTEM_ERROR::Unknown (unmappable) system error
+ERR_INVAL_SOCKET::Invalid socket value
+ERR_USER_ID_MISMATCH::The user identities do not match.
+ERR_INVAL_PUBKEY::Invalid public key
+ERR_INVAL_ENTITY_RIGHT::Invalid entity or right
+ERR_TRANSACTION_ALIVE::Transaction is still running
+ERR_NOT_USER::Entity is not a user
+ERR_NOT_ROLE::Entity is not a role
+ERR_LIST_DUPLICATE_NOT_ALLOWED::The list already contains an entry with that value
+ERR_WF_HOLDER_SELECTION_METHOD_NOT_FOUND::A specified holder selection method is invalid
+ERR_ABORT_TRANSACTION::Abort transaction
+ERR_COMMIT_TRANSACTION::Commit transaction
+ERR_TRANSACTION_ABORTED::Transaction aborted
+ERR_TRANSACTION_COMMITED::Transaction committed.
+ERR_READ_ONLY_SLAVE::Object or entity is read only (its a slave embedded object)
+ERR_DATA_NOT_PRESENT::No data was present when it was expected.
+ERR_OBJECT_NOT_EMBEDDED::The specified object is not embedded.
+ERR_INTERNAL_PROP_INVALID::The internal property specified is invalid (never set)
+ERR_INVALID_RUNTIME_ASSIGN::The assign attempted is using mismatched types.
+ERR_INTERNAL_CLASS_NOTIMPL::Internal class implementation could not be found.
+ERR_INVALID_COMPONENT::The supplied component is invalid.
+ERR_RUNTIME_TYPE_MISMATCH::A type mismatch has occurred.
+ERR_NOT_DEBUGGING::A debug function was attempted on a non debug session.
+ERR_SRV_NOT_REGISTERED::The local server is not registered with the registry.
+ERR_SERVERTICKET_FORMAT::The supplied ticket is not in a valid format.
+ERR_INVAL_CACHE_REGISTER_ID::Invalid cache register identity supplied.
+ERR_INVAL_CACHE_ITEM::Invalid cache item (index or name).
+ERR_SERVER_NOT_TRUSTED::The signing server is not in our trusted list.
+ERR_WSAEINTR_10004::A blocking operation was interrupted by a call to WSACancelBlockingCall (WIN32-10004)
+ERR_WSAEBADF_10009::The file handle supplied is not valid. (WIN32-10009)
+ERR_WSAEACCES_10013::An attempt was made to access a socket in a way forbidden by its access permissions. (WIN32-10013)
+ERR_WSAEFAULT_10014::The system detected an invalid pointer address in attempting to use a pointer argument in a call. (WIN32-10014)
+ERR_WSAEINVAL_10022::An invalid argument was supplied (WIN32-10022)
+ERR_WSAEMFILE_10024::Too many open sockets. (WIN32-10024)
+ERR_WSAEWOULDBLOCK_10035::A non-blocking socket operation could not be completed immediately. (WIN32-10035)
+ERR_WSAEINPROGRESS_10036::A blocking operation is currently executing. (WIN32-10036)
+ERR_WSAEALREADY_10037::An operation was attempted on a non-blocking socket that already had an operation in progress. (WIN32-10037)
+ERR_WSAENOTSOCK_10038::An operation was attempted on something that is not a socket. (WIN32-10038)
+ERR_WSAEDESTADDRREQ_10039::A required address was omitted from an operation on a socket. (WIN32-10039)
+ERR_WSAEMSGSIZE_10040::A message sent on a datagram socket was larger than the internal message buffer or some other network limit, or the buffer used to receive a datagram into was smaller than the datagram itself. (WIN32-10040)
+ERR_WSAEPROTOTYPE_10041::A protocol was specified in the socket function call that does not support the semantics of the socket type requested. (WIN32-10041)
+ERR_WSAENOPROTOOPT_10042::An unknown, invalid, or unsupported option or level was specified in a getsockopt or setsockopt call. (WIN32-10042)
+ERR_WSAEPROTONOSUPPORT_10043::The requested protocol has not been configured into the system, or no implementation for it exists. (WIN32-10043)
+ERR_WSAESOCKTNOSUPPORT_10044::The support for the specified socket type does not exist in this address family. (WIN32-10044)
+ERR_WSAEOPNOTSUPP_10045::The attempted operation is not supported for the type of object referenced. (WIN32-10045)
+ERR_WSAEPFNOSUPPORT_10046::The protocol family has not been configured into the system or no implementation for it exists. (WIN32-10046)
+ERR_WSAEAFNOSUPPORT_10047::An address incompatible with the requested protocol was used. (WIN32-10047)
+ERR_WSAEADDRINUSE_10048::Only one usage of each socket address (protocol/network address/port) is normally permitted. (WIN32-10048)
+ERR_WSAEADDRNOTAVAIL_10049::The requested address is not valid in its context. (WIN32-10049)
+ERR_WSAENETDOWN_10050::A socket operation encountered a dead network. (WIN32-10050)
+ERR_WSAENETUNREACH_10051::A socket operation was attempted to an unreachable network. (WIN32-10051)
+ERR_WSAENETRESET_10052::The connection has been broken due to keep-alive activity detecting a failure while the operation was in progress. (WIN32-10052)
+ERR_WSAECONNABORTED_10053::An established connection was aborted by the software in your host machine. (WIN32-10053)
+ERR_WSAECONNRESET_10054::An existing connection was forcibly closed by the remote host. (WIN32-10054)
+ERR_WSAENOBUFS_10055::An operation on a socket could not be performed because the system lacked sufficient buffer space or because a queue was full. (WIN32-10055)
+ERR_WSAENOTCONN_10057::A request to send or receive data was disallowed because the socket is not connected and (when sending on a datagram socket using a sendto call) no address was supplied. (WIN32-10057)
+ERR_WSAESHUTDOWN_10058::A request to send or receive data was disallowed because the socket had already been shut down in that direction with a previous shutdown call. (WIN32-10058)
+ERR_WSAETOOMANYREFS_10059::Too many references to some kernel object. (WIN32-10059)
+ERR_WSAELOOP_10062::Cannot translate name. (WIN32-10062)
+ERR_WSAENAMETOOLONG_10063::Name component or name was too long. (WIN32-10063)
+ERR_WSAEHOSTDOWN_10064::A socket operation failed because the destination host was down. (WIN32-10064)
+ERR_WSAEHOSTUNREACH_10065::A socket operation was attempted to an unreachable host. (WIN32-10065)
+ERR_WSAENOTEMPTY_10066::Cannot remove a directory that is not empty. (WIN32-10066)
+ERR_WSAEPROCLIM_10067::A Windows Sockets implementation may have a limit on the number of applications that may use it simultaneously. (WIN32-10067)
+ERR_WSAEUSERS_10068::Ran out of quota. (WIN32-10068)
+ERR_WSAEDQUOT_10069::Ran out of disk quota. (WIN32-10069)
+ERR_WSAESTALE_10070::File handle reference is no longer available. (WIN32-10070)
+ERR_WSAEREMOTE_10071::Item is not available locally. (WIN32-10071)
+ERR_WSASYSNOTREADY_10091::WSAStartup cannot function at this time because the underlying system it uses to provide network services is currently unavailable. (WIN32-10091)
+ERR_WSAVERNOTSUPPORTED_10092::The Windows Sockets version requested is not supported. (WIN32-10092)
+ERR_WSANOTINITIALISED_10093::Either the application has not called WSAStartup, or WSAStartup failed. (WIN32-10093)
+ERR_WSAEISCONN::The socket is already connected (WIN32-10056).
+ERR_WSACONNREFUSED::The connection was refused (WIN32-10061).
+ERR_WSAETIMEDOUT_10060::The connection timed out (WIN32-10060)
+ERR_THREAD_RUNNING::The thread is still running.
+ERR_THREAD_NOT_FOUND::No such thread has been found.
+ERR_FOREIGN_OBJECT::The object is foreign or a link.
+ERR_RULE_INVALID_SPACE::The space supplied has no rules.
+ERR_RULE_NO_MATCH_CONTENT::No matching rule for the container and mimetype was found.
+ERR_RULE_NO_MATCH_FOLDER::No matching rule for the container was found.
+ERR_UPDATES_NON_AVAIL::No new updates available
+ERR_UPDATES_CREATE_FAIL::Update creation failed.
+ERR_UPDATES_INVAL_OPSYS::Invalid operating system
+ERR_ALREADY_ROLE_MEMBER::Server or user is already a member of the role
+ERR_SSL_ERROR_ZERO_RETURN::SSL_ERROR_ZERO_RETURN.The TLS/SSL connection has been closed.
+ERR_SSL_ERROR_WANT_READ::SSL_ERROR_WANT_READ. The operation did not complete.
+ERR_SSL_ERROR_WANT_WRITE::SSL_ERROR_WANT_WRITE. The operation did not complete.
+ERR_SSL_ERROR_WANT_CONNECT::SSL_ERROR_WANT_CONNECT. The operation did not complete.
+ERR_SSL_ERROR_WANT_ACCEPT::SSL_ERROR_WANT_ACCEPT. The operation did not complete.
+ERR_SSL_ERROR_WANT_X509_LOOKUP::SSL_ERROR_WANT_X509_LOOKUP. The operation did not complete because an application callback set by SSL_CTX_set_client_cert_cb() has asked to be called again.
+ERR_SSL_ERROR_SYSCALL::SSL_ERROR_SYSCALL. Some I/O error occurred. The OpenSSL error queue may contain more information.
+ERR_COULD_NOT_READ_ACL::Could not read the object's ACL data.
+ERR_AUTH_MECH_NOT_ALLOWED::Authentication mechanism not allowed.
+ERR_FRAMESTACK_LEVEL_EXCEEDED::Run frame-stack level exceeded.
+ERR_SOFTRULES_DENIED_PLACEMENT::An object of this class may not be placed under the specified parent.
+ERR_REGEX_FAILURE::Regular expression failure.
+ERR_SERVER_PURGING::Server is being purged
+ERR_SERVER_PURGED::Server has purged and is OK
+ERR_SERVER_MUST_PURGE::Server must purge before embedding etc
+ERR_INVALID_IMAGE::The supplied image is not valid
+ERR_INVALID_FILE::The supplied filename is invalid.
+ERR_NEW_SPACE_OFFLINE::Cannot register a space with home server offline.
+ERR_SERVER_NOT_AVAILABLE::Server not available.
+ERR_PARSER_ERROR::Parser error
+ERR_NOT_SERVICE::The service is invalid (WIN32-1060)
+ERR_SERVICE_NOT_ACTIVE_1062::Service not started (WIN32-1062)
+ERR_FAILED_SERVICE_CONTROLLER_CONNECT_1063::The service process could not connect to the service controller (WIN32-1063)
+ERR_NO_OF_ENVIRON::No openFabric environment could be found.
+ERR_DELETE_IN_DESTRUCTOR::Cannot delete myself in my own destructor.
+ERR_INVAL_CODE::Invalid return code
+ERR_INVAL_RESPONSE::Invalid response
+ERR_INVAL_TYPE::Invalid type at runtime
+ERR_PRINTS_ARG_COUNT::PRINTS argument count mismatch
+ERR_SPACERULE_NOT_FOUND::Space rule not found
+ERR_SERVER_TERMINATING::Server is currently stopping
+ERR_CLASS_IDNAME_MISMATCH::Class identity/name mismatch
+ERR_SYSCLM_CLASS_MISMATCH::System/CLM class mismatch. Server out of date.
+ERR_SERVER_NAMEID_MISMATCH::Registry server name/id mismatch
+ERR_INVALID_ADMIN_FUNC::Invalid administrative function
+ERR_DEMOUSER_EXPIRED::Demo user has expired
+ERR_BUILDING::A new search engine is building: request cannot be done.
+ERR_NO_CURRENT_USER::No current user.
+ERR_INCOMPAT_SERVER::Local server version is not compatible with remote server.
+ERR_NEED_LOCK::Object must be checked out to be modified.
+ERR_LOCK_HELD::Another user has already checked out this object - try again later.
+ERR_LOCK_YOURS::You have already checked out this object.
+ERR_XML_PARSE_XPATH::Error parsing xpath.
+ERR_WSDL_CANNOT_FIND_WSDLPPITEM::Cannot find specified WSDLPPItem
+ERR_WSDL_CANNOT_FIND_TARGET_NAMESPACE::Missing targetNamespace
+ERR_BUFFER_TOO_SMALL::The supplied buffer is too small
+ERR_NONCE_EXPIRED::The supplied nonce has expired
+ERR_NOT_DICTIONARY_SERVER::This server is not a dictionary server
+ERR_HOME_DICTIONARY_MISMATCH::Home and dictionary server mismatch
+ERR_INVAL_ACCESS_FUNCTION::Invalid access function
+ERR_HOMESERVER_NOTAVAIL::Home server could not be contacted.
+ERR_OBJECT_NAME_EMPTY::Object name is empty
+ERR_INVAL_ATTACHMENT::Invalid (or empty) attachment
+ERR_SSL_DECRYPT::SSL decryption error
+ERR_TOO_MANY_SITES::Too many server sites
+ERR_SSO_FAILED::Single sign on failed
+end:
+begin:OFVALUE_LIST_TYPES:OFVALUE list types 
+typeListInteger:typeInteger|8:integer list
+typeListBoolean:typeBoolean|8:boolean
+typeListString:typeString|8:string
+typeListFloat:typeFloat|8:float
+typeListOFDateTime:typeOFDateTime|8:datetime
+typeListIdentity:typeIdentity|8:identity
+typeListBinary:typeBinary|8:binary
+end:
+begin:OPSYS:Operating systems:B
+OS_LINUX:1:Linux
+OS_WIN9X::Windows 95/98
+OS_WINME::Windows ME
+OS_WINNT::Windows NT
+OS_WIN2K::Windows 2000
+OS_WINXP::Windows XP
+OS_MACOS::Mac OS
+OS_MACOSX::Mac OS X
+OS_SOL8::Solaris 8
+OS_SOL9::Solaris 9
+OS_FREEBSD::FreeBSD
+OS_DARWIN::Darwin
+OS_SOLARIS::Solaris
+end:

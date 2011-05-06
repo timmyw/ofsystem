@@ -20,12 +20,23 @@
   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
-*/
-
-#if !defined(_OFGLAGS_H_)
-#define _OFGLAGS_H_
+ */
 
 #include <ofsys.h>
-#include <offlags.i>
+#include <srvidentity.h>
 
-#endif // _OFGLAGS_H_
+const SRVIDENTITY SRVIDENTITY::NullSrvID( "0000000000000000" );
+
+ostream & operator << ( ostream &s, const SRVIDENTITY &id )
+{
+    return s 
+		<< hex 
+		<< setfill('0') 
+		<< setw(16) 
+		<< id.m_id << dec;
+}
+
+bool SRVIDENTITY::isNull() const
+{
+    return m_id == NullSrvID.m_id;
+}

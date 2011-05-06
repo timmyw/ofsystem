@@ -15,11 +15,25 @@ set (srcs
   oftss.cpp
   ofcondvar.cpp
   ofdirent.cpp
+  ofdatetime.cpp
   buffers.cpp
+  ofvalue.cpp
+  storageblob.cpp
+  storageblobbuffer.cpp
+  storageblobbuffered.cpp
+  ofidentity.cpp
+  offlags.cpp
+  srvidentity.cpp
+  oferr.cpp
   )
 
 if (!WIN32)
    set (srcs ${srcs} terminput.cpp)
 endif (!WIN32)
 
-addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "")
+add_custom_command(OUTPUT offlags.cpp
+  COMMAND perl ${BD}/tools/mkflags.pl -o offlags.cpp -h ${BD}/include/offlags.i -i ${BD}/data/flags.data
+  DEPENDS ${BD}/tools/mkflags.pl ${BD}/data/flags.data
+)
+
+addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "${LIBS}")
