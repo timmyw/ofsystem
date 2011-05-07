@@ -1,7 +1,7 @@
 /* This file was automatically generated. Do not modify it.
 */
 
-/** \file C:/code/ofsystem/include/offlags.i
+/** \file /home/timmy/code/ofsystem/include/offlags.i
     Contains the generated flag enumerations
  */
 

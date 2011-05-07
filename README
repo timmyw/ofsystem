@@ -17,6 +17,15 @@ To build ofsystem:
         cmake -G "Unix Makefiles
         make
 
+cmake will accept a PREFIX variable as a command line argument, which
+will set the installation prefix (defaults to /usr/local)
+
+    cmake -G "Unix Makefiles" -DPREFIX=/opt/
+
+This will set a cmake cache entry, which ultimately means if you need
+to change it, you'll need to delete the CMakeCache.txt file, and
+re-run the above cmake command.
+
 Documentation
 =============
 
