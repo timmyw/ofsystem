@@ -44,8 +44,8 @@ ostream &
 operator << ( ostream &s, const OFIDENTITY &id )
 {
     return s << hex << setfill('0') << setw(4) << id.m_flags << setw(16) 
-         << id.m_id0 << setw(16)
-         << id.m_id1 << dec;
+         << (ofint64)id.m_id0 << setw(16)
+         << (ofint64)id.m_id1 << dec;
 }
 
 bool
