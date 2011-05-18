@@ -25,6 +25,7 @@ set (srcs
   offlags.cpp
   srvidentity.cpp
   oferr.cpp
+  ofvariant.cpp
   )
 
 if (!WIN32)
