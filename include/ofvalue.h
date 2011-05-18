@@ -136,7 +136,6 @@ struct OFSYS_API OFVALUE
      */
     //@{
 
-#if defined(HAVE_OFVARIANT)
     /** Populates this from an OFVariant.
      */
     void populate( OFVariant *variant );
@@ -146,7 +145,6 @@ struct OFSYS_API OFVALUE
         responsibility to destroy it.
     */
     OFVariant *populate( );
-#endif // HAVE_OFVARIANT
 
     void set( const OFIDENTITY *id );
     void set( const char *str );
@@ -277,5 +275,29 @@ struct OFSYS_API OFVALUE
     ofint32 operator !=(const OFVALUE &rhs);
 
 };
+
+/** Destroy an OFVALUE
+ */
+void OFSYS_API destroyOFVALUE( OFVALUE *value, signed char type, bool doDelete = false );
+
+/** Translate a variant type to an OFVALUE type.
+    OCAL_EXT_TYPE is translate to typeIdentity.
+ */
+signed char OFSYS_API translateVariantType( OFVariant *variant );
+
+/** Populate an OFVALUE from an OFIDENTITYLIST.
+    Also destroys each element in the OFIDENTITYLIST
+ */
+void OFSYS_API OFVALUEfromOFIDENTITYLIST( OFIDENTITYLIST* src, OFVALUE* dest );
+
+/** Populates an OFVALUE from an OFCHARSTARLIST
+
+    Also destroy each string in the OFCHARSTARLIST
+*/
+void OFSYS_API OFVALUEfromOFCHARSTARLIST(OFCHARSTARLIST* src, OFVALUE* dest);
+
+/** Create an OFIDENTITYLIST from an OFVALUE
+ */
+ofuint64 OFSYS_API OFIDENTITYLISTfromOFVALUE(OFVALUE* src, OFIDENTITYLIST* dest);
 
 #endif // #if !defined(_OFVALUE_H_)
