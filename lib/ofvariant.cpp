@@ -964,16 +964,16 @@ void
 OFVariant::dumpToFile( OFFile *file )
 {
     OFUtility::dumpint32( file, m_type );
-    Utility::dumpint32( file, m_subType );
+    OFUtility::dumpint32( file, m_subType );
     if ( m_subType == VARIANT_SCALAR )
     {
-        Utility::dumpuint32( file, m_bufLen );
+        OFUtility::dumpuint32( file, m_bufLen );
         if ( m_bufLen )
             file->write( m_buffer, m_bufLen );
     }
     else
     {
-        Utility::dumpuint32( file, m_list.size() );
+        OFUtility::dumpuint32( file, m_list.size() );
         if ( m_list.size() )
         {
             for ( OFVariantIterator i = m_list.begin(); i != m_list.end(); i++ )
@@ -988,11 +988,11 @@ void
 OFVariant::undumpFromFile( OFFile *file )
 {
     destroy_( );
-    Utility::undumpint32( file, &m_type );
-    Utility::undumpint32( file, &m_subType );
+    OFUtility::undumpint32( file, &m_type );
+    OFUtility::undumpint32( file, &m_subType );
     if ( m_subType == VARIANT_SCALAR )
     {
-        Utility::undumpuint32( file, &m_bufLen );
+        OFUtility::undumpuint32( file, &m_bufLen );
         m_buffer = new char[m_bufLen+1];
         if ( m_bufLen )
         {
@@ -1004,7 +1004,7 @@ OFVariant::undumpFromFile( OFFile *file )
     else
     {
         ofuint32 l;
-        Utility::undumpuint32( file, &l );
+        OFUtility::undumpuint32( file, &l );
         m_null = l ? false : true;
         while ( l )
         {
@@ -1144,18 +1144,18 @@ OFVariant::readFromBlob( StorageBlob *blob, int version )
 void
 OFVariant::dumpToBuffer( char **buffer )
 {
-    Utility::dumpint32( buffer, m_type );
-    Utility::dumpint32( buffer, m_subType );
+    OFUtility::dumpint32( buffer, m_type );
+    OFUtility::dumpint32( buffer, m_subType );
     if ( m_subType == VARIANT_SCALAR )
     {
-        Utility::dumpuint32( buffer, m_bufLen );
+        OFUtility::dumpuint32( buffer, m_bufLen );
         if ( m_bufLen )
             memcpy( *buffer, m_buffer, m_bufLen );
         (*buffer) += m_bufLen;
     }
     else
     {
-        Utility::dumpuint32( buffer, m_list.size() );
+        OFUtility::dumpuint32( buffer, m_list.size() );
         if ( m_list.size() )
         {
             for ( OFVariantIterator i = m_list.begin(); i != m_list.end(); i++ )
@@ -1169,11 +1169,11 @@ OFVariant::undumpFromBuffer( const char **buffer )
 {
     // First destroy the current contents, if any
     destroy_( );
-    Utility::undumpint32( buffer, &m_type );
-    Utility::undumpint32( buffer, &m_subType );
+    OFUtility::undumpint32( buffer, &m_type );
+    OFUtility::undumpint32( buffer, &m_subType );
     if ( m_subType == VARIANT_SCALAR )
     {
-        Utility::undumpuint32( buffer, &m_bufLen );
+        OFUtility::undumpuint32( buffer, &m_bufLen );
         m_buffer = new char[m_bufLen+1];
         if ( m_bufLen )
         {
@@ -1186,7 +1186,7 @@ OFVariant::undumpFromBuffer( const char **buffer )
     else
     {
         ofuint32 l;
-        Utility::undumpuint32( buffer, &l );
+        OFUtility::undumpuint32( buffer, &l );
         m_null = ((l) ? false : true);
         while ( l )
         {
@@ -1365,8 +1365,7 @@ operator *( const OFVariant &lhs, const OFVariant &rhs)
     return ret;
 }
 
-OFVariant
-operator /( const OFVariant &lhs, const OFVariant &rhs)
+OFVariant operator /( const OFVariant &lhs, const OFVariant &rhs)
 {
     OFVariant ret( MAKELL( 0 ) );
     if ( lhs.m_null || rhs.m_null )
@@ -1413,8 +1412,7 @@ operator /( const OFVariant &lhs, const OFVariant &rhs)
 
 // Equality operators
 
-ofint64
-operator ==( const OFVariant &lhs, const OFVariant &rhs)
+ofint64 operator ==( const OFVariant &lhs, const OFVariant &rhs)
 {
     ofuint32 ret = 0;
 
@@ -1465,16 +1463,14 @@ operator ==( const OFVariant &lhs, const OFVariant &rhs)
     return ret;
 }
 
-ofint64
-operator !=( const OFVariant &lhs, const OFVariant &rhs)
+ofint64 operator !=( const OFVariant &lhs, const OFVariant &rhs)
 {
     return !(lhs == rhs);
 }
 
 // Relational Operators
 
-ofint64
-operator <( const OFVariant &lhs, const OFVariant &rhs)
+ofint64 operator <( const OFVariant &lhs, const OFVariant &rhs)
 {
     ofuint32 ret=0;
 
@@ -1512,26 +1508,22 @@ operator <( const OFVariant &lhs, const OFVariant &rhs)
     return ret;
 }
 
-ofint64
-operator <=( const OFVariant &lhs, const OFVariant &rhs)
+ofint64 operator <=( const OFVariant &lhs, const OFVariant &rhs)
 {
     return (lhs < rhs) || (lhs == rhs);
 }
 
-ofint64
-operator >( const OFVariant &lhs, const OFVariant &rhs)
+ofint64 operator >( const OFVariant &lhs, const OFVariant &rhs)
 {
     return !(lhs <= rhs);
 }
 
-ofint64
-operator >=( const OFVariant &lhs, const OFVariant &rhs)
+ofint64 operator >=( const OFVariant &lhs, const OFVariant &rhs)
 {
     return !(lhs < rhs);
 }
 
-ofint32  
-arithOpResultType( ofint32 type1, ofint32 type2 )
+ofint32 arithOpResultType( ofint32 type1, ofint32 type2 )
 {
     // Remember string comparision operators (GE, EQUALS etc) will result in
     // a signed integer value.
@@ -1543,8 +1535,7 @@ arithOpResultType( ofint32 type1, ofint32 type2 )
     return res;
 }
 
-bool
-ValidArithmeticOpTypes( const OFVariant &lhs, const OFVariant &rhs )
+bool ValidArithmeticOpTypes( const OFVariant &lhs, const OFVariant &rhs )
 {
     ofint32 lType1 = lhs.m_type;
     ofint32 lType2 = rhs.m_type;    
@@ -1584,8 +1575,7 @@ ValidArithmeticOpTypes( const OFVariant &lhs, const OFVariant &rhs )
     return true;
 }
 
-bool
-ValidEqualityOpTypes( const OFVariant &lhs, const OFVariant &rhs )
+bool ValidEqualityOpTypes( const OFVariant &lhs, const OFVariant &rhs )
 {
     ofint32 lType1 = lhs.m_type ;
     ofint32 lType2 = rhs.m_type ;    
@@ -1630,8 +1620,8 @@ ValidEqualityOpTypes( const OFVariant &lhs, const OFVariant &rhs )
     
     return bOk;
 }
-bool
-ValidRelationalOpTypes( const OFVariant &lhs, const OFVariant &rhs )
+
+bool ValidRelationalOpTypes( const OFVariant &lhs, const OFVariant &rhs )
 {
     ofint32 lType1 = lhs.type() ;
     ofint32 lType2 = rhs.type() ;    
@@ -1672,8 +1662,8 @@ ValidRelationalOpTypes( const OFVariant &lhs, const OFVariant &rhs )
     
     return bOk;
 }
-bool
-operator &&( const OFVariant &lhs, const OFVariant &rhs)
+
+bool operator &&( const OFVariant &lhs, const OFVariant &rhs)
 {
     bool ret = false;
     
@@ -1686,8 +1676,7 @@ operator &&( const OFVariant &lhs, const OFVariant &rhs)
     return ret;
 }
 
-bool
-operator ||( const OFVariant &lhs, const OFVariant &rhs)
+bool operator ||( const OFVariant &lhs, const OFVariant &rhs)
 {
     bool ret = false;
     
@@ -1700,8 +1689,7 @@ operator ||( const OFVariant &lhs, const OFVariant &rhs)
     return ret;
 }
 
-void
-OFVariant::dumpBinary( OFVariant *bin )
+void OFVariant::dumpBinary( OFVariant *bin )
 {
     cout << "Binary dump: " << bin->bufferSize() << " bytes" << endl << "[";
     ofuint32 len = bin->bufferSize() * 2 + 1;

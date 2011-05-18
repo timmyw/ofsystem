@@ -1716,6 +1716,158 @@ OFUtility::toRelativePath( const char *fromPath, const char *toPath, char **relP
     return *relPath;        
 }
 
+void 
+OFUtility::dumpId( OFFile *file, const OFIDENTITY *id )
+{
+    OFUtility::dumpuint16( file, id->m_flags );
+    OFUtility::dumpuint64( file, id->m_id0 );
+    OFUtility::dumpuint64( file, id->m_id1 );
+}
+
+void
+OFUtility::dumpId( char **data, const OFIDENTITY *id )
+{
+    OFUtility::dumpuint16( data, id->m_flags );
+    OFUtility::dumpuint64( data, id->m_id0 );
+    OFUtility::dumpuint64( data, id->m_id1 );
+}
+
+void 
+OFUtility::undumpId( OFFile *file, OFIDENTITY *id )
+{
+    char tempid[128];
+    ofuint32 l;
+    OFUtility::undumpuint32( file, &l );
+    file->read( tempid, l );
+    tempid[l] = 0;
+    *id = tempid;
+}
+
+void
+OFUtility::undumpId( const char **data, OFIDENTITY *id )
+{
+    ofuint32 len = 0;
+    char tempid[128];
+
+    OFUtility::undumpuint32( data, &len );
+
+    ::memcpy( tempid, *data, len );
+    tempid[len] = 0;
+    *data += len;
+
+    *id = tempid;
+}
+
+void 
+OFUtility::dumpStr( OFFile *file, const char *str )
+{
+    ofuint32 l = ofstrlen( str );
+    OFUtility::dumpuint32( file, l );
+    file->write( str, l );
+}
+
+void
+OFUtility::dumpStr( char **data, const char *str )
+{
+    ofint32 l = ofstrlen( str );
+    OFUtility::dumpuint32( data, l );
+    ::memcpy( *data, str, l );
+    *data += l;
+}
+
+void 
+OFUtility::undumpStr( OFFile *file, char *str )
+{
+    ofuint32 l;
+    OFUtility::undumpuint32( file, &l );
+    file->read( str, l );
+    str[l] = 0;
+}
+
+void
+OFUtility::undumpStr( const char **data, char *str )
+{
+    ofint32 l;
+    const char *pos = *data;
+    ::memcpy( &l, pos, sizeof(l) );
+    l = ntohl( l );
+    pos += sizeof(l);
+    ::memcpy( str, pos, l );
+    str[l] = 0;
+    *data = pos + l;
+}
+
+/* static */
+void
+OFUtility::undumpNewStr( const char **data, char **str )
+{
+    ofint32 len;
+    const char *pos = *data;
+    ::memcpy( &len, pos, sizeof(len) );
+    len = ntohl( len );
+    *str = new char[ len + 1 ];
+    pos += sizeof( len );
+    ::memcpy( *str, pos, len );
+    (*str)[ len ] = 0;
+    *data = pos + len;
+}
+
+// HexBinary Conversion
+void
+OFUtility::convertToHexBinary( const char *data, ofuint32 buflen, char *output )
+{
+    char conv[] = "0123456789ABCDEF";
+
+    const char *current = data;
+    const char *finish = data + buflen;
+    
+    while ( current < finish )
+    {
+        // High byte
+        output[0] = conv[ ( current[0] & 0xF0 ) >> 4 ];
+        output++;
+        // Low byte
+        output[0] = conv[ ( current[0] & 0x0F ) ];
+        output++;
+        current++;
+    }
+    *output = 0;
+}
+
+ofuint32
+OFUtility::convertFromHexBinary( const char *data, ofuint32 buflen, char *output )
+{
+    const char *current = data;
+    char *pos = output;
+    unsigned char t;
+    
+    // Check we are not going to write over the end of the buffer.
+    while (*current&&(ofuint32)(pos-output)<(ofuint32)(buflen+4))
+    {
+        t = current[0];
+        if ( t >= 'A' && t <= 'F' )
+            t = t - 'A' + 10;
+        else if ( t >= 'a' && t <='f' )
+            t = t - 'a' + 10;
+        else if ( t >= '0' && t <= '9' )
+            t = t - '0';        
+        pos[0] = t << 4;
+        current++;
+        
+        t = current[0];
+        if ( t >= 'A' && t <= 'F' )
+            t = t - 'A' + 10;
+        else if ( t >= 'a' && t <='f' )
+            t = t - 'a' + 10;
+        else if ( t >= '0' && t <= '9' )
+            t = t - '0'; 
+        pos[0] = pos[0] | t;
+        current++;
+        pos++;
+    }
+    return pos - output;
+}
+
 // //////////////////////////////////////////////////////////////////////////
 
 #if defined(UNIT_TEST)

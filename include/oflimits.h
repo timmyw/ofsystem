@@ -59,4 +59,12 @@
  */
 #define OF_SOCK_RECV_BUFSIZE            8192
 
+/** Maximum length for an OFAP field name
+ */
+#define OFAP_MAX_FIELD_NAME_LEN         128
+
+/** Maximum OFAP field value
+ */
+#define OFAP_MAX_FIELD_VALUE_LEN        65536
+
 #endif // _OFLIMITS_H_
