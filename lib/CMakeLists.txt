@@ -26,6 +26,7 @@ set (srcs
   srvidentity.cpp
   oferr.cpp
   ofvariant.cpp
+  ofcommandarg.cpp
   )
 
 if (!WIN32)
