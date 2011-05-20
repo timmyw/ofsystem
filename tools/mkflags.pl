@@ -786,9 +786,7 @@ sub addheader_decl( )
 sub addheader_trans( )
   {
     print OUTPUT "/** This file is generated automatically. Do not modify it.\n */\n";
-    print OUTPUT "\n#include <offlags.h>\n";
-    print OUTPUT "#include <ofos.h>\n";
-    print OUTPUT "#include <ofutility.h>\n";
+    print OUTPUT "#include <ofsys.h>\n";
     print OUTPUT "\n";
   }
 

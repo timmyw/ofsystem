@@ -1,9 +1,6 @@
 /** This file is generated automatically. Do not modify it.
  */
-
-#include <offlags.h>
-#include <ofos.h>
-#include <ofutility.h>
+#include <ofsys.h>
 
 
 

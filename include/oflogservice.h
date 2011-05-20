@@ -22,11 +22,15 @@
   SOFTWARE.
 */
 
-#include <string>
-using namespace std;
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
 
 #if !defined(_OFLOGSERVICE_H_)
 #define _OFLOGSERVICE_H_
+
+#include <string>
+using namespace std;
 
 #if defined(OFOPSYS_WIN32)
 

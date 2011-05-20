@@ -22,12 +22,11 @@
   SOFTWARE.
  */
 
+#include <ofsys.h>
 #include <ofvariant.h>
-#include <float.h>
-#include <offile.h>
-#include <offlags.h>
-//#include <ofgen/genutil.h>
 #include <ofutility.h>
+#include <offile.h>
+#include <float.h>
 #include <limits>
 
 const ofint32 OFVariant::MAX_DISPLAY_BUFFER_LENGTH = 2*OF_MAX_ID_LEN ;

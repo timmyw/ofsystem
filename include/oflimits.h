@@ -22,6 +22,10 @@
   SOFTWARE.
 */
 
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
 #if !defined(_OFLIMITS_H_)
 #define _OFLIMITS_H_
 
@@ -66,5 +70,9 @@
 /** Maximum OFAP field value
  */
 #define OFAP_MAX_FIELD_VALUE_LEN        65536
+
+/** Max length of an OCAL type name
+ */
+#define OF_MAX_TYPE_VAL_LEN                256 
 
 #endif // _OFLIMITS_H_

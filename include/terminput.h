@@ -22,6 +22,10 @@
   SOFTWARE.
 */
 
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
 #if !defined(_TERMINPUT_H_)
 #define _TERMINPUT_H_
 
@@ -29,114 +33,115 @@
  */
 
 enum
-        {
-                TI_ECHO_NORMAL = 0,
-                TI_ECHO_PASS = 1
-        };
+    {
+        TI_ECHO_NORMAL = 0,
+        TI_ECHO_PASS = 1
+    };
 
 const ofuint32 ti_buffer_size = 512;
 
 /** \class TermInput terminput.h
-Provides input utilities
-\nosubgrouping
+    
+    Provides input utilities
+    \nosubgrouping
  */
 class TermInput
 {
  public:
-        /** \name Constructors and destructors
-         */
-        //@{
+    /** \name Constructors and destructors
+     */
+    //@{
 
-        /** Default constructor
-         */
-        TermInput();
+    /** Default constructor
+     */
+    TermInput();
 
-        /** Destructor
-         */
-        ~TermInput();
+    /** Destructor
+     */
+    ~TermInput();
 
-        //@}
+    //@}
 
-        /** \name Input methods
-         */
-        //@{
+    /** \name Input methods
+     */
+    //@{
 
-        /** Retrieve a line of input 
-            Returns a pointer to the entered
-            line. This buffer is managed by the class and should not
-            be manipulated or freed.
-         */
-        const char* get_line(const char*prompt = 0, ofuint32 max_len = 0);
+    /** Retrieve a line of input 
+        Returns a pointer to the entered
+        line. This buffer is managed by the class and should not
+        be manipulated or freed.
+    */
+    const char* get_line(const char*prompt = 0, ofuint32 max_len = 0);
 
-        //@}
+    //@}
 
-        /** \name Accessor methods
-         */
-        //@{
+    /** \name Accessor methods
+     */
+    //@{
 
-        /** Retrieve the echo mode
-         */
-        ofuint32 echo() { return m_echo; }
+    /** Retrieve the echo mode
+     */
+    ofuint32 echo() { return m_echo; }
 
-        /** Set the echo mode
-         */
-        void echo(ofuint32 e) {m_echo = e;}
+    /** Set the echo mode
+     */
+    void echo(ofuint32 e) {m_echo = e;}
 
-        //@}
+    //@}
 
  protected:
 
-        /** \name Helper methods
-         */
-        //@{
+    /** \name Helper methods
+     */
+    //@{
 
-        /** Destroy/empty current line
-         */
-        void destroy_() {
-                delete [] m_line;
-                m_line = 0;
-                m_length = 0;
-        }
+    /** Destroy/empty current line
+     */
+    void destroy_() {
+        delete [] m_line;
+        m_line = 0;
+        m_length = 0;
+    }
 
-        /** Check size and extend if necessary
-         */
-        void check_size_(ofuint32 new_inc = 0);
+    /** Check size and extend if necessary
+     */
+    void check_size_(ofuint32 new_inc = 0);
 
-        /** Retrieve a character
-         */
-        ofchar get_char_();
+    /** Retrieve a character
+     */
+    ofchar get_char_();
 
-        //@}
+    //@}
 
-        /** \name Data members
-         */
-        //@{
+    /** \name Data members
+     */
+    //@{
 
-        /** Current buffer
-         */
-        char* m_line;
+    /** Current buffer
+     */
+    char* m_line;
 
-        /** Current allocated length
-         */
-        ofuint32 m_length;
+    /** Current allocated length
+     */
+    ofuint32 m_length;
 
-        /** Current echo mode
-         */
-        ofuint32 m_echo;
+    /** Current echo mode
+     */
+    ofuint32 m_echo;
 
-        /** Keyboard buffer
-         */
-        char m_buffer[ti_buffer_size+1];
+    /** Keyboard buffer
+     */
+    char m_buffer[ti_buffer_size+1];
 
-        /** Buffer space position
-         */
-        ofuint32 m_buffer_pos;
+    /** Buffer space position
+     */
+    ofuint32 m_buffer_pos;
 
-        /** Buffer read position
-         */
-        ofuint32 m_buffer_read;
+    /** Buffer read position
+     */
+    ofuint32 m_buffer_read;
 
-        //@}
+    //@}
 
 };
 

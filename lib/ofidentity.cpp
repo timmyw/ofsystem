@@ -22,9 +22,9 @@
   SOFTWARE.
  */
 
+#include <ofsys.h>
 #include <ofidentity.h>
 #include <ofutility.h>
-#include <ofos.h>
 #include <iomanip>
 
 const OFIDENTITY OFIDENTITY::NullID( 0, 0, 0x0);

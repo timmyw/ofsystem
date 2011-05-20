@@ -23,8 +23,6 @@
 */
 
 #include <ofsys.h>
-#include <buffers.h>
-#include <ofos.h>
 
 VirtualChunk::VirtualChunk()
 {

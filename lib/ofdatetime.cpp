@@ -22,6 +22,7 @@
   SOFTWARE.
  */
 
+#include <ofsys.h>
 #include <ofdatetime.h>
 #include <ofos.h>
 

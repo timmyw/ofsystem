@@ -22,7 +22,11 @@
   SOFTWARE.
  */
 
-#ifndef CAS_H
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
+#if !defined(CAS_H)
 #define CAS_H
 
 #if defined(OFOPSYS_WIN32)
