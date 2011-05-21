@@ -121,6 +121,8 @@
 #include <ofvariant.h>
 #include <ofvalue.h>
 
+#include <ofcommandarg.h>
+
 using namespace std;
 
 #endif // #if !defined(_OF_SYS_H_)
