@@ -40,3 +40,24 @@ bool SRVIDENTITY::isNull() const
 {
     return m_id == NullSrvID.m_id;
 }
+
+
+void readFromBlob(SRVIDENTITYLIST* list, StorageBlob* b)
+{
+    ofuint32 c = b->readInt32 ();
+    list->reserve (c);
+    for(; c; c--) {
+        SRVIDENTITY* i = new SRVIDENTITY;
+        b->readServerIdentity (i);
+        list->push_back (i);
+    }
+}
+
+
+void dumpToBlob(SRVIDENTITYLIST* list, StorageBlob* b)
+{
+    assert(list);
+    b->writeInt32( list->size() );
+    for ( SRVIDENTITYLIST::iterator i = list->begin(); i != list->end(); i++ )
+        b->writeServerIdentity( *i );
+}
