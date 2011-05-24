@@ -107,6 +107,7 @@
 
 #include <oflogservice.h>
 #include <offile.h>
+#include <ofdirent.h>
 #include <ofos.h>
 #include <ofplatform.h>
 #include <ofidentity.h>
