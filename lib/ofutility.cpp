@@ -1812,6 +1812,96 @@ OFUtility::undumpNewStr( const char **data, char **str )
     *data = pos + len;
 }
 
+void OFUtility::dumpuint16( OFFile *file, ofuint16 ho )
+{
+    unsigned short no = htons( ho );
+    file->write( &no, sizeof( no ) );
+}
+
+void OFUtility::dumpuint32( OFFile *file, ofuint32 ho )
+{
+	unsigned long no = htonl( ho );
+	file->write( &no, sizeof( no ) );
+}
+
+void OFUtility::dumpuint64( OFFile *file, ofuint64 ho )
+{
+    unsigned long no = htonl( ho & 0xffffffff );
+    file->write( &no, sizeof( no ) );
+    no = htonl( ho >> 32 );
+    file->write( &no, sizeof( no ) );
+}
+
+void OFUtility::undumpuint32( OFFile *file, ofuint32 *ho )
+{
+    unsigned long no;
+    file->read( &no, sizeof( no ) );
+    *ho = ntohl( no );
+}
+
+void OFUtility::dumpuint16( char **data, ofuint16 ho )
+{
+    ofuint16 no = htons( ho );
+    ofuint16 *temp = (ofuint16*)*data;
+    *temp = no;
+    *data += sizeof(no);
+}
+
+void OFUtility::dumpuint32( char **data, ofuint32 ho )
+{
+    ofuint32 no = htonl( ho );
+    ofuint32 *temp = (ofuint32*)*data;
+    *temp = no;
+    *data += sizeof(no);
+}
+
+void OFUtility::dumpuint64( char **data, ofuint64 ho )
+{
+    unsigned long no = htonl( ho & 0xffffffff );
+    ofuint32 *temp = (ofuint32*)*data;
+    *temp = no;
+    *data += sizeof(no);
+    no = htonl( ho >> 32 );
+    temp = (ofuint32*)*data;
+    *temp = no;
+    *data += sizeof(no);
+}
+
+void OFUtility::undumpuint32( const char **data, ofuint32 *ho )
+{
+    ofuint32 no = *(ofuint32*)*data;
+    *ho = ntohl( no );
+    *data += sizeof( no );
+}
+
+void OFUtility::dumpint32( OFFile *file, ofint32 ho )
+{
+    ofint32 no = htonl( ho );
+    file->write( &no, sizeof( no ) );
+}
+
+void OFUtility::undumpint32( OFFile *file, ofint32 *ho )
+{
+    ofint32 no;
+    file->read( &no, sizeof( no ) );
+    *ho = ntohl( no );
+}
+
+void OFUtility::dumpint32( char **data, ofint32 ho )
+{
+    ofint32 no = htonl( ho );
+    ofint32 *temp = (ofint32*)*data;
+    *temp = no;
+    *data += sizeof(no);
+}
+
+void OFUtility::undumpint32( const char **data, ofint32 *ho )
+{
+    ofint32 no = *(ofint32*)*data;
+    *ho = ntohl( no );
+    *data += sizeof( no );
+}
+
 // HexBinary Conversion
 void
 OFUtility::convertToHexBinary( const char *data, ofuint32 buflen, char *output )

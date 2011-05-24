@@ -727,6 +727,4 @@ class OFSYS_API OFUtility
 
 };
 
-OFSYS_API const char* getSourceBranch();
-
 #endif // #if !defined(_OF_UTILITY_H_)

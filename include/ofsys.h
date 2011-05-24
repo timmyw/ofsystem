@@ -108,6 +108,7 @@
 #include <oflogservice.h>
 #include <offile.h>
 #include <ofos.h>
+#include <ofplatform.h>
 #include <ofidentity.h>
 #include <srvidentity.h>
 #include <ofutility.h>
