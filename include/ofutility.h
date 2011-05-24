@@ -474,6 +474,8 @@ class OFSYS_API OFUtility
     
     /** convert string to a double, returns 0.0 if failed */
     static double toDouble(const std::string& theValue);
+
+    static void to_bin (ofuint32 src, char* out);
     
     /** convert from URL format to plain ascii. 
 

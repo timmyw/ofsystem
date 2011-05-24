@@ -1716,6 +1716,18 @@ OFUtility::toRelativePath( const char *fromPath, const char *toPath, char **relP
     return *relPath;        
 }
 
+void OFUtility::to_bin (ofuint32 src, char* out)
+{
+        ofuint32 j = 1<<31;
+        char* pos = out;
+        for (ofuint32 i = 32; i; i--)
+        {
+                *pos++ = (src&j)?'1':'0';
+                j /= 2;
+        }
+        *pos = 0;
+}
+
 void 
 OFUtility::dumpId( OFFile *file, const OFIDENTITY *id )
 {
