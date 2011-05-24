@@ -132,4 +132,12 @@ typedef vector<SRVIDENTITY*> SRVIDENTITYLIST;
 typedef SRVIDENTITYLIST::iterator SRVIDENTITYIterator;
 typedef SRVIDENTITYLIST::const_iterator SRVIDENTITYIteratorC;
 
+/** Dump a SRVIDENTITYLIST to the supplied StorageBlobBuffer.
+ */
+void OFSYS_API dumpToBlob( SRVIDENTITYLIST* list, StorageBlob* b );
+
+/** Read a SRVIDENTITYLIST from a StorageBlobBuffer
+ */
+void OFSYS_API readFromBlob( SRVIDENTITYLIST* list, StorageBlob * b );
+
 #endif // #if !defined(_SRVIDENTITY_H_)

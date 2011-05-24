@@ -124,6 +124,9 @@
 
 #include <ofcommandarg.h>
 
+#include <ofmutex.h>
+#include <oflockguard.h>
+
 using namespace std;
 
 #endif // #if !defined(_OF_SYS_H_)

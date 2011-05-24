@@ -23,8 +23,6 @@
 */
 
 #include <ofsys.h>
-#include <oflogservice.h>
-#include <ofos.h>
 
 #if !defined(OFOPSYS_WIN32)
 #include <syslog.h>
