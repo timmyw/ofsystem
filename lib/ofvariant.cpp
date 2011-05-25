@@ -1698,5 +1698,60 @@ void OFVariant::dumpBinary( OFVariant *bin )
     delete [] hex;
 }
 
+ofuint32
+variantMakeList( OFVariant *vnt, const char *data, ofuint32 variantType /* = OFVariant::typeString */ )
+{
+    ofuint32 count = 0;
+    vnt->makeList( false );
+
+    // Make a copy of the data, cos we're going to muck with it.
+    char *tlist = new char[OFOS::strlen( data ) + 1];
+    OFOS::strcpy( tlist, data );
+
+    if ( OFOS::strstr( tlist, "<<" ) && OFOS::strstr( tlist, ">>" ) )
+    {
+        const char *pos = OFOS::strstr( tlist, "<<" ) + 2;
+        *((char*)(OFOS::strstr(tlist, ">>"))) = 0;
+        ofuint32 toklen = OFOS::strlen( pos );
+        char *token = new char[toklen + 1];
+        ofuint32 start = 0;
+        while ( OFUtility::str_token2( pos, ",", "\"\"", &start, token, toklen, 1 ) )
+        {
+            OFVariant *listElem = new OFVariant( token );
+            listElem->convert( variantType );
+            vnt->listAdd( listElem );
+        }
+        delete [] token;
+    }
+    delete [] tlist;
+    return count;
+}
+
 #if defined(UNIT_TEST)
+#include <UnitTest.h>
+
+int
+main( int c, char *v[] )
+{
+    UT_BATCH_START( "variant" );
+
+    UT_TEST_START( 1, "make list" );
+//     char *data1 = "<< Hello, World, how are, you, doing >>";
+    char *data1 = "<< \"  Hello   \"  , World, how are, you, doing >>";
+    OFVariant vnt1;
+
+    variantMakeList( &vnt1, data1 );
+    cout << "Data: [" << data1 << "]" << endl;
+    cout << "List:" << vnt1.cv_pcstr() << endl;
+    UT_EVAL_EXPR( 1, "make list", vnt1.listSize() == 5 );
+    cout << "Elem1: [" << vnt1.listRetrieve( 1 )->cv_pcstr() << "]" << endl;
+    UT_EVAL_EXPR( 1, "make list", !OFOS::strcmp( vnt1.listRetrieve( 1 )->cv_pcstr(), "  Hello   " ) );
+
+    UT_TEST_END( 1 );
+
+    UT_BATCH_END( "variant" );
+    
+    return 0;
+}
+
 #endif
