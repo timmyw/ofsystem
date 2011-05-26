@@ -41,8 +41,7 @@ bool SRVIDENTITY::isNull() const
     return m_id == NullSrvID.m_id;
 }
 
-
-void readFromBlob(SRVIDENTITYLIST* list, StorageBlob* b)
+void readFromBlob( SRVIDENTITYLIST* list, StorageBlob* b )
 {
     ofuint32 c = b->readInt32 ();
     list->reserve (c);
@@ -52,7 +51,6 @@ void readFromBlob(SRVIDENTITYLIST* list, StorageBlob* b)
         list->push_back (i);
     }
 }
-
 
 void dumpToBlob(SRVIDENTITYLIST* list, StorageBlob* b)
 {

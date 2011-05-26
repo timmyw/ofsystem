@@ -210,6 +210,9 @@ OFSYS_API void listAdd(vector<OFIDENTITY>& roles, OFIDENTITY& role);
  */
 OFSYS_API ofuint32 OFIDENTITYLISTfromCSLIST(const char* cslist, OFIDENTITYLIST* idlist);
 
+class OFFile;
+class StorageBlob;
+
 /** Write the specified identity to file.
     Assumes the file has already been opened with the appropriate permissions.
 */
@@ -230,5 +233,9 @@ void OFSYS_API dumpToBlob( OFIDENTITYLIST *list, StorageBlob *b );
 /** Read an OFIDENTITYLIST from the supplied StorageBlobBuffer.
  */
 void OFSYS_API readFromBlob( OFIDENTITYLIST *list, StorageBlob *b );
+
+/** Dump an OFIDENTITYLIST to the supplied StorageBlobBuffer.
+ */
+void OFSYS_API dumpToBlob( OFIDENTITYLIST *list, StorageBlob *b );
 
 #endif // #if !defined(_OF_IDENTITY_H_)

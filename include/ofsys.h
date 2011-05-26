@@ -99,6 +99,7 @@
 #include <oflimits.h>
 #include <ofdefines.h>
 #include <oferr.h>
+#include <ofconstants.h>
 
 #include <cas.h>
 #include <ofaddress.h>
@@ -127,6 +128,10 @@
 
 #include <ofmutex.h>
 #include <oflockguard.h>
+#include <oftss.h>
+#include <ofcondvar.h>
+#include <ofthrmgr.h>
+#include <ofdll.h>
 
 using namespace std;
 

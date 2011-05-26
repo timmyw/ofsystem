@@ -532,4 +532,6 @@ typedef auto_ptr<OFVariant> OFVariantGuard;
 
 OFSYS_API ofint32 arithOpResultType( ofint32 type1, ofint32 type2 );
 
+ofuint32 OFSYS_API variantMakeList( OFVariant *vnt, const char *data, ofuint32 variantType = typeString );
+
 #endif // #if !defined( OF_VARIANT_H_)

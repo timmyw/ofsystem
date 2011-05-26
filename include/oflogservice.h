@@ -69,6 +69,10 @@ class OFSYS_API OFLogService
     */
     static void debugLine(const char* format, ...);
 
+    /** Write a line to stdout
+     */
+    static void dumpLine(const char* format, ...);
+
     //@}
 
     /** \name Helper methods
