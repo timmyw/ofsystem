@@ -1327,6 +1327,13 @@ void OFUtility::hexStringToData(const std::string& hexString, unsigned char*& da
     }
 }
 
+ofuint32 OFUtility::calculateHexBinarySize( const char *data, ofuint32 buflen /* = 0 */ )
+{
+    if ( !buflen )
+        buflen = ofstrlen( data );
+    return ( buflen * 2 + 1);
+}
+
 OFINLINE std::string OFUtility::toString(ofint16 theValue)
 {
     char buffer[32];
