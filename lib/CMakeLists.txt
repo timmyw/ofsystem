@@ -27,6 +27,7 @@ set (srcs
   oferr.cpp
   ofvariant.cpp
   ofcommandarg.cpp
+  ofconstants.cpp
   )
 
 if (!WIN32)
