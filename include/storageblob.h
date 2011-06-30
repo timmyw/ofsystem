@@ -22,7 +22,11 @@
   SOFTWARE.
  */
 
-#ifndef _STORAGEBLOB_H
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
+#if !defined(_STORAGEBLOB_H)
 #define _STORAGEBLOB_H
 
 #include <ofsys.h>

@@ -25,6 +25,9 @@ set (srcs
   offlags.cpp
   srvidentity.cpp
   oferr.cpp
+  ofvariant.cpp
+  ofcommandarg.cpp
+  ofconstants.cpp
   )
 
 if (!WIN32)
@@ -37,3 +40,6 @@ add_custom_command(OUTPUT offlags.cpp
 )
 
 addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "${LIBS}")
+
+FILE(GLOB incfiles "${BD}/include/*.[hi]")
+install(FILES ${incfiles} DESTINATION ${incdir})

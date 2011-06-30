@@ -22,11 +22,16 @@
   SOFTWARE.
  */
 
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
 #if !defined(_OF_IDENTITY_H_)
 #define _OF_IDENTITY_H_
 
 #include <ofsys.h>
-#include <ofos.h>
+
+class StorageBlob;
 
 #if defined(OFOPSYS_WIN32)
 #if defined(_MSC_VER) && (_MSC_VER<1300)
@@ -165,7 +170,7 @@ struct OFSYS_API OFIDENTITY
     static const OFIDENTITY ThisID;
 
     //@}
-    //friend OFCOMBO_API int operator ==( const OFIDENTITY &lhs, const OFIDENTITY &rhs);
+    //friend OFSYS_API int operator ==( const OFIDENTITY &lhs, const OFIDENTITY &rhs);
 };
 
 #include <ofidentity.i>
@@ -206,5 +211,33 @@ OFSYS_API void listAdd(vector<OFIDENTITY>& roles, OFIDENTITY& role);
 /** Convert a comma separated list to a list of identities
  */
 OFSYS_API ofuint32 OFIDENTITYLISTfromCSLIST(const char* cslist, OFIDENTITYLIST* idlist);
+
+class OFFile;
+class StorageBlob;
+
+/** Write the specified identity to file.
+    Assumes the file has already been opened with the appropriate permissions.
+*/
+void OFSYS_API writeIdentityToFile( OFFile *file, const char *id );
+
+/** Reads an identity from the specified file.
+ */
+void OFSYS_API readIdentityFromFile( OFFile *file, char *id );
+
+/** Find the specified OFIDENTITY in the list
+ */
+char OFSYS_API findIdentity( OFIDENTITYLIST *list, OFIDENTITY *id );
+
+/** Dump an OFIDENTITYLIST to the supplied StorageBlobBuffer.
+ */
+void OFSYS_API dumpToBlob( OFIDENTITYLIST *list, StorageBlob *b );
+
+/** Read an OFIDENTITYLIST from the supplied StorageBlobBuffer.
+ */
+void OFSYS_API readFromBlob( OFIDENTITYLIST *list, StorageBlob *b );
+
+/** Dump an OFIDENTITYLIST to the supplied StorageBlobBuffer.
+ */
+void OFSYS_API dumpToBlob( OFIDENTITYLIST *list, StorageBlob *b );
 
 #endif // #if !defined(_OF_IDENTITY_H_)

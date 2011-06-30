@@ -1,0 +1,5 @@
+function(getsysvar outputvar cmd arg)
+  EXECUTE_PROCESS(COMMAND ${cmd} ${arg} OUTPUT_VARIABLE out)
+  STRING(REGEX REPLACE "\n" "" out "${out}") 
+  SET(${outputvar} ${out} PARENT_SCOPE)
+endfunction(getsysvar)

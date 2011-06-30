@@ -23,8 +23,6 @@
 */
 
 #include <ofsys.h>
-#include <oflogservice.h>
-#include <ofos.h>
 
 #if !defined(OFOPSYS_WIN32)
 #include <syslog.h>
@@ -40,6 +38,23 @@ string OFLogService::m_appName = "ofsystem";
 #if defined(OFOPSYS_WIN32)
 OFMutex OFLogService::m_mutexFile;
 #endif // OFOPSYS_WIN32
+
+void OFLogService::dumpLine(const char* format, ...)
+{
+    va_list arglist;
+    va_start( arglist, format );
+    char line[OF_LOG_LINE_LENGTH+10];
+#if defined(OFOPSYS_WIN32)
+    ::_vsnprintf
+#else
+        ::vsnprintf
+#endif
+        ( line, OF_LOG_LINE_LENGTH - 3, format, arglist );
+
+    va_end( arglist );
+
+    cout << line << endl;
+}
 
 void OFLogService::writeLine(const char* format, ...)
 {

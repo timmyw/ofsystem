@@ -20,14 +20,13 @@
   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
-*/
+ */
 
-#if !defined(_OTHER_UTIL_H_)
-#define _OTHER_UTIL_H_
+#include <ofsys.h>
 
-/* template<class T> T reversebits( T in ); */
-/* template<class T> void printbin( T x ); */
+/* static */
+const ofuint32 OFConstant::lenCRLF = OFOS::strlen( "\r\n" );
 
-#include <ofsys/otherutil.i>
+/* static */
+const ofuint32 OFConstant::lenCR = OFOS::strlen( "\n" );
 
-#endif // _OTHER_UTIL_H_

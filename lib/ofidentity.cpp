@@ -22,9 +22,9 @@
   SOFTWARE.
  */
 
+#include <ofsys.h>
 #include <ofidentity.h>
 #include <ofutility.h>
-#include <ofos.h>
 #include <iomanip>
 
 const OFIDENTITY OFIDENTITY::NullID( 0, 0, 0x0);
@@ -45,8 +45,8 @@ ostream &
 operator << ( ostream &s, const OFIDENTITY &id )
 {
     return s << hex << setfill('0') << setw(4) << id.m_flags << setw(16) 
-         << (ofuint64)id.m_id0 << setw(16)
-         << (ofint64)id.m_id1 << dec;
+         << id.m_id0 << setw(16)
+         << id.m_id1 << dec;
 }
 
 bool
@@ -226,6 +226,70 @@ ofuint32 OFIDENTITYLISTfromCSLIST(const char* cslist, OFIDENTITYLIST* idlist)
         delete[] (*i);
     }
     return idlist->size();
+}
+
+void
+readIdentityFromFile( OFFile *file, char *id )
+{
+        if (file->isOpen ())
+        {
+                RESETSTRING (id);
+                int chunk;
+                for (ofuint32 x = 0; x < OF_MAX_SRV_ID_LEN; x++)
+                {
+                        file->read (&chunk, sizeof (chunk));
+                        char temp[12];
+                        OFOS::snprintf (temp, 11, "%c", (char)(chunk+48));
+                        OFOS::strcat (id, temp);
+                }
+        }
+}
+
+void
+writeIdentityToFile( OFFile *file, const char *id )
+{ 
+        if ( file->isOpen( ) )
+        {
+                for ( ofuint32 x = 0; x < OF_MAX_SRV_ID_LEN; x ++ )
+                { 
+                        int chunk = *(id+x) - 48;
+                        file->write( &chunk, sizeof( chunk ) );
+                }
+        }
+}
+
+char
+findIdentity( OFIDENTITYLIST *list, OFIDENTITY *id )
+{
+    OFIDENTITYLIST::iterator i = list->begin();
+    char found = 0;
+    for ( ; !found && i != list->end(); i++ )
+        if ( *id == *(*i) )
+            found = 1;
+    return found;
+}
+
+void
+dumpToBlob( OFIDENTITYLIST *list, StorageBlob *b )
+{
+    assert( list );
+    b->writeInt32( list->size() );
+    for ( OFIDENTITYLIST::iterator i = list->begin(); i != list->end(); i++ )
+    {
+        b->writeIdentity( *i );
+    }
+}
+
+void readFromBlob( OFIDENTITYLIST *list, StorageBlob *b )
+{
+    ofuint32 count = b->readInt32( );
+    list->reserve( count );
+    for ( ; count; count-- )
+    {
+        OFIDENTITY *id = new OFIDENTITY;
+        b->readIdentity( id );
+        list->push_back( id );
+    }
 }
 
 #if defined(UNIT_TEST)

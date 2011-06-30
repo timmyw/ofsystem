@@ -25,6 +25,8 @@
 #if !defined(_OF_SYS_H_)
 #define _OF_SYS_H_
 
+#define _OFSYS_H_INCLUDED_
+
 #include "platform.h"
 
 #if defined(OFOPSYS_WIN32)
@@ -97,8 +99,39 @@
 #include <oflimits.h>
 #include <ofdefines.h>
 #include <oferr.h>
+#include <ofconstants.h>
 
 #include <cas.h>
+#include <ofaddress.h>
+#include <ofsocket.h>
+#include <ofconfig.h>
+
+#include <oflogservice.h>
+#include <offile.h>
+#include <ofdirent.h>
+#include <ofos.h>
+#include <ofplatform.h>
+#include <ofidentity.h>
+#include <srvidentity.h>
+#include <ofutility.h>
+#include <ofdatetime.h>
+
+#include <buffers.h>
+#include <storageblob.h>
+#include <storageblobbuffer.h>
+#include <storageblobbuffered.h>
+
+#include <ofvariant.h>
+#include <ofvalue.h>
+
+#include <ofcommandarg.h>
+
+#include <ofmutex.h>
+#include <oflockguard.h>
+#include <oftss.h>
+#include <ofcondvar.h>
+#include <ofthrmgr.h>
+#include <ofdll.h>
 
 using namespace std;
 

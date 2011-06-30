@@ -22,9 +22,17 @@
   SOFTWARE.
 */
 
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
 #if !defined(_OFTYPES_H_)
 #define _OFTYPES_H_
 
+#include <vector>
+#include <map>
+#include <string>
+using namespace std;
 
 typedef short ofint16;
 typedef unsigned short ofuint16;
@@ -85,7 +93,8 @@ typedef OF_THR_RETTYPE (OF_THREADAPI *OF_THR_FUNC)(void *);
 /** \typedef OFCHARSTARLIST ofsys.h
     Typedef for a vector of char * pointers.
 */
-typedef std::vector<char *> OFCHARSTARLIST;
+
+typedef vector<char *> OFCHARSTARLIST;
 
 typedef OFCHARSTARLIST::iterator OFCHARSTARIterator;
 typedef OFCHARSTARLIST::const_iterator OFCHARSTARIteratorC;
@@ -93,7 +102,7 @@ typedef OFCHARSTARLIST::const_iterator OFCHARSTARIteratorC;
 /** \typedef STRINGMAP ofsys.h
     Map of two strings
 */
-typedef std::map<std::string,std::string> STRINGMAP;
+typedef map<string, string> STRINGMAP;
 
 #if defined(OFOPSYS_WIN32)
 #define bcopy(src,dest,n) \

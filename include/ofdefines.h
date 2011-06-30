@@ -22,6 +22,10 @@
   SOFTWARE.
 */
 
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
 #if !defined(_OF_DEFINES_H_)
 #define _OF_DEFINES_H_
 

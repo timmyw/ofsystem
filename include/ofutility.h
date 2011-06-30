@@ -22,10 +22,14 @@
   SOFTWARE.
 */
 
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
 #if !defined(_OF_UTILITY_H_)
 #define _OF_UTILITY_H_
 
-#include <ofos.h>
+#include <ofidentity.h>
 
 /** \file ofutility.h
     Contains the declaration of the OFUtility class.
@@ -172,7 +176,7 @@ class OFSYS_API OFUtility
         handle, but dynamically allocates the memory required for the
         line.  \warning It is the caller's responsibility to destroy
         the buffer. It is allocated with new[].
-     */
+    */
     static bool readLine2(OFOS::of_handle_t fd, char** line);
 
     /** Read the specified line from the supplied file name.
@@ -470,6 +474,8 @@ class OFSYS_API OFUtility
     
     /** convert string to a double, returns 0.0 if failed */
     static double toDouble(const std::string& theValue);
+
+    static void to_bin (ofuint32 src, char* out);
     
     /** convert from URL format to plain ascii. 
 
@@ -552,8 +558,175 @@ class OFSYS_API OFUtility
     static char toUpper( const char ch );
 
     //@}
-};
 
-OFSYS_API const char* getSourceBranch();
+    /** \name Dumping and undump methods
+     */
+    //@{
+
+    /** Dumps the supplied OFIDENTITY to file.
+        Dumps the length first, and then the data.
+    */
+    static void dumpId( OFFile *file, const OFIDENTITY *id );
+
+    /** Dump the supplied OFIDENTITY to the existing buffer.
+     */
+    static void dumpId( char **data, const OFIDENTITY *id );
+
+    /** Undumps the OFIDENTITY from file.
+     */
+    static void undumpId( OFFile *file, OFIDENTITY *id );
+
+    /** Undumps the identity (OFIDENTITY) from the buffer.
+        The buffer pointer is updated to point to just after the identity data.
+        \param data A pointer to the buffer pointer.
+        \param id A pointer to the identity.
+    */
+    static void undumpId( const char **data, OFIDENTITY *id );
+
+    /** Dumps the null-terminated string to file.
+        Writes out the string length first and then the data.
+    */
+    static void dumpStr( OFFile *file, const char *str );
+
+    /** Dump the supplied null-terminated string to the supplied buffer.
+     */
+    static void dumpStr( char **data, const char *str );
+
+    /** Undumps the null-terminated string from file.
+     */
+    static void undumpStr( OFFile *file, char *str );
+
+    /** Undump the string from the data buffer.
+        The data buffer is updated to point to just after the string.
+        \param data A pointer to the data buffer pointer.
+        \param str A pointer to the string buffer. No checking is done on the
+        size of this buffer.
+    */
+    static void undumpStr( const char **data, char *str );
+
+    /** Undump a new string from the data buffer.
+        The data buffer is updated to point to just after the string.
+        The length of the string is read in, and the string is allocated by
+        this method.
+        \param data A pointer to the data buffer pointer.
+        \param str A pointer to the string buffer. No checking is done on the
+        size of this buffer.
+    */
+    static void undumpNewStr( const char **data, char **str );
+
+    /** Dump a short to file in network order.
+        \param file A pointer to an already open file.
+        \param ho An ofuint16 in network order.
+    */
+    static void dumpuint16( OFFile *file, ofuint16 ho );
+
+    /** Dump a short to the supplied buffer.
+        The short data is converted to host order before it's written.
+        \param buffer A pointer to the char * buffer. Updated to point to just
+        after the short's data.
+        \param ho An unsigned short containing the short value.
+    */
+    static void dumpuint16( char **data, ofuint16 ho );
+
+    /** Dump a long to file in network order.
+        \param file A pointer to an already open file.
+        \param ho An ofuint32 in network order.
+    */
+    static void dumpuint32( OFFile *file, ofuint32 ho );
+
+    /** Dump a long to the supplied buffer.
+        The long data is converted to host order before it's written.
+        \param buffer A pointer to the char * buffer. Updated to point to just
+        after the long's data.
+        \param ho An unsigned long containing the long value.
+    */
+    static void dumpuint32( char **data, ofuint32 ho );
+
+    /** Dump a long long to file in network order.
+        \param file A pointer to an already open file.
+        \param ho An ofuint64 in network order.
+    */
+    static void dumpuint64( OFFile *file, ofuint64 ho );
+
+    /** Dump a long long to the supplied buffer.
+        The long data is converted to host order before it's written.
+        \param buffer A pointer to the char * buffer. Updated to point to just
+        after the long's data.
+        \param ho An unsigned long long containing the long value.
+    */
+    static void dumpuint64( char **data, ofuint64 ho );
+
+    /** Undump a long from file.
+        The long value read in from the file is converted to host order.
+        \param file A pointer to an already open file.
+        \param ho A pointer to an ofuint32 which will contain the long value.
+    */
+    static void undumpuint32( OFFile *file, ofuint32 *ho );
+
+    /** Undump a long from the supplied buffer.
+        Performs conversion to host order.
+    */
+    static void undumpuint32( const char **data, ofuint32 *ho );
+
+    /** Dump a long to file in network order.
+        \param file A pointer to an already open file.
+        \param ho An ofuint32 in network order.
+    */
+    static void dumpint32( OFFile *file, ofint32 ho );
+
+    /** Dump a long to the supplied buffer.
+        The long data is converted to host order before it's written.
+        \param buffer A pointer to the char * buffer. Updated to point to just
+        after the long's data.
+        \param ho An unsigned long containing the long value.
+    */
+    static void dumpint32( char **data, ofint32 ho );
+
+    /** Undump a long from file.
+        The long value read in from the file is converted to host order.
+        \param file A pointer to an already open file.
+        \param ho A pointer to an ofuint32 which will contain the long value.
+    */
+    static void undumpint32( OFFile *file, ofint32 *ho );
+
+    /** Undump a long from the supplied buffer.
+        Performs conversion to host order.
+    */
+    static void undumpint32( const char **data, ofint32 *ho );
+
+    //@}
+
+    /** \name HexBinary methods
+     */
+    //@{
+
+    /** Calculates the size of the buffer required to represent the data in hexBinary.
+        \param data A pointer to the data cast to const char *. If the \c buflen
+        parameter is non-zero, this parameter can be OFNULL.
+        \param buflen The length of the data. If zero, the \c data parameter is assumed
+        to point to a null-terminated string, and the length calculated from that.
+        \return An ofuint32 containing the size of the required buffer.
+    */
+    static ofuint32 calculateHexBinarySize( const char *data, ofuint32 buflen = 0 );
+        
+    /** convert to hex binary
+        \param data A pointer to the data to be converted. This is cast to a const char *.
+        \param buflen An ofuint32 containing the length of the supplied data.
+        \param output A pointer to an already allocated buffer.  This buffer must be twice the 
+        size of the supplied data
+    */
+    static void convertToHexBinary( const char *data, ofuint32 buflen, char *output );
+    
+    /** convert back from hex binary
+        \param data A pointer to the data to be converted. This is cast to a const char *.
+        \param buflen An ofuint32 containing the length of the supplied data.
+        \param output A pointer to an already allocated buffer.  This buffer must be at least 1/2
+        the length of the supplied data (rounded up to the nearest single byte)
+        \return length of decoded data returned in output
+    */
+    static ofuint32 convertFromHexBinary( const char *data, ofuint32 buflen, char *output );
+    //@}
+
+};
 
 #endif // #if !defined(_OF_UTILITY_H_)

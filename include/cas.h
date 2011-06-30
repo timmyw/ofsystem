@@ -22,17 +22,19 @@
   SOFTWARE.
  */
 
-#ifndef CAS_H
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
+#if !defined(CAS_H)
 #define CAS_H
 
 #if defined(OFOPSYS_WIN32)
 
-inline
-int
-compare_and_swap_int( volatile ofuint32 *loc, // Destination
-					  ofuint32 oldV, // Comperand
-					  ofuint32 newV // Exchange
-					  )
+inline int compare_and_swap_int(volatile ofuint32 *loc, // Destination
+                                ofuint32 oldV, // Comperand
+                                ofuint32 newV // Exchange
+                                )
 {
 	volatile long *locX = (long *)loc;
 	ofuint32 ret = InterlockedCompareExchange( locX, newV, oldV );
@@ -147,18 +149,18 @@ inline int compare_and_swap_pointer(volatile ofuint32* ptr,
 #else // OFOPSYS_SOLARIS
 #define compare_and_swap_int(a,b,c) \
 ({ \
-   volatile ofuint32 *loc = (a); \
-   ofuint32 oldV = (b); \
-   ofuint32 newV = (c); \
-   unsigned char actV; \
-   asm volatile ( \
-      "  lock ; cmpxchg %1, (%2); setz %0" \
-      : "=A" (actV)  \
-      : "r" (newV), "r" (loc), "a" (oldV) \
-      : "memory" \
-      ); \
-   actV; \
-})
+    volatile ofuint32 *loc = (a);               \
+    ofuint32 oldV = (b);                        \
+    ofuint32 newV = (c);                        \
+    unsigned char actV;                         \
+    asm volatile (                              \
+                  "  lock ; cmpxchg %1, (%2); setz %0"  \
+                  : "=A" (actV)                         \
+                  : "r" (newV), "r" (loc), "a" (oldV)   \
+                  : "memory"                            \
+                                                );      \
+    actV;                                               \
+ })
 
 #define compare_and_swap_address(a,b,c) \
 ({ \

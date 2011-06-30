@@ -1327,6 +1327,13 @@ void OFUtility::hexStringToData(const std::string& hexString, unsigned char*& da
     }
 }
 
+ofuint32 OFUtility::calculateHexBinarySize( const char *data, ofuint32 buflen /* = 0 */ )
+{
+    if ( !buflen )
+        buflen = ofstrlen( data );
+    return ( buflen * 2 + 1);
+}
+
 OFINLINE std::string OFUtility::toString(ofint16 theValue)
 {
     char buffer[32];
@@ -1714,6 +1721,260 @@ OFUtility::toRelativePath( const char *fromPath, const char *toPath, char **relP
     }
 
     return *relPath;        
+}
+
+void OFUtility::to_bin (ofuint32 src, char* out)
+{
+        ofuint32 j = 1<<31;
+        char* pos = out;
+        for (ofuint32 i = 32; i; i--)
+        {
+                *pos++ = (src&j)?'1':'0';
+                j /= 2;
+        }
+        *pos = 0;
+}
+
+void 
+OFUtility::dumpId( OFFile *file, const OFIDENTITY *id )
+{
+    OFUtility::dumpuint16( file, id->m_flags );
+    OFUtility::dumpuint64( file, id->m_id0 );
+    OFUtility::dumpuint64( file, id->m_id1 );
+}
+
+void
+OFUtility::dumpId( char **data, const OFIDENTITY *id )
+{
+    OFUtility::dumpuint16( data, id->m_flags );
+    OFUtility::dumpuint64( data, id->m_id0 );
+    OFUtility::dumpuint64( data, id->m_id1 );
+}
+
+void 
+OFUtility::undumpId( OFFile *file, OFIDENTITY *id )
+{
+    char tempid[128];
+    ofuint32 l;
+    OFUtility::undumpuint32( file, &l );
+    file->read( tempid, l );
+    tempid[l] = 0;
+    *id = tempid;
+}
+
+void
+OFUtility::undumpId( const char **data, OFIDENTITY *id )
+{
+    ofuint32 len = 0;
+    char tempid[128];
+
+    OFUtility::undumpuint32( data, &len );
+
+    ::memcpy( tempid, *data, len );
+    tempid[len] = 0;
+    *data += len;
+
+    *id = tempid;
+}
+
+void 
+OFUtility::dumpStr( OFFile *file, const char *str )
+{
+    ofuint32 l = ofstrlen( str );
+    OFUtility::dumpuint32( file, l );
+    file->write( str, l );
+}
+
+void
+OFUtility::dumpStr( char **data, const char *str )
+{
+    ofint32 l = ofstrlen( str );
+    OFUtility::dumpuint32( data, l );
+    ::memcpy( *data, str, l );
+    *data += l;
+}
+
+void 
+OFUtility::undumpStr( OFFile *file, char *str )
+{
+    ofuint32 l;
+    OFUtility::undumpuint32( file, &l );
+    file->read( str, l );
+    str[l] = 0;
+}
+
+void
+OFUtility::undumpStr( const char **data, char *str )
+{
+    ofint32 l;
+    const char *pos = *data;
+    ::memcpy( &l, pos, sizeof(l) );
+    l = ntohl( l );
+    pos += sizeof(l);
+    ::memcpy( str, pos, l );
+    str[l] = 0;
+    *data = pos + l;
+}
+
+/* static */
+void
+OFUtility::undumpNewStr( const char **data, char **str )
+{
+    ofint32 len;
+    const char *pos = *data;
+    ::memcpy( &len, pos, sizeof(len) );
+    len = ntohl( len );
+    *str = new char[ len + 1 ];
+    pos += sizeof( len );
+    ::memcpy( *str, pos, len );
+    (*str)[ len ] = 0;
+    *data = pos + len;
+}
+
+void OFUtility::dumpuint16( OFFile *file, ofuint16 ho )
+{
+    unsigned short no = htons( ho );
+    file->write( &no, sizeof( no ) );
+}
+
+void OFUtility::dumpuint32( OFFile *file, ofuint32 ho )
+{
+	unsigned long no = htonl( ho );
+	file->write( &no, sizeof( no ) );
+}
+
+void OFUtility::dumpuint64( OFFile *file, ofuint64 ho )
+{
+    unsigned long no = htonl( ho & 0xffffffff );
+    file->write( &no, sizeof( no ) );
+    no = htonl( ho >> 32 );
+    file->write( &no, sizeof( no ) );
+}
+
+void OFUtility::undumpuint32( OFFile *file, ofuint32 *ho )
+{
+    unsigned long no;
+    file->read( &no, sizeof( no ) );
+    *ho = ntohl( no );
+}
+
+void OFUtility::dumpuint16( char **data, ofuint16 ho )
+{
+    ofuint16 no = htons( ho );
+    ofuint16 *temp = (ofuint16*)*data;
+    *temp = no;
+    *data += sizeof(no);
+}
+
+void OFUtility::dumpuint32( char **data, ofuint32 ho )
+{
+    ofuint32 no = htonl( ho );
+    ofuint32 *temp = (ofuint32*)*data;
+    *temp = no;
+    *data += sizeof(no);
+}
+
+void OFUtility::dumpuint64( char **data, ofuint64 ho )
+{
+    unsigned long no = htonl( ho & 0xffffffff );
+    ofuint32 *temp = (ofuint32*)*data;
+    *temp = no;
+    *data += sizeof(no);
+    no = htonl( ho >> 32 );
+    temp = (ofuint32*)*data;
+    *temp = no;
+    *data += sizeof(no);
+}
+
+void OFUtility::undumpuint32( const char **data, ofuint32 *ho )
+{
+    ofuint32 no = *(ofuint32*)*data;
+    *ho = ntohl( no );
+    *data += sizeof( no );
+}
+
+void OFUtility::dumpint32( OFFile *file, ofint32 ho )
+{
+    ofint32 no = htonl( ho );
+    file->write( &no, sizeof( no ) );
+}
+
+void OFUtility::undumpint32( OFFile *file, ofint32 *ho )
+{
+    ofint32 no;
+    file->read( &no, sizeof( no ) );
+    *ho = ntohl( no );
+}
+
+void OFUtility::dumpint32( char **data, ofint32 ho )
+{
+    ofint32 no = htonl( ho );
+    ofint32 *temp = (ofint32*)*data;
+    *temp = no;
+    *data += sizeof(no);
+}
+
+void OFUtility::undumpint32( const char **data, ofint32 *ho )
+{
+    ofint32 no = *(ofint32*)*data;
+    *ho = ntohl( no );
+    *data += sizeof( no );
+}
+
+// HexBinary Conversion
+void
+OFUtility::convertToHexBinary( const char *data, ofuint32 buflen, char *output )
+{
+    char conv[] = "0123456789ABCDEF";
+
+    const char *current = data;
+    const char *finish = data + buflen;
+    
+    while ( current < finish )
+    {
+        // High byte
+        output[0] = conv[ ( current[0] & 0xF0 ) >> 4 ];
+        output++;
+        // Low byte
+        output[0] = conv[ ( current[0] & 0x0F ) ];
+        output++;
+        current++;
+    }
+    *output = 0;
+}
+
+ofuint32
+OFUtility::convertFromHexBinary( const char *data, ofuint32 buflen, char *output )
+{
+    const char *current = data;
+    char *pos = output;
+    unsigned char t;
+    
+    // Check we are not going to write over the end of the buffer.
+    while (*current&&(ofuint32)(pos-output)<(ofuint32)(buflen+4))
+    {
+        t = current[0];
+        if ( t >= 'A' && t <= 'F' )
+            t = t - 'A' + 10;
+        else if ( t >= 'a' && t <='f' )
+            t = t - 'a' + 10;
+        else if ( t >= '0' && t <= '9' )
+            t = t - '0';        
+        pos[0] = t << 4;
+        current++;
+        
+        t = current[0];
+        if ( t >= 'A' && t <= 'F' )
+            t = t - 'A' + 10;
+        else if ( t >= 'a' && t <='f' )
+            t = t - 'a' + 10;
+        else if ( t >= '0' && t <= '9' )
+            t = t - '0'; 
+        pos[0] = pos[0] | t;
+        current++;
+        pos++;
+    }
+    return pos - output;
 }
 
 // //////////////////////////////////////////////////////////////////////////

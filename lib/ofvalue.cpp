@@ -23,6 +23,7 @@
  */
 
 #include <ofsys.h>
+#include <ofvariant.h>
 #include <ofvalue.h>
 #include <ofos.h>
 #include <offlags.h>
@@ -104,15 +105,14 @@ OFVALUE::operator=( const OFVALUE &rhs )
     return *this;
 }
 
-#if defined(HAVE_OFVARIANT)
 void
 OFVALUE::populate( OFVariant *variant )
 {
 //     cout << hex << "THIS:" << (void*)this << dec << endl;
     destroy( );
     OFIDENTITY id;
-    signed char newtype = translateVariantType( variant );
-    switch ( newtype )
+    signed char newtype = translateVariantType(variant);
+    switch (newtype)
     {
     case 0: // special case because the variant had no type.
         if ( variant->isList() && variant->listSize() )
@@ -176,8 +176,7 @@ OFVALUE::populate( OFVariant *variant )
     }
 }
 
-OFVariant *
-OFVALUE::populate( )
+OFVariant* OFVALUE::populate( )
 {
     assert( type );
     OFVariant *vnt = new OFVariant;
@@ -204,7 +203,8 @@ OFVALUE::populate( )
     case typeBinary:
          if ( value.valmem.size != 0 )
          {
-              vnt->assign( (const void *)(((char *)value.valmem.buffer)+REFCOUNTSIZE), value.valmem.size-REFCOUNTSIZE );
+              vnt->assign((const void *)(((char *)value.valmem.buffer)+REFCOUNTSIZE)
+                          , value.valmem.size-REFCOUNTSIZE);
          }
          else
          {
@@ -228,16 +228,13 @@ OFVALUE::populate( )
     }
     return vnt;
 }
-#endif // HAVE_OFVARIANT
 
-const char
-OFVALUE::isList() const
+const char OFVALUE::isList() const
 {
     return ( type & 8 );
 }
 
-void
-OFVALUE::listAllocate( ofuint32 listSize )
+void OFVALUE::listAllocate( ofuint32 listSize )
 {
     value.valmem.size = 0;
     value.valmem.capacity = REFCOUNTSIZE + listSize * sizeof(OFVALUE);
@@ -1051,6 +1048,18 @@ void OFVALUE::translateType(ofint32 type, char *typeName)
         if ( tn )
             OFOS::strcpy( typeName, tn );
     }
+}
+
+signed char translateVariantType(OFVariant *variant)
+{
+    signed char t = variant->type();
+    if (!t)
+        return t;
+    if (t == -1)
+        t = typeIdentity;
+    if (variant->isList())
+        t |= 8;
+    return t;
 }
 
 void OFSYS_API OFVALUEfromOFIDENTITYLIST( OFIDENTITYLIST* src, OFVALUE* dest )

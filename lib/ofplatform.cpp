@@ -849,7 +849,6 @@ OFOS::of_ipv6_t
 OFPlatform::getHostIP(const char* hostname)
 {
     ofuint32 ip = 0;
-    cout << "gethostip:" << hostname << endl;
 
 #if defined(OFOPSYS_WIN32)
     hostent* he = gethostbyname(hostname);
@@ -861,16 +860,17 @@ OFPlatform::getHostIP(const char* hostname)
     struct addrinfo hints;
     struct sockaddr_in sa;
 
-    memset(&hints, 0, sizeof(hints));
+    //memset(&hints, 0, sizeof(hints));
     //hints.ai_flags = AI_CANONNAME;
-    int rc=getaddrinfo(hostname, 0, &hints, &res);
+    //int rc=getaddrinfo(hostname, 0, &hints, &res);
+    int rc=getaddrinfo(hostname, 0, 0, &res);
     if (!rc)
     {
         memcpy(&sa, res[0].ai_addr, sizeof(sa));
         ip = *(ofuint32*)&sa.sin_addr;
         freeaddrinfo(res);
     }
-    
+    else
     {
         cout << "getaddrinfo:" << rc << ":" << retrieveMsg(OFUtility::translateSystemError(rc)) << endl;
     }

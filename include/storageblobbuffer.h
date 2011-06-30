@@ -22,27 +22,27 @@
   SOFTWARE.
  */
 
-#ifndef _STORAGEBLOBBUFFER_H
+#if !defined(_OFSYS_H_INCLUDED_)
+#error "Please do not include this file directly.  Include <ofsys.h>"
+#endif
+
+#if !defined(_STORAGEBLOBBUFFER_H)
 #define _STORAGEBLOBBUFFER_H
 
-#include <srvidentity.h>
-#include <storageblob.h>
+/** \class StorageBlobBuffer storageblob.h
 
-/**
-   \class StorageBlobBuffer storageblob.h
+    Helper class for turning instances into blobs for writing to
+    network and restoring the objects from the blobs.
 
-   Helper class for turning instances into blobs for writing to
-   network and restoring the objects from the blobs.
+    Everything is stored in little end format regardless of the
+    endian-ness of the hardware.
 
-   Everything is stored in little end format regardless of the
-   endian-ness of the hardware.
+    There are no separate sizing functions as the write functions
+    serve as sizing functions if the buffer has overlowed. This allows
+    an data to be written to a fixed buffer (of say 10,000 bytes) and
+    only reprocessed if this is not big enough.
 
-   There are no separate sizing functions as the write functions serve
-   as sizing functions if the buffer has overlowed. This allows an
-   data to be written to a fixed buffer (of say 10,000 bytes) and only
-   reprocessed if this is not big enough.
-
-   If the buffer is flagged it will be freed on destruction.
+    If the buffer is flagged it will be freed on destruction.
 */
 
 class OFSYS_API StorageBlobBuffer : public StorageBlob

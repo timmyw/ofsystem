@@ -20,14 +20,29 @@
   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
-*/
+ */
 
-#if !defined(_OTHER_UTIL_H_)
-#define _OTHER_UTIL_H_
+inline bool OFVariant::isList( ) const
+{
+    return m_subType == VARIANT_LIST;
+}
 
-/* template<class T> T reversebits( T in ); */
-/* template<class T> void printbin( T x ); */
+inline bool OFVariant::isScalar() const
+{
+    return m_subType == VARIANT_SCALAR;
+}
 
-#include <ofsys/otherutil.i>
+inline bool OFVariant::isValid( ) const
+{
+    return ( !m_null && m_buffer && m_type );
+}
 
-#endif // _OTHER_UTIL_H_
+inline ofuint32 OFVariant::activeReference( ) const
+{
+    return m_activeReference;
+}
+
+inline void OFVariant::activeReference( ofuint32 reference )
+{
+    m_activeReference = reference;
+}
