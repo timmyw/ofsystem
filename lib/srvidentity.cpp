@@ -33,7 +33,7 @@ ostream & operator << ( ostream &s, const SRVIDENTITY &id )
 		<< hex 
 		<< setfill('0') 
 		<< setw(16) 
-		<< (ofint64)id.m_id << dec;
+		<< id.m_id << dec;
 }
 
 bool SRVIDENTITY::isNull() const
