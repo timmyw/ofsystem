@@ -18,3 +18,13 @@ Doxyfile
 *.pdb
 Debug
 RelWithDebInfo
+*.sln
+*.suo
+*.sdf
+ALL_BUILD*
+INSTALL.vc*
+ZERO_CHECK*
+*.filters
+*.user
+*.vcxproj
+*.opensdf

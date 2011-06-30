@@ -29,7 +29,9 @@
 #include <ofos.h>
 
 #if defined(OFOPSYS_WIN32)
+#if defined(_MSC_VER) && (_MSC_VER<1300)
 OFSYS_API ostream & operator <<(ostream&s, const ofuint64 &x);
+#endif
 #endif // OFOPSYS_WIN32
 
 /** \struct OFIDENTITY ofidentity.h

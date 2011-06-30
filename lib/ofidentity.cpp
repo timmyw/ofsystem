@@ -31,21 +31,22 @@ const OFIDENTITY OFIDENTITY::NullID( 0, 0, 0x0);
 const OFIDENTITY OFIDENTITY::ThisID( MAKEULL( 0xfffffffffffffffe ), MAKEULL( 0xeeeeeeeeeeeeeeee ), 0xffff );
 
 #if defined(OFOPSYS_WIN32)
-ostream &
-operator << ( ostream &s, const ofuint64 &x )
+#if defined(_MSC_VER) && (_MSC_VER<1300)
+ostream & operator << ( ostream &s, const ofuint64 x )
 {
     ofuint32 hi =  ( x & MAKEULL( 0xffffffff00000000 ) ) >> 32;
     ofuint32 lo = (ofuint32)(x & MAKEULL(0xffffffff));
     return s << hex << setfill('0') << setw(8) << hi << setw(8) << lo << dec;
 }
 #endif
+#endif
 
 ostream &
 operator << ( ostream &s, const OFIDENTITY &id )
 {
     return s << hex << setfill('0') << setw(4) << id.m_flags << setw(16) 
-         << id.m_id0 << setw(16)
-         << id.m_id1 << dec;
+         << (ofuint64)id.m_id0 << setw(16)
+         << (ofint64)id.m_id1 << dec;
 }
 
 bool
