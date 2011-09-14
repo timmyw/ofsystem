@@ -4,7 +4,7 @@ Section: dev
 Priority: optional
 Architecture: all
 Essential: no
-Depends: unixodbc, imagemagick, zlib1g, libc6, libmagick++2, libxml2, libxslt1
+Depends: unixodbc, imagemagick, zlib1g, libc6, libmagick++2, libxml2, libxslt1.1
 Maintainer: Tim Whelan <tim@zipt.co>
 Provides: libofsystem
 Description: Cross-platform low-level libraries.
