@@ -205,9 +205,9 @@ int OFOS::sscanf(const char *str, const char *format, ...)
     va_list arglist;
     va_start(arglist, format);
 #if defined(OFOPSYS_WIN32)
-    int ret = sscanf(str, format, arglist);
+    int ret = ::sscanf(str, format, arglist);
 #else
-    int ret = sscanf(str, format, arglist);
+    int ret = ::sscanf(str, format, arglist);
 #endif
     va_end( arglist );
     return ret;
