@@ -42,7 +42,7 @@ typedef unsigned int ofuint;
 
 #if defined(OFPLATFORM_I386) || defined(OFPLATFORM_PPCMAC) || defined(OFPLATFORM_SPARC)
 typedef long ofint32;
-typedef unsigned long ofuint32;
+typedef unsigned int ofuint32;
 typedef unsigned long ofpointer;
 typedef unsigned long oflong;
 #define LFORMAT "l"
@@ -50,7 +50,7 @@ typedef unsigned long oflong;
 
 #if defined(OFPLATFORM_X86_64)
 typedef int ofint32;
-typedef unsigned ofuint32;
+typedef unsigned int ofuint32;
 typedef unsigned long long ofpointer;
 typedef unsigned long long oflong;
 #define OFLLONG long long
