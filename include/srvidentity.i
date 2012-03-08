@@ -17,9 +17,9 @@ SRVIDENTITY::SRVIDENTITY( const char *value )
 {
     assert( value );
 #if defined(OFOPSYS_WIN32)
-    sscanf( value, "%I64x", &m_id );
+    OFOS::sscanf( value, "%I64x", &m_id );
 #else
-    sscanf( value, "%llx", &m_id );
+    OFOS::sscanf( value, "%llx", &m_id );
 #endif
 }
 
@@ -57,9 +57,9 @@ SRVIDENTITY::operator = ( const char *copy )
 {
     assert( copy );
 #if defined(OFOPSYS_WIN32)
-    sscanf( copy, "%I64x", &m_id );
+    OFOS::sscanf( copy, "%I64x", &m_id );
 #else
-    sscanf( copy, "%llx", &m_id );
+    OFOS::sscanf( copy, "%llx", &m_id );
 #endif
     return *this;
 }
@@ -90,7 +90,7 @@ char *
 SRVIDENTITY::cstr( char *strId ) const
 {
 #if defined(OFOPSYS_WIN32)
-    sprintf( strId, "%016I64x", m_id );
+    OFOS::snprintf(strId, OF_MAX_ID_LEN, "%016I64x", m_id );
 #else
     sprintf( strId, "%016llx", m_id );
 #endif

@@ -199,7 +199,7 @@ class OFSYS_API StorageBlobBuffered : public StorageBlob
 
     /** Get the read position
      */
-    virtual ofuint32 getReadPosition() { return m_readPos; }
+    virtual ofuint64 getReadPosition() { return m_readPos; }
 
 };
 

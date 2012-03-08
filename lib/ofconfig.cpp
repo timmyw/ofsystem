@@ -514,8 +514,8 @@ OFConfigurator::writeCommentForItem( const char *groupName, const char *itemName
     OFConfigItem *item = group->retrieveItem( itemName );
     if ( !item )
         return false;
-    char line[1024];
-    sprintf( line, "#%s", comment );
+    char line[1025];
+    OFOS::snprintf(line, 1024, "#%s", comment );
     item->addComment(line);
     m_dirty = true;
 

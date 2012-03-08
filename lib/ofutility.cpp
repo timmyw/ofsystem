@@ -47,8 +47,8 @@ OFUtility::leftTrimString( char *instr )
         while ( OFOS::strchr( "\n\t\r ", *pos ) && OFOS::strlen( pos ) > 0)
             pos++;
         char *temp = new char[ OFOS::strlen(pos) + 1 ];
-        strcpy( temp, pos );
-        strcpy( instr, temp );
+        OFOS::strcpy( temp, pos );
+        OFOS::strcpy( instr, temp );
         delete [] temp;
     }
 }
@@ -1337,7 +1337,7 @@ ofuint32 OFUtility::calculateHexBinarySize( const char *data, ofuint32 buflen /*
 OFINLINE std::string OFUtility::toString(ofint16 theValue)
 {
     char buffer[32];
-    sprintf(buffer,"%d",theValue);
+    OFOS::snprintf(buffer, 31, "%d",theValue);
     std::string outstring(buffer);
     return outstring;
 }
@@ -1345,7 +1345,7 @@ OFINLINE std::string OFUtility::toString(ofint16 theValue)
 OFINLINE std::string OFUtility::toString(ofint32 theValue)
 {
     char buffer[32];
-    sprintf(buffer,"%"LFORMAT"d",theValue);
+    OFOS::snprintf(buffer, 31, "%"LFORMAT"d",theValue);
     std::string outstring(buffer);
     return outstring;
 }
@@ -1353,7 +1353,7 @@ OFINLINE std::string OFUtility::toString(ofint32 theValue)
 OFINLINE std::string OFUtility::toString(ofuint32 theValue)
 {
     char buffer[32];
-    sprintf(buffer,"%"LFORMAT"u", (ofuint32)theValue);
+    OFOS::snprintf(buffer,31, "%"LFORMAT"u", (ofuint32)theValue);
     std::string outstring(buffer);
     return outstring;
 }
@@ -1361,7 +1361,7 @@ OFINLINE std::string OFUtility::toString(ofuint32 theValue)
 OFINLINE std::string OFUtility::toString(double theValue)
 {
     char buffer[32];
-    sprintf(buffer,"%f",theValue);
+    OFOS::snprintf(buffer,31, "%f",theValue);
     std::string outstring(buffer);
     return outstring;
 }

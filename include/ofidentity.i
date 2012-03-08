@@ -50,14 +50,14 @@ OFIDENTITY::OFIDENTITY( const char *strId ) :
         return;
     char temp[17];
     OFOS::strncpy2( temp, strId, 4 );
-    sscanf( temp, "%x", (int*)&m_flags );
+    OFOS::sscanf( temp, "%x", (int*)&m_flags );
     OFOS::strncpy2( temp, strId+4, 16 );
 #if defined(OFOPSYS_WIN32)
-    sscanf( temp, "%I64x", &m_id0 );
-    sscanf( strId+20, "%I64x", &m_id1 );
+    OFOS::sscanf( temp, "%I64x", &m_id0 );
+    OFOS::sscanf( strId+20, "%I64x", &m_id1 );
 #else
-    sscanf( temp, "%llx", &m_id0 );
-    sscanf( strId+20, "%llx", &m_id1 );
+    OFOS::sscanf( temp, "%llx", &m_id0 );
+    OFOS::sscanf( strId+20, "%llx", &m_id1 );
 #endif
 }
 
@@ -100,19 +100,19 @@ OFIDENTITY::operator =( const char *strId )
     }
     char temp[17];
     OFOS::strncpy2( temp, strId, 4 );
-    sscanf( temp, "%x", (int*)&m_flags );
+    OFOS::sscanf( temp, "%x", (int*)&m_flags );
     OFOS::strncpy2( temp, strId+4, 16 );
 #if defined(OFOPSYS_WIN32)
-    sscanf( temp, "%I64x", &m_id0 );
+    OFOS::sscanf( temp, "%I64x", &m_id0 );
 #else
-    sscanf( temp, "%llx", &m_id0 );
+    OFOS::sscanf( temp, "%llx", &m_id0 );
 #endif
 
     OFOS::strncpy2( temp, strId+20, 16 );
 #if defined(OFOPSYS_WIN32)
-    sscanf( temp, "%I64x", &m_id1 );
+    OFOS::sscanf( temp, "%I64x", &m_id1 );
 #else
-    sscanf( temp, "%llx", &m_id1 );
+    OFOS::sscanf( temp, "%llx", &m_id1 );
 #endif
 
     return *this;
@@ -126,18 +126,18 @@ OFIDENTITY::assign( const char *data, ofuint32 dataLength )
     {
         char temp[17];
         memcpy( temp, data, 4 ); temp[4] = 0;
-        sscanf( temp, "%x", (int*)&m_flags );
+        OFOS::sscanf( temp, "%x", (int*)&m_flags );
         memcpy( temp, data+4, 16 ); temp[16] = 0;
 #if defined(OFOPSYS_WIN32)
-        sscanf( temp, "%I64x", &m_id0 );
+        OFOS::sscanf( temp, "%I64x", &m_id0 );
 #else
-        sscanf( temp, "%llx", &m_id0 );
+        OFOS::sscanf( temp, "%llx", &m_id0 );
 #endif
         memcpy( temp, data+20, 16 ); temp[16] = 0;
 #if defined(OFOPSYS_WIN32)
-        sscanf( temp, "%I64x", &m_id1 );
+        OFOS::sscanf( temp, "%I64x", &m_id1 );
 #else
-        sscanf( temp, "%llx", &m_id1 );
+        OFOS::sscanf( temp, "%llx", &m_id1 );
 #endif
     }
     else
@@ -192,7 +192,7 @@ char *
 OFIDENTITY::cstr( char *id ) const
 {
 #if defined(OFOPSYS_WIN32)
-    sprintf( id, "%04x%016I64x%016I64x", m_flags, m_id0, m_id1 );
+    OFOS::snprintf(id, OF_MAX_ID_LEN, "%04x%016I64x%016I64x", m_flags, m_id0, m_id1 );
 #else
     sprintf( id, "%04x%016llx%016llx", m_flags, m_id0, m_id1 );
 #endif
