@@ -265,7 +265,7 @@ ofint32 OFFile::read_file(OFOS::of_handle_t fd, void *buffer, ofuint32 length)
     ofint32 bytesRead = -1;
   
 #if defined(OFOPSYS_WIN32)
-    ofuint32 actual;
+    oflong actual;
     BOOL ok  = ReadFile(fd, buffer, length, &actual, NULL);
     if (ok)
         bytesRead = actual;
@@ -284,7 +284,7 @@ ofint32 OFFile::read(void *buffer, ofuint32 length)
 ofint32 OFFile::write_file(OFOS::of_handle_t fd, const void * buffer, ofuint32 length )
 {
 #if defined(OFOPSYS_WIN32)
-    ofuint32 actual;
+    oflong actual;
     bool ok = WriteFile(fd, buffer, length, &actual, NULL) != 0;
     if (ok)
         return actual;
@@ -397,7 +397,7 @@ OFFile::handle( OFOS::of_handle_t handle )
     if ( fstat( m_handle, &buf ) == 0 )
         m_open = true;
 #elif defined(OFOPSYS_WIN32)
-    ofuint32 hi;
+    oflong hi;
     if ( GetHandleInformation( m_handle, &hi ) )
         m_open = true;
 #else

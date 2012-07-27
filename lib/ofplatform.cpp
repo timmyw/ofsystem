@@ -250,7 +250,7 @@ OFPlatform::logPath( char * logpath )
         // Try the registry. Ukkkkk!!!!
 
         HKEY hkey;
-        ofuint32 dwDisp;
+        oflong dwDisp;
         if ( RegCreateKeyEx( HKEY_LOCAL_MACHINE, "SOFTWARE\\Suntail.com\\openFabric\\Server", 0, "REG_SZ", 0, KEY_QUERY_VALUE, NULL, &hkey, &dwDisp ) == ERROR_SUCCESS )
         {
                 ofint32 len=MAX_PATH;
@@ -799,7 +799,7 @@ OFPlatform::stopServer_win32 (const char* site, char waitForStop)
                 HANDLE ph = OpenProcess( PROCESS_QUERY_INFORMATION, FALSE, pid );
                 if ( ph )
                 {
-                        ofuint32 exitcode = STILL_ACTIVE;
+                        oflong exitcode = STILL_ACTIVE;
                         while ( exitcode == STILL_ACTIVE )
                         {
                                 Sleep( 100 );
@@ -933,7 +933,8 @@ OFPlatform::doesUserHaveAdminPrivileges()
     {
         // uses the NT help example code function SearchTokenGroupsForSID()
 
-        ofuint32 i, dwSize = 0, dwResult = 0;
+        ofuint32 i, dwResult = 0;
+		oflong dwSize = 0;
         HANDLE hToken;
         PTOKEN_GROUPS pGroupInfo;
         SID_NAME_USE SidType;

@@ -65,7 +65,7 @@ OFThreadManager::waitForThread( OFTHREAD_IDENT *tid )
 {
     ofuint32 ret = 0;
 #if defined(OFOPSYS_WIN32)
-    ofuint32 exitCode = STILL_ACTIVE;
+    oflong exitCode = STILL_ACTIVE;
     while ( exitCode == STILL_ACTIVE )
         GetExitCodeThread( tid->m_tid, &exitCode );
 #elif defined(OFOPSYS_LINUX) || defined(OFOPSYS_SOLARIS) || defined(OFOPSYS_FREEBSD) || defined(OFOPSYS_DARWIN)
