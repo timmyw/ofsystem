@@ -83,7 +83,7 @@ OFSocket::connect( const OFAddress &remote )
     m_open = true;
 
 #if defined(OFOPSYS_WIN32)
-    ofuint32 param = 1;
+    oflong param = 1;
     if (ioctlsocket(m_socket, FIONBIO, &param) == SOCKET_ERROR)
 #else
         ofuint32 param = fcntl(m_socket, F_GETFL);
