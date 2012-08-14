@@ -2,7 +2,7 @@ set(PROJECTNAME ofsystem)
 
 set(BD ${CMAKE_BINARY_DIR})
 
-set(CMAKE_BUILD_TYPE "Debug")
+#set(CMAKE_BUILD_TYPE "Debug")
 #set(CMAKE_BUILD_TYPE "Release")
 
 include(${BD}/config/functions.cmake)
@@ -66,6 +66,17 @@ endif(WIN32)
 
 # Add the definitions for OS and PLATFORM
 add_definitions(-D${BUILD_OS} -D${BUILD_PLATFORM} -D${WORDSIZE} -DOF_${SHAREDSTATIC}_BUILD)
+
+file(WRITE include/platform.i "// Generated Platform/OS defines\n")
+file(APPEND include/platform.i "#if !defined(${BUILD_PLATFORM})\n")
+file(APPEND include/platform.i "#define ${BUILD_PLATFORM}\n")
+file(APPEND include/platform.i "#endif\n")
+file(APPEND include/platform.i "#if !defined(${BUILD_OS})\n")
+file(APPEND include/platform.i "#define ${BUILD_OS}\n")
+file(APPEND include/platform.i "#endif\n")
+file(APPEND include/platform.i "#if !defined(OF_${SHAREDSTATIC}_BUILD)\n")
+file(APPEND include/platform.i "#define OF_${SHAREDSTATIC}_BUILD\n")
+file(APPEND include/platform.i "#endif\n")
 
 # Add debug/ndebug macros
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
