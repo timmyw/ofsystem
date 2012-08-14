@@ -25,6 +25,8 @@
 #if !defined(_PLATFORM_H_)
 #define _PLATFORM_H_
 
+#include "platform.i"
+
 #if defined(_WIN32)
 #if !defined(OFOPSYS_WIN32)
 #define OFOPSYS_WIN32
