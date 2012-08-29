@@ -77,6 +77,9 @@ file(APPEND include/platform.i "#endif\n")
 file(APPEND include/platform.i "#if !defined(OF_${SHAREDSTATIC}_BUILD)\n")
 file(APPEND include/platform.i "#define OF_${SHAREDSTATIC}_BUILD\n")
 file(APPEND include/platform.i "#endif\n")
+file(APPEND include/platform.i "#if !defined(${WORDSIZE})\n")
+file(APPEND include/platform.i "#define ${WORDSIZE}\n")
+file(APPEND include/platform.i "#endif\n")
 
 # Add debug/ndebug macros
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
