@@ -28,3 +28,4 @@ ZERO_CHECK*
 *.user
 *.vcxproj
 *.opensdf
+include/platform.i
