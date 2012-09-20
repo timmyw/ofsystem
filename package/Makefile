@@ -1,4 +1,4 @@
-ver=0.3.2
+ver=0.3.3
 platform=i386
 plat=$(shell uname -m)
 ifeq ($(plat),x86_64)
@@ -15,11 +15,13 @@ deps=debian/DEBIAN/control.master
 
 # Setup distro specific dependencies
 
-ifeq ($(distro), debian)
-	deb_deps=unixodbc, imagemagick, zlib1g, libc6, libmagick++3, libxml2, libxslt1.1
-else	
-	deb_deps=unixodbc, imagemagick, zlib1g, libc6, libmagick++2, libxml2, libxslt1.1
-endif
+deb_deps=libc6
+
+#ifeq ($(distro), debian)
+#	deb_deps=unixodbc, imagemagick, zlib1g, libc6, libmagick++3, libxml2, libxslt1.1
+#else	
+#	deb_deps=unixodbc, imagemagick, zlib1g, libc6, libmagick++2, libxml2, libxslt1.1
+#endif
 
 $(target): $(deps)
 	test -d debian/usr/lib || mkdir -p debian/usr/lib
