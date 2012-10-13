@@ -154,7 +154,7 @@ inline int compare_and_swap_pointer(volatile ofuint32* ptr,
     ofuint32 newV = (c);                        \
     unsigned char actV;                         \
     asm volatile (                              \
-                  "  lock ; cmpxchg %1, (%2); setz %0"  \
+                  "  lock ; cmpxchg %1, (%2); setz %%r8b"  \
                   : "=A" (actV)                         \
                   : "r" (newV), "r" (loc), "a" (oldV)   \
                   : "memory"                            \
