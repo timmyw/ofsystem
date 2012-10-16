@@ -147,20 +147,29 @@ inline int compare_and_swap_pointer(volatile ofuint32* ptr,
     atomic_cas_ptr(a,b,c)
 
 #else // OFOPSYS_SOLARIS
+
+// LINUX
+
+// GCC - check for ver>406
+#if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) > 40100
 #define compare_and_swap_int(a,b,c) \
-({ \
-    volatile ofuint32 *loc = (a);               \
-    ofuint32 oldV = (b);                        \
-    ofuint32 newV = (c);                        \
-    unsigned char actV;                         \
-    asm volatile (                              \
-                  "  lock ; cmpxchg %1, (%2); setz %0"  \
-                  : "=A" (actV)                         \
-                  : "r" (newV), "r" (loc), "a" (oldV)   \
-                  : "memory"                            \
-                                                );      \
-    actV;                                               \
- })
+    __sync_val_compare_and_swap(a, b, c)
+#else
+#define compare_and_swap_int(a,b,c) \
+    ({                                          \
+        volatile ofuint32 *loc = (a);           \
+        ofuint32 oldV = (b);                    \
+        ofuint32 newV = (c);                    \
+        unsigned char actV;                     \
+        asm volatile (                                     \
+                      "  lock ; cmpxchg %1, (%2); setz %%r8b"   \
+                      : "=A" (actV)                             \
+                      : "r" (newV), "r" (loc), "a" (oldV)       \
+                      : "memory"                                \
+                                                           );   \
+        actV;                                                   \
+    })
+#endif
 
 #define compare_and_swap_address(a,b,c) \
 ({ \
