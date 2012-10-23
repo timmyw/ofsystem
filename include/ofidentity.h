@@ -226,18 +226,18 @@ void OFSYS_API readIdentityFromFile( OFFile *file, char *id );
 
 /** Find the specified OFIDENTITY in the list
  */
-char OFSYS_API findIdentity( OFIDENTITYLIST *list, OFIDENTITY *id );
+char OFSYS_API findIdentity( OFIDENTITYLIST *lst, OFIDENTITY *id );
 
 /** Dump an OFIDENTITYLIST to the supplied StorageBlobBuffer.
  */
-void OFSYS_API dumpToBlob( OFIDENTITYLIST *list, StorageBlob *b );
+void OFSYS_API dumpToBlob( OFIDENTITYLIST *lst, StorageBlob *b );
 
 /** Read an OFIDENTITYLIST from the supplied StorageBlobBuffer.
  */
-void OFSYS_API readFromBlob( OFIDENTITYLIST *list, StorageBlob *b );
+void OFSYS_API readFromBlob( OFIDENTITYLIST *lst, StorageBlob *b );
 
 /** Dump an OFIDENTITYLIST to the supplied StorageBlobBuffer.
  */
-void OFSYS_API dumpToBlob( OFIDENTITYLIST *list, StorageBlob *b );
+void OFSYS_API dumpToBlob( OFIDENTITYLIST *lst, StorageBlob *b );
 
 #endif // #if !defined(_OF_IDENTITY_H_)
