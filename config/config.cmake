@@ -54,7 +54,11 @@ ELSE(WIN32)
 
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic -fPIC")
 
-  SET(LIBS ${LIBS} "dl")
+  IF (CLANG)
+    SET(LIBS ${LIBS} "dl pthread")
+  ELSE(CLANG)
+    SET(LIBS ${LIBS} "dl")
+  ENDIF(CLANG)
 ENDIF(WIN32)
 
 # Change this to "SHARED" to create shared libraries
