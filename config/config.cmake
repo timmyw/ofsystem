@@ -58,6 +58,7 @@ ELSE(WIN32)
     SET(LIBS ${LIBS} "dl pthread")
   ELSE(CLANG)
     SET(LIBS ${LIBS} "dl")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
   ENDIF(CLANG)
 ENDIF(WIN32)
 
