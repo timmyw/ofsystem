@@ -85,7 +85,9 @@
 */
 
 #include <fcntl.h>
+#if defined(__cplusplus)
 #include <iostream>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
