@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 2.6)
-include(config/config.cmake)
+cmake_minimum_required(VERSION 2.8)
+include(${CMAKE_SOURCE_DIR}/config/config.cmake)
 project(${PROJECTNAME})
 
-message(STATUS "project: '" ${PROJECTNAME} "' in '" ${BD} "'")
+message(STATUS "project: '" ${PROJECTNAME} "' in '" ${CMAKE_BINARY_DIR} "'")
 
 add_subdirectory(lib)
 

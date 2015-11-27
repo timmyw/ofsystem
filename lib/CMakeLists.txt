@@ -22,7 +22,7 @@ set (srcs
   storageblobbuffer.cpp
   storageblobbuffered.cpp
   ofidentity.cpp
-  offlags.cpp
+  ${CMAKE_BINARY_DIR}/lib/offlags.cpp
   srvidentity.cpp
   oferr.cpp
   ofvariant.cpp
@@ -34,12 +34,13 @@ if (!WIN32)
    set (srcs ${srcs} terminput.cpp)
 endif (!WIN32)
 
-add_custom_command(OUTPUT offlags.cpp
-  COMMAND perl ${BD}/tools/mkflags.pl -o offlags.cpp -h ${BD}/include/offlags.i -i ${BD}/data/flags.data
-  DEPENDS ${BD}/tools/mkflags.pl ${BD}/data/flags.data
+add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/offlags.cpp
+  COMMAND perl ${CMAKE_SOURCE_DIR}/tools/mkflags.pl -o offlags.cpp -h ${CMAKE_BINARY_DIR}/include/offlags.i -i ${CMAKE_SOURCE_DIR}/data/flags.data
+  DEPENDS ${CMAKE_SOURCE_DIR}/tools/mkflags.pl ${CMAKE_SOURCE_DIR}/data/flags.data
 )
 
 addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "${LIBS}")
 
-FILE(GLOB incfiles "${BD}/include/*.[hi]")
-install(FILES ${incfiles} DESTINATION ${incdir})
+FILE(GLOB incfiles "${CMAKE_SOURCE_DIR}/include/*.[hi]")
+FILE(GLOB incfiles2 "${CMAKE_BINARY_DIR}/include/*.[hi]")
+install(FILES ${incfiles} ${incfiles2} DESTINATION ${incdir})
