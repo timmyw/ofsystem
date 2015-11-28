@@ -34,7 +34,7 @@ if (!WIN32)
    set (srcs ${srcs} terminput.cpp)
 endif (!WIN32)
 
-add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/offlags.cpp
+add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/lib/offlags.cpp
   COMMAND perl ${CMAKE_SOURCE_DIR}/tools/mkflags.pl -o offlags.cpp -h ${CMAKE_BINARY_DIR}/include/offlags.i -i ${CMAKE_SOURCE_DIR}/data/flags.data
   DEPENDS ${CMAKE_SOURCE_DIR}/tools/mkflags.pl ${CMAKE_SOURCE_DIR}/data/flags.data
 )
