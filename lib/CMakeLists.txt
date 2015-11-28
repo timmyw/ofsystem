@@ -43,4 +43,5 @@ addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "${LIBS}")
 
 FILE(GLOB incfiles "${CMAKE_SOURCE_DIR}/include/*.[hi]")
 FILE(GLOB incfiles2 "${CMAKE_BINARY_DIR}/include/*.[hi]")
-install(FILES ${incfiles} ${incfiles2} DESTINATION ${incdir})
+install(FILES ${incfiles} DESTINATION ${incdir})
+install(FILES ${incfiles2} DESTINATION ${incdir})
