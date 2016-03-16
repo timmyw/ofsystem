@@ -41,6 +41,11 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/lib/offlags.cpp
 
 addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "${LIBS}")
 
+set_property(TARGET ofsystem PROPERTY CXX_STANDARD 14)
+set_property(TARGET ofsystem PROPERTY CXX_STANDARD_REQUIRED ON)
+
+#target_compile_features(ofsystem PRIVATE cxx_constexpr)
+
 FILE(GLOB incfiles "${CMAKE_SOURCE_DIR}/include/*.[hi]")
 FILE(GLOB incfiles2 "${CMAKE_BINARY_DIR}/include/*.[hi]")
 install(FILES ${incfiles} DESTINATION ${incdir})
