@@ -1,4 +1,4 @@
-ver=0.3.3
+ver=0.3.4
 platform=i386
 plat=$(shell uname -m)
 ifeq ($(plat),x86_64)
