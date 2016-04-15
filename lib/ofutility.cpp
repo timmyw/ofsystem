@@ -1345,7 +1345,7 @@ OFINLINE std::string OFUtility::toString(ofint16 theValue)
 OFINLINE std::string OFUtility::toString(ofint32 theValue)
 {
     char buffer[32];
-    OFOS::snprintf(buffer, 31, "%"LFORMAT"d",theValue);
+    OFOS::snprintf(buffer, 31, "%" LFORMAT "d",theValue);
     std::string outstring(buffer);
     return outstring;
 }
@@ -1353,7 +1353,7 @@ OFINLINE std::string OFUtility::toString(ofint32 theValue)
 OFINLINE std::string OFUtility::toString(ofuint32 theValue)
 {
     char buffer[32];
-    OFOS::snprintf(buffer,31, "%"LFORMAT"u", (ofuint32)theValue);
+    OFOS::snprintf(buffer,31, "%" LFORMAT "u", (ofuint32)theValue);
     std::string outstring(buffer);
     return outstring;
 }
@@ -1361,7 +1361,7 @@ OFINLINE std::string OFUtility::toString(ofuint32 theValue)
 OFINLINE std::string OFUtility::toString(double theValue)
 {
     char buffer[32];
-    OFOS::snprintf(buffer,31, "%f",theValue);
+    OFOS::snprintf(buffer,31, "%f", theValue);
     std::string outstring(buffer);
     return outstring;
 }

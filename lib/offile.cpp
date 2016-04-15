@@ -49,7 +49,7 @@ void OFFile::make_unique(char *filename)
     while (OFFile::doesFileExist(testname)) {
         j++;
         OFOS::snprintf(testname, OF_MAX_PATH_LEN
-                       , "%s-%04"DFORMAT2".%s"
+                       , "%s-%04" DFORMAT2 ".%s"
                        , name, j, ext);
     }
     OFOS::strcpy(filename, testname);

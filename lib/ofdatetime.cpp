@@ -268,7 +268,7 @@ OFDate::toStringISO() const
 #if !defined(NDEBUG)
         int i = 
 #endif
-            sprintf( temp, "%.4"LFORMAT"d-%.2"LFORMAT"d-%.2"LFORMAT"d", y, m, d );
+            sprintf( temp, "%.4" LFORMAT "d-%.2" LFORMAT "d-%.2" LFORMAT "d", y, m, d );
         assert( i < 15 );
 
         s = temp;
