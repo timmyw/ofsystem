@@ -101,7 +101,7 @@
 #include <oferr.h>
 #include <ofconstants.h>
 
-#include <cas.h>
+//#include <cas.h>
 #include <ofaddress.h>
 #include <ofsocket.h>
 #include <ofconfig.h>
