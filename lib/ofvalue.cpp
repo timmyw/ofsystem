@@ -28,6 +28,8 @@
 #include <ofos.h>
 #include <offlags.h>
 
+#include <cas.h>
+
 #define REFCOUNT(a) (*(ofint32*)((a).valmem.buffer))
 #define REFCOUNTADDR(a) ((volatile ofuint32*)((a).valmem.buffer))
 #define REFCOUNTSIZE OFVALUE::refCountSize
@@ -381,6 +383,8 @@ OFVALUE::listIncrease( ofuint32 inc )
             for (;;)
             {
                 i = REFCOUNT(value);
+                // if (std::atomic_compare_exchange_weak(REFCOUNTADDR(value), &i, i-1)
+                //     break;
                 if (compare_and_swap_int(REFCOUNTADDR(value), i, i-1))
                     break;
             }

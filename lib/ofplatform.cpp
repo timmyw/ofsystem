@@ -605,14 +605,14 @@ OFPlatform::stopServer( const char* siteName,
 ofuint32
 OFPlatform::startServer_win32 (const char* site)
 {
-        char cmd[1025];
-        char param[129] = "-site";
-        char ofbin[1024];
+    char cmd[1025];
+    char param[129] = "-site";
+    char ofbin[1024] = "";
 
-        if ( getenv( "OFBIN" ) )
-                OFOS::strcpy( ofbin, getenv( "OFBIN" ) );
-        OFOS::snprintf( cmd, 1024, "%s/ofserver", ofbin );
-        return _execl( cmd, cmd, param, site, 0 );
+    if ( getenv( "OFBIN" ) )
+        OFOS::strcpy( ofbin, getenv( "OFBIN" ) );
+    OFOS::snprintf( cmd, 1024, "%s/ofserver", ofbin );
+    return _execl( cmd, cmd, param, site, 0 );
 }
 
 ofuint32
