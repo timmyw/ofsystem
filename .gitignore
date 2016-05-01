@@ -30,3 +30,5 @@ ZERO_CHECK*
 *.opensdf
 include/platform.i
 build
+compile_commands.json
+*.deb
