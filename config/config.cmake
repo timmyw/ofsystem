@@ -2,8 +2,8 @@ set(PROJECTNAME ofsystem)
 
 include(${CMAKE_SOURCE_DIR}/config/functions.cmake)
 
-set (CMAKE_CXX_STANDARD 14)
-set (CMAKE_CXX_STANDARD_REQUIRED 14)
+set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD_REQUIRED On)
 
 set(OFBUILDER "no-one")
 IF (WIN32)
