@@ -32,3 +32,4 @@ include/platform.i
 build
 compile_commands.json
 *.deb
+/lib/offlags.cpp

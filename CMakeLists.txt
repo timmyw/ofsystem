@@ -1,11 +1,12 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+cmake_minimum_required(VERSION 3.0)
 
-set(PROJECTNAME ofsystem)
-
-include(${CMAKE_SOURCE_DIR}/config/functions.cmake)
-
+set (CMAKE_CXX_EXTENSIONS off)
 set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
+project(ofsystem)
+
+include(${CMAKE_SOURCE_DIR}/config/functions.cmake)
 
 set(OFBUILDER "no-one")
 IF (WIN32)
@@ -21,9 +22,6 @@ getsysvar(OFBUILDOS uname -s)
 getsysvar(OFBUILDPROC uname -p)
 getsysvar(UNAMEM uname -m)
 ENDIF(WIN32)
-
-set (CMAKE_CXX_STANDARD 14)
-set (CMAKE_CXX_STANDARD_REQUIRED 14)
 
 # Defaults to 32bit platform on Win32
 SET(BUILD_PLATFORM OFPLATFORM_I386)
@@ -55,16 +53,16 @@ ELSE(WIN32)
     SET(WORDSIZE "WORDSIZE64")
   ENDIF(UNAMEM STREQUAL "x86_64")
 
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic -fPIC -pthread")
+  # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic -fPIC -pthread")
   
-  IF (CLANG)
-    SET(LIBS ${LIBS} "dl pthread")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-  ELSE(CLANG)
-    SET(LIBS ${LIBS} "dl")
-    #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  ENDIF(CLANG)
+  # IF (CLANG)
+  #   SET(LIBS ${LIBS} "dl pthread")
+  #   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+  # ELSE(CLANG)
+  #   SET(LIBS ${LIBS} "dl")
+  #   #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  #   #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  # ENDIF(CLANG)
 ENDIF(WIN32)
 
 # Change this to "SHARED" to create shared libraries
@@ -96,28 +94,25 @@ file(APPEND ${CMAKE_BINARY_DIR}/include/platform.i "#endif\n")
 file(APPEND ${CMAKE_BINARY_DIR}/include/platform.i "\n")
 
 # Add debug/ndebug macros
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  add_definitions(-DDEBUG)
-else(CMAKE_BUILD_TYPE STREQUAL "Debug")
-endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+# if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+#   add_definitions(-DDEBUG)
+# else(CMAKE_BUILD_TYPE STREQUAL "Debug")
+# endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 # Add the shared build flags, if necessary
-if (SHAREDSTATIC STREQUAL "SHARED")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pthread")
-else (SHAREDSTATIC STREQUAL "SHARED")
-endif (SHAREDSTATIC STREQUAL "SHARED")
+# if (SHAREDSTATIC STREQUAL "SHARED")
+# set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pthread")
+# else (SHAREDSTATIC STREQUAL "SHARED")
+# endif (SHAREDSTATIC STREQUAL "SHARED")
 
 if(WIN32)
-set(bindir ${CMAKE_SOURCE_DIR}/../bin)
-set(libdir ${CMAKE_SOURCE_DIR}/../lib)
-set(incdir ${CMAKE_SOURCE_DIR}/../include)
+  set(bindir ${CMAKE_SOURCE_DIR}/../bin)
+  set(libdir ${CMAKE_SOURCE_DIR}/../lib)
+  set(incdir ${CMAKE_SOURCE_DIR}/../include)
 else(WIN32)
-IF("${PREFIX}" STREQUAL "")
-set(PREFIX /usr/local)
-endif("${PREFIX}" STREQUAL "")
-set(bindir ${PREFIX}/bin)
-set(libdir ${PREFIX}/lib)
-set(incdir ${PREFIX}/include)
+  set(bindir bin)
+  set(libdir lib)
+  set(incdir include)
 endif(WIN32)
 
 function(addexec name srcs libs)

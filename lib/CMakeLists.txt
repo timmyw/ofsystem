@@ -1,4 +1,4 @@
-project(${PROJECTNAME})
+project(ofsystem)
 
 set (srcs
   oflogservice.cpp 
@@ -39,17 +39,17 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/lib/offlags.cpp
   DEPENDS ${CMAKE_SOURCE_DIR}/tools/mkflags.pl ${CMAKE_SOURCE_DIR}/data/flags.data
 )
 
-set (CMAKE_CXX_STANDARD 14)
-set (CMAKE_CXX_STANDARD_REQUIRED ON)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14" )
+# set (CMAKE_CXX_STANDARD 14)
+# set (CMAKE_CXX_STANDARD_REQUIRED ON)
+# set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14" )
 
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fPIC")
-SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fPIC")
+# SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fPIC")
+# SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fPIC")
 
 addlib(ofsystem ${SHAREDSTATIC} "${srcs}" "${LIBS}")
 
-set_property(TARGET ofsystem PROPERTY CXX_STANDARD 14)
-set_property(TARGET ofsystem PROPERTY CXX_STANDARD_REQUIRED ON)
+# set_property(TARGET ofsystem PROPERTY CXX_STANDARD 14)
+# set_property(TARGET ofsystem PROPERTY CXX_STANDARD_REQUIRED ON)
 
 # target_compile_features(ofsystem PUBLIC cxx_constexpr)
 
