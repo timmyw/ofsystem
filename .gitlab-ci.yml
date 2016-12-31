@@ -1,0 +1,12 @@
+# ofsystem
+
+image: astrobat/builds:latest
+  
+build:
+  stage: build
+  script:
+    - mkdir build
+    - cd build
+    - ../runcmake
+    - make
+    
